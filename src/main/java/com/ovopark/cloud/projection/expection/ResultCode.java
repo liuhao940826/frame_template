@@ -39,16 +39,6 @@ public class ResultCode {
     public static ResultCodeInfo PARAM_SHOULD_NOT_BE_NULL = new ResultCodeInfo(100009, "PARAM_SHOULD_NOT_BE_NULL", " %s不得为空");
 
 
-    //巡店的任务
-    public static  ResultCodeInfo TEMPLATE_DELETE_FAIL = new ResultCodeInfo(200001, "TEMPLATE_DELETE_FAIL", "巡店模板高级配置删除失败");
-    public static  ResultCodeInfo STORE_PLAN_UPDATE_PARAM_EMPTY = new ResultCodeInfo(200002, "STORE_PLAN_UPDATE_PARAM_EMPTY", "巡店任务更改参数为空");
-    public static  ResultCodeInfo STORE_PLAN_EMPTY = new ResultCodeInfo(200003, "STORE_PLAN_EMPTY", "计划巡店任务不存在");
-    public static  ResultCodeInfo STORE_PLAN_TPYE_NOT_READ = new ResultCodeInfo(200004, "STORE_PLAN_TPYE_NOT_READ", "计划巡店任务任务类型非阅读任务");
-    public static  ResultCodeInfo STORE_PLAN_JOB = new ResultCodeInfo(200005, "STORE_PLAN_TPYE_NOT_READ", "计划巡店任务任务定时任务失败");
-    public static  ResultCodeInfo STORE_PLAN_PRIVILEGEDEPT_INTERSECTION_EMPTY = new ResultCodeInfo(200006, "STORE_PLAN_PRIVILEGEDEPT_INTERSECTION_EMPTY", "计划巡店任务门店用户权限交集为空");
-    //企业配置
-    public static  ResultCodeInfo ENTERPRISE_CONFIG_EMPTY = new ResultCodeInfo(300001, "ENTERPRISE_CONFIG_EMPTY", "root企业配置不存在");
-
 
 
 

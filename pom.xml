@@ -95,6 +95,11 @@
             <artifactId>jackson-module-parameter-names</artifactId>
         </dependency>
 
+        <!--aspectJ-->
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
 
         <!-- logback -->
         <dependency>

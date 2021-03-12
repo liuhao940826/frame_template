@@ -141,6 +141,11 @@ public class JsonNewResult<T> implements Serializable{
 	}
 
 
+	public static <T> JsonNewResult<T> error(ResultCodeInfo resultCodeInfo,String eStr){
+		return newInstance(resultCodeInfo.getCode(),resultCodeInfo.getDesc()+":"+eStr,null,true);
+	}
+
+
 	public static <T> JsonNewResult<T> success(String successCode, T data){
 		if(StringUtils.isEmpty(successCode)){
 			successCode = JsonNewResult.RESULT_SUCCESS;
