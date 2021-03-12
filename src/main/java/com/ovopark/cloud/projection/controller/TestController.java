@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.ovopark.cloud.projection.mapper.TestMapper;
 import com.ovopark.cloud.projection.model.po.Depart;
 import com.ovopark.cloud.projection.model.resp.JsonNewResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import java.util.List;
 @RequestMapping("/test")
 public class TestController {
 
+    private static Logger log = LoggerFactory.getLogger(TestController.class);
+
     @Autowired
     TestMapper testMapper;
 
@@ -32,6 +36,14 @@ public class TestController {
     @RequestMapping(value="/test")
     @ResponseBody
     public JsonNewResult<?> test(){
+
+        log.trace("======trace");
+        log.debug("======debug");
+        log.info("======info");
+        log.warn("======warn");
+        log.error("======error");
+
+
         PageInfo<Depart> pageInfo = null;
 
         PageHelper.startPage(1,2);

@@ -59,14 +59,14 @@
 	</appender>
 
 	<!-- 1,COMMON.LOG -->
-	<logger name="com.ovopark" additivity="true">
+	<logger name="com.ovopark" additivity="false">
 		<level value="INFO"/>
 		<appender-ref ref="DEFAULT-APPENDER"/>
 		<appender-ref ref="ERROR-APPENDER"/>
 	</logger>
 
-	<!-- 3,输入输出日志 -->
-	<logger name="R-R-LOG" additivity="true">
+	<!-- 3,输入输出日志 false 情况不会被root输出 -->
+	<logger name="R-R-LOG" additivity="false">
 		<level value="INFO"/>
 		<appender-ref ref="R-R-APPENDER" />
 	</logger>
@@ -74,7 +74,6 @@
 	<root>
 		<level value="INFO"/>
 		<appender-ref ref="DEFAULT-APPENDER"/>
-		<appender-ref ref="R-R-APPENDER"/>
 	</root>
 
 
