@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.cloud.projection.mapper.TestMapper" >
+  <resultMap id="BaseResultMap" type="com.ovopark.cloud.projection.model.po.Depart" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+
+    
+  
+  <select id="test" resultMap="BaseResultMap">
+    select * from depart
+  </select>
+
+
+
+</mapper>
