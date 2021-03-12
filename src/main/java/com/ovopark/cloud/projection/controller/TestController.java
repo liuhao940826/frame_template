@@ -2,6 +2,7 @@ package com.ovopark.cloud.projection.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ovopark.cloud.projection.context.HttpContext;
 import com.ovopark.cloud.projection.mapper.TestMapper;
 import com.ovopark.cloud.projection.model.po.Depart;
 import com.ovopark.cloud.projection.model.resp.JsonNewResult;
@@ -40,7 +41,7 @@ public class TestController {
 
         log.trace("======trace");
         log.debug("======debug");
-        log.info("======info");
+        log.info(HttpContext.getTraceId() +"======info");
         log.warn("======warn");
         log.error("======error");
 

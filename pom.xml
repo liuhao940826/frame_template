@@ -20,6 +20,7 @@
         <java.version>1.8</java.version>
         <pro.name>mission-projection-screen</pro.name>
         <env>local</env>
+        <commons.version>2.6</commons.version>
     </properties>
 
     <dependencies>
@@ -47,7 +48,16 @@
             <artifactId>commons-lang</artifactId>
             <version>2.6</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.version}</version>
+        </dependency>
 
         <!--mybatis-->
         <dependency>
@@ -114,6 +124,14 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
+
+        <!-- httpclient -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.11.0</version>
+        </dependency>
+
 
     </dependencies>
 

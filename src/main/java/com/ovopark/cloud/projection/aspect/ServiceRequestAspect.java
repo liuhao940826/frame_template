@@ -2,6 +2,7 @@ package com.ovopark.cloud.projection.aspect;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ovopark.cloud.projection.context.HttpContext;
 import com.ovopark.cloud.projection.expection.ResultCode;
 import com.ovopark.cloud.projection.model.resp.JsonNewResult;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -46,6 +47,10 @@ public class ServiceRequestAspect {
         }
 
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
+
+        HttpContext.start(request, response);
+
         String reqParams="";
         // 获取参数, 只取自定义的参数, 自带的HttpServletRequest, HttpServletResponse不管
         if (call.getArgs().length > 0) {
