@@ -2,6 +2,8 @@ package com.ovopark.cloud.projection.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ovopark.cloud.projection.annotation.AutoCache;
+import com.ovopark.cloud.projection.annotation.DelCache;
 import com.ovopark.cloud.projection.constants.CacheKeyConsts;
 import com.ovopark.cloud.projection.context.HttpContext;
 import com.ovopark.cloud.projection.mapper.TestMapper;
@@ -64,6 +66,9 @@ public class TestController {
 
     @RequestMapping(value="/test/redis")
     @ResponseBody
+    @AutoCache(value = CacheKeyConsts.TEST_ANNO,
+            expire = 60 * 60 * 3)
+    @DelCache(CacheKeyConsts.TEST)
     public JsonNewResult<String> testRedisTemplate() {
 
         boolean isSucess = redisUtil.set(CacheKeyConsts.TEST, "我是测试数据");
