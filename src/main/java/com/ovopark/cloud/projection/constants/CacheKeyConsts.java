@@ -1,21 +1,20 @@
 package com.ovopark.cloud.projection.constants;
 
-/**
- * @author
- * @version 1.0
- * @description 描述
- * @create 2019-11-25 14:24
- */
-public final class CommonConstants {
+public class CacheKeyConsts {
 
-    public static final String UTF8 = "UTF-8";
+	public final static String CACHE_KEY_PREFIX = "mission-projection-screen:";	//缓存前缀
+	public static final String CACHE_LOCK_PREFIX = CACHE_KEY_PREFIX + "lock:";	//锁前缀
 
-    public static final String HEADER_ACCEPT = "application/json";
-    public static final String HEADER_CONTENT_TYPE = "application/json;charset=utf-8";
+    public static final long LOCK_DEFAULT_TRY_INTERVAL = 1 * 1000;	//锁的默认重试间隔，单位毫秒，默认一秒
+    public static final int LOCK_DEFAULT_LOCK_EXPIRE_TIME = 4;		//锁的默认失效时间
+    public static final int LOCK_DEFAULT_TRY_TIMES = 4;				//锁的默认重抢间隔
+    public static final String LOCK_RELEASE_LUA_SCRIPT = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 
+    //lock key
+    public static final String LOCK_DEMO_KEY = CACHE_LOCK_PREFIX + "lock_demo:";
 
-    public static final Long MILLISECOND_UNIT = 1000L;
-
+    public static final String TEST = CACHE_LOCK_PREFIX + "test:";
+    public static final String TEST_ANNO = CACHE_LOCK_PREFIX + "test:${id}";
 
     public final static String NULL = "NULL";
 

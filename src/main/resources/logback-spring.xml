@@ -12,6 +12,17 @@
 			  value="%d [%boldYellow(%t-${PID})] %highlight(%-5p) %boldGreen(%c) - [%X{sysTraceId}] [%m]%n"/>
 
 
+
+	<appender name="STDOUT"
+			  class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+				class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50}:%L - [traceId=%X{sysTraceId}] %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
 	<!-- [1,公共Appender] 默认 -->
 	<appender name="DEFAULT-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${LOGGING_ROOT}/common-default.log</file>
@@ -76,9 +87,8 @@
 	<root>
 		<level value="INFO"/>
 		<appender-ref ref="DEFAULT-APPENDER"/>
+		<appender-ref ref="STDOUT"/>
 	</root>
-
-
 
 	<jmxConfigurator/>
 </configuration>

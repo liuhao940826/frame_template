@@ -5,7 +5,7 @@ spring:
     druid:
       #监控统计拦截的filters
       filters: stat
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
       url: jdbc:mysql://121.43.123.76:3306/shopwebdb?characterEncoding=UTF-8&useUnicode=true&useSSL=false
       username: root
@@ -27,6 +27,18 @@ spring:
       #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
+  redis:
+    database: 0
+    host: 121.43.123.76
+    port: 36379
+    password: ovopark2016 # Redis服务器连接密码（默认为空）
+    timeout: 3000 # 连接超时时间（毫秒）
+    lettuce:
+      pool:
+        max-active: 1000
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 5
 
 
 mybatis:

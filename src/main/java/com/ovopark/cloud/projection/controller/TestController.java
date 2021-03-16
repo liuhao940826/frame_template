@@ -2,10 +2,12 @@ package com.ovopark.cloud.projection.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ovopark.cloud.projection.constants.CacheKeyConsts;
 import com.ovopark.cloud.projection.context.HttpContext;
 import com.ovopark.cloud.projection.mapper.TestMapper;
 import com.ovopark.cloud.projection.model.po.Depart;
 import com.ovopark.cloud.projection.model.resp.JsonNewResult;
+import com.ovopark.cloud.projection.utils.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,10 @@ public class TestController {
     @Autowired
     TestMapper testMapper;
 
+
+    @Autowired
+    RedisUtil redisUtil;
+
     /**
      * 删除草稿箱的任务
      * @return
@@ -55,5 +61,26 @@ public class TestController {
 
         return JsonNewResult.success(pageInfo);
     }
+
+    @RequestMapping(value="/test/redis")
+    @ResponseBody
+    public JsonNewResult<String> testRedisTemplate() {
+
+        boolean isSucess = redisUtil.set(CacheKeyConsts.TEST, "我是测试数据");
+
+        String value = (String)redisUtil.get(CacheKeyConsts.TEST);
+
+        System.out.println(value);
+
+        redisUtil.del(CacheKeyConsts.TEST);
+
+        value= (String)redisUtil.get(CacheKeyConsts.TEST);
+
+        System.out.println(value);
+
+        return null;
+    }
+
+
 
 }
