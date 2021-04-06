@@ -14,7 +14,7 @@ spring:
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      url: jdbc:mysql://localhost:3306/frame_template?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+      jdbc-url: jdbc:mysql://localhost:3306/frame_template?characterEncoding=UTF-8&useUnicode=true&useSSL=false
       username: root
       password: root
       #配置初始化大小/最小/最大
@@ -35,10 +35,10 @@ spring:
       pool-prepared-statements: false
       max-pool-prepared-statement-per-connection-size: 20
   redis:
-    database: 0
-    host: 121.43.123.76
-    port: 36379
-    password: ovopark2016 # Redis服务器连接密码（默认为空）
+    database: 1
+    host: localhost
+    port: 6379
+    password:  # Redis服务器连接密码（默认为空）
     timeout: 3000 # 连接超时时间（毫秒）
     lettuce:
       pool:
@@ -49,14 +49,14 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
-  type-aliases-package: com.ovopark.cloud.projection.model  # 注意：对应实体类的路径
+  type-aliases-package: self.alan.po  # 注意：对应实体类的路径
 
 #pagehelper分页插件
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
+#pagehelper:
+#  helperDialect: mysql
+#  reasonable: true
+#  supportMethodsArguments: true
+#  params: count=countSql
 
 logging:
   file:
