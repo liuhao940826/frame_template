@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: ${SERVER_ENVIROMENT:local}
+  application:
+    name: '@pro.name@'
+

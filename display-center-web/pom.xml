@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>display-center</artifactId>
+        <groupId>com.ovopark</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.ovopark</groupId>
+    <artifactId>display-center-web</artifactId>
+    <!--这边不加父类中${pro.version}引用不到-->
+    <version>${pro.version}</version>
+
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+
+        <!--内部依赖-->
+        <dependency>
+            <groupId>com.ovopark</groupId>
+            <artifactId>display-center-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ovopark</groupId>
+            <artifactId>display-center-common</artifactId>
+        </dependency>
+
+        <!--        <dependency>-->
+<!--            <groupId>com.ovopark</groupId>-->
+<!--            <artifactId>display-center-service</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.ovopark</groupId>-->
+<!--            <artifactId>display-center-service</artifactId>-->
+<!--        </dependency>-->
+
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <!--主要使用的是maven提供的assembly插件完成-->
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <!--具体的配置文件-->
+                            <descriptors>${project.basedir}/src/main/java/com/ovopark/web/assembly/assembly.xml
+                            </descriptors>
+                        </configuration>
+                        <id>make-assembly</id>
+                        <!--绑定到maven操作类型上-->
+                        <phase>package</phase>
+                        <!--运行一次-->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--隔离测试的resource和main的resource-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-shell</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.name}/bin
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${basedir}/src/main/bin/</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+        </plugins>
+    </build>
+
+</project>
