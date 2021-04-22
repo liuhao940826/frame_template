@@ -40,7 +40,7 @@
 
         <!--内部依赖-->
         <dependency>
-            <groupId>self.alan</groupId>
+            <groupId>com.ovopark</groupId>
             <artifactId>display-center-common</artifactId>
             <version>${pro.version}</version>
         </dependency>

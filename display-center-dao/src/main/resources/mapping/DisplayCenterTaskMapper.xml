@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.mapper.DisplayCenterTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.ovopark.po.DisplayCenterTask" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="dept_id" property="deptId" jdbcType="INTEGER" />
+    <result column="dept_name" property="deptName" jdbcType="VARCHAR" />
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+    <result column="operator_name" property="operatorName" jdbcType="VARCHAR" />
+    <result column="audit_id" property="auditId" jdbcType="INTEGER" />
+    <result column="audit_name" property="auditName" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="actual_score" property="actualScore" jdbcType="DECIMAL" />
+    <result column="total_score" property="totalScore" jdbcType="DECIMAL" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_id" property="createId" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="update_id" property="updateId" jdbcType="INTEGER" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, name, group_id, dept_id, dept_name, operator_id, operator_name,audit_id, audit_name,
+    status,actual_score,total_score,create_time,create_id, update_time, update_id,is_delete
+  </sql>
+
+
+
+
+
+
+</mapper>

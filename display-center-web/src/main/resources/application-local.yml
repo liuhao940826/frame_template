@@ -5,6 +5,22 @@ server:
   servlet:
     context-path: /display-center
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://121.199.19.240:8761/eureka/,http://121.199.19.240:8762/eureka/
+  instance:
+    instance-id: display-center #实例名
+
+#项目信息
+info:
+  company.name: com.ovopark
+  company.addr: China SuZhou
+  company.tel: 17621142248
+  app.name: display-center
+  app.desc: mic-server-cloud
+  author: alan.liu
+
 spring:
   datasource:
     name: shopwebdb
@@ -14,7 +30,7 @@ spring:
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      jdbc-url: jdbc:mysql://121.43.123.76:3306/shopwebdb??characterEncoding=UTF-8&useUnicode=true&useSSL=false
+      jdbc-url: jdbc:mysql://121.43.123.76:3306/shopwebdb?characterEncoding=UTF-8&useUnicode=true&useSSL=false
       username: root
       password: WUmtKNTGRiSLXLGr
       #配置初始化大小/最小/最大
@@ -61,3 +77,11 @@ mybatis:
 logging:
   file:
     path: /Users/liuhao/wdzIdeaProject/display-center/log
+
+ovopark:
+  sso:
+    server:
+      url: http://47.96.139.143:8819
+
+config:
+  expiredTime: 2592000000

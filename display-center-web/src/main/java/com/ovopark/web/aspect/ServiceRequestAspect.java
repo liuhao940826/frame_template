@@ -1,7 +1,19 @@
 package com.ovopark.web.aspect;
 
+import cn.hutool.http.HttpResponse;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.ovopark.constants.CommonConstants;
+import com.ovopark.constants.ConfigurationConstants;
+import com.ovopark.expection.SysErrorException;
+import com.ovopark.model.login.TokenInfo;
+import com.ovopark.model.login.Users;
+import com.ovopark.pojo.BaseResult;
+import com.ovopark.pojo.sso.TokenValueResp;
+import com.ovopark.service.UserRemoteService;
+import com.ovopark.utils.CommonUtil;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,7 +21,10 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import com.ovopark.context.HttpContext;
@@ -35,6 +50,15 @@ public class ServiceRequestAspect {
     private static final Logger defaultLogger = LoggerFactory.getLogger("R-R-LOG");
 
 
+    @Value("${ovopark.sso.server.url}")
+    private String  ssoServerUrl;
+
+    @Autowired
+    private UserRemoteService userRemoteService;
+
+    @Autowired
+    ConfigurationConstants configurationConstants;
+
 
     @Pointcut("execution(public * com.ovopark.web.controller..*(..))")
     private void allMethod() {
@@ -49,7 +73,15 @@ public class ServiceRequestAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         HttpServletResponse response = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse();
 
+        //生成traceId
         HttpContext.start(request, response);
+
+        //处理用户信息
+        boolean vaildTokenResult = vaildToken(request, response);
+
+        if(!vaildTokenResult){
+            return JsonNewResult.error(ResultCode.RESULT_INVALID_TOKEN);
+        }
 
         String reqParams="";
         // 获取参数, 只取自定义的参数, 自带的HttpServletRequest, HttpServletResponse不管
@@ -132,5 +164,141 @@ public class ServiceRequestAspect {
         }
 
         return ret.toString();
+    }
+
+    /**
+     * token的校验逻辑
+     * @param request
+     * @param response
+     */
+    private boolean vaildToken(HttpServletRequest request,HttpServletResponse response) {
+
+        boolean isNewLogin = false;
+        String token = request.getParameter("token");
+
+        //新的token信息
+        String authorization = request.getHeader("Ovo-Authorization");
+
+        if (StringUtils.isEmpty(authorization)) {
+            authorization = request.getHeader("authorization");
+        }
+
+        if (StringUtils.isEmpty(authorization)) {
+            authorization = request.getParameter("ticket");
+        }
+
+        if (!StringUtils.isEmpty(authorization)) {
+            isNewLogin = true;
+        }
+
+        if (isNewLogin) {
+            //解析新的
+            String[] auths = authorization.split(" ");
+            //组装clientInfo信息
+            token = assemblyClientInfo(auths, token);
+
+            HttpResponse ovoResult = HttpUtil.createGet(ssoServerUrl + CommonConstants.PARSE_TOKEN_URL + "?token=" + token).timeout(3000).execute();
+            if (ovoResult == null || ovoResult.getStatus() != 200 || StringUtils.isEmpty(ovoResult.body())) {
+                logger.error("调用sso失败");
+                throw new SysErrorException(ResultCode.RESULT_INVALID_TOKEN);
+            }
+            BaseResult<TokenValueResp> tokenValueBaseResult = null;
+            try {
+                tokenValueBaseResult = JSON.parseObject(ovoResult.body(), new TypeReference<BaseResult<TokenValueResp>>() {
+                });
+            } catch (Exception e) {
+                logger.error("异常信息", e);
+                throw new SysErrorException(ResultCode.INTERNAL_SERVER_ERROR);
+            }
+            //处理用户信息
+            if (!tokenValueBaseResult.getIsError()) {
+                TokenValueResp resp = tokenValueBaseResult.getData();
+                //获取用户
+                Users user = userRemoteService.queryUserById(resp.getUserId());
+                //这个一定要放在前面赋值
+                HttpContext.setContextInfoUser(user);
+                return true;
+            } else {
+                // 解析code
+                throw new SysErrorException(tokenValueBaseResult.getCode());
+            }
+        } else {
+            String authenticator = request.getHeader("authenticator");
+            //不为空 去处理截断逻辑
+            if (authenticator != null) {
+                String[] auths = authenticator.split(" ");
+
+                //组装clientInfo信息
+                token = assemblyClientInfo(auths, token);
+            }
+
+            //设置user
+            if (!StringUtils.isEmpty(token)) {
+                TokenInfo tokenBo = CommonUtil.decodeToken(token);
+                Integer kUserId = tokenBo.getUserId();
+                if (kUserId != null) {
+                    Users user = userRemoteService.queryUserById(kUserId);
+                    if (user != null) {
+                        String tokenPassword = tokenBo.getPassword();
+                        String dbPassword = user.getPassword();
+                        Date date = new Date();
+                        Date tokenDate = tokenBo.getDate();
+                        Date expiredDate = null;
+                        if (tokenDate != null) {
+                            if (tokenBo.getExpires() != null) {
+                                expiredDate = new Date(tokenDate.getTime() + tokenBo.getExpires());
+                            } else {
+                                Long expiredTime = configurationConstants.getExpiredTime();
+                                expiredDate = new Date(tokenDate.getTime() + expiredTime);
+                            }
+                        }
+                        // 用户名错误
+                        if (tokenBo.getUserName() != null && !user.getUserName().equals(tokenBo.getUserName())) {
+                            return false;
+                        }
+                        // 密码错误
+                        if (!StringUtils.isEmpty(tokenPassword) && !tokenPassword.equals(dbPassword)) {
+                            return false;
+                        }
+                        // token过期
+                        if (expiredDate != null && date.after(expiredDate)) {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                    HttpContext.setContextInfoUser(user);
+                    return true;
+                }
+                return false;
+            } else {
+                return false;
+            }
+
+        }
+
+
+    }
+
+
+    /**
+     * 赋值对应的客户短信息
+     * @param auths
+     * @param token
+     */
+    private String assemblyClientInfo(String[] auths,String token){
+        if (auths.length > 0 && StringUtils.isEmpty(token)) {
+            token = auths[0];
+        }
+        return  token;
+    }
+
+
+    public String getSsoServerUrl() {
+        return ssoServerUrl;
+    }
+
+    public void setSsoServerUrl(String ssoServerUrl) {
+        this.ssoServerUrl = ssoServerUrl;
     }
 }

@@ -1,5 +1,6 @@
 package com.ovopark.web.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ovopark.annotation.AutoCache;
@@ -53,6 +54,9 @@ public class TestController {
         log.warn("======warn");
         log.error("======error");
 
+        String traceId = HttpContext.getTraceId();
+
+        log.info("用户信息"+ JSON.toJSONString(HttpContext.getContextInfoUser()));
 
         PageInfo<Depart> pageInfo = null;
 

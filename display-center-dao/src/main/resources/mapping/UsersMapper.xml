@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.mapper.UsersMapper">
+	<resultMap id="BaseResultMap"
+		type="com.ovopark.model.login.Users">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_name" property="userName"
+			jdbcType="VARCHAR" />
+		<result column="show_name" property="showName"
+			jdbcType="VARCHAR" />
+		<result column="password" property="password"
+			jdbcType="VARCHAR" />
+		<result column="dept_ids" property="deptIds" jdbcType="INTEGER" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="mobile_phone" property="mobilePhone"
+			jdbcType="VARCHAR" />
+		<result column="mail" property="mail" jdbcType="VARCHAR" />
+		<result column="localelan" property="localelan"
+			jdbcType="VARCHAR" />
+		<result column="unread" property="unread" jdbcType="INTEGER" />
+		<result column="validate_date" property="validateDate"
+			jdbcType="TIMESTAMP" />
+		<result column="p_id" property="pId" jdbcType="INTEGER" />
+		<result column="creater_id" property="createrId"
+			jdbcType="INTEGER" />
+		<result column="activate_code" property="activateCode"
+			jdbcType="VARCHAR" />
+		<result column="privileges" property="privileges"
+			jdbcType="VARCHAR" />
+		<result column="is_register_user" property="isRegisterUser"
+			jdbcType="INTEGER" />
+		<result column="group_id" property="groupId" jdbcType="INTEGER" />
+		<result column="indicator" property="indicator"
+			jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime"
+			jdbcType="TIMESTAMP" />
+		<result column="user_organ_id" property="userOrganId"
+			jdbcType="INTEGER" />
+		<result column="passwd_update_time" property="passwdUpdateTime"
+			jdbcType="TIMESTAMP" />
+		<result column="is_single_sign" property="isSingleSign"
+			jdbcType="INTEGER" />
+		<result column="is_phone_activate" property="isPhoneActivate"
+			jdbcType="INTEGER" />
+		<result column="is_mail_activate" property="isMailActivate"
+			jdbcType="INTEGER" />
+		<result column="employee_number" property="employeeNumber"
+			jdbcType="VARCHAR" />
+		<result column="is_del" property="isDel" jdbcType="INTEGER" />
+		<result column="py_name" property="pyName" jdbcType="VARCHAR" />
+		<result column="is_assign" property="isAssign"
+			jdbcType="INTEGER" />
+		<result column="is_agency" property="isAgency"
+			jdbcType="INTEGER" />
+		<result column="has_thumb" property="hasThumb"
+			jdbcType="INTEGER" />
+		<result column="has_score_config" property="hasScoreConfig"
+			jdbcType="INTEGER" />
+		<result column="except_score_rank" property="exceptScoreRank"
+			jdbcType="INTEGER" />
+		<result column="creater" property="creater" jdbcType="INTEGER" />
+		<result column="is_frozen" property="isFrozen"
+			jdbcType="INTEGER" />
+		<result column="login_time" property="loginTime"
+			jdbcType="TIMESTAMP" />
+		<result column="dingding_user_id" property="dingdingUserId"
+			jdbcType="VARCHAR" />
+		<result column="thumb_url" property="thumbUrl"
+				jdbcType="VARCHAR" />
+		<result column="staff_image_url" property="staffImageUrl"
+				jdbcType="VARCHAR" />
+		<result column="thumb_update_time" property="thumbUpdateTime"
+				jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, user_name, show_name, password, dept_ids, phone, mobile_phone, mail,
+		localelan,
+		unread, validate_date, p_id, creater_id, activate_code, privileges,
+		is_register_user,
+		group_id, indicator, create_time, user_organ_id, passwd_update_time,
+		is_single_sign,
+		is_phone_activate, is_mail_activate, employee_number, is_del, py_name, is_assign,
+		is_agency, has_thumb, has_score_config, except_score_rank, creater,
+		is_frozen, login_time,
+		dingding_user_id,thumb_url,thumb_update_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+			parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from is_users
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+
+</mapper>

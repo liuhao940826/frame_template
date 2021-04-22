@@ -1,4 +1,5 @@
 package com.ovopark.context;
+import com.ovopark.model.login.Users;
 import com.ovopark.utils.IpUtils;
 import com.ovopark.utils.UuidUtils;
 import org.slf4j.MDC;
@@ -89,6 +90,30 @@ public class HttpContext {
 
     /**
      * 获取上下文对象
+     * @param
+     * @return
+     */
+    public static Users getContextInfoUser(){
+        HttpContextInfo httpContextInfo = httpContextInfoThreadLocal.get();
+        if(null == httpContextInfo){
+            return null;
+        }
+
+        return httpContextInfo.getUser();
+
+    }
+
+    public static void setContextInfoUser(Users user){
+        HttpContextInfo httpContextInfo = httpContextInfoThreadLocal.get();
+        if(null == httpContextInfo){
+           return;
+        }
+        httpContextInfo.setUser(user);
+    }
+
+
+    /**
+     * 获取上下文对象
      * @param key
      * @return
      */
@@ -161,14 +186,6 @@ public class HttpContext {
     }
 
 
-    /**
-     * 获取当前登录用户
-     * @return
-     */
-//    public static LoginUser getLoginUser(){
-//        return (LoginUser) SecurityUtils.getSubject().getPrincipal();
-//    }
-
 
     private static class HttpContextInfo{
 
@@ -185,6 +202,8 @@ public class HttpContext {
         private String ip;
 
         private Map<String, Object> data;
+        //用户信息
+        private Users user;
 
         public HttpContextInfo(HttpServletRequest request, HttpServletResponse response){
 
@@ -243,12 +262,22 @@ public class HttpContext {
             return traceId;
         }
 
+
+
         public String getIp() {
             return ip;
         }
 
         public Map<String, Object> getData() {
             return data;
+        }
+
+        public Users getUser() {
+            return user;
+        }
+
+        public void setUser(Users user) {
+            this.user = user;
         }
     }
 }

@@ -12,7 +12,7 @@
 			  value="%d [%boldYellow(%t-${PID})] %highlight(%-5p) %boldGreen(%c) - [%X{sysTraceId}] [%m]%n"/>
 
 
-
+	<!-- [1,控制台] 默认 -->
 	<appender name="STDOUT"
 			  class="ch.qos.logback.core.ConsoleAppender">
 		<encoder
@@ -69,13 +69,15 @@
 		</encoder>
 	</appender>
 
-	<!-- 1,COMMON.LOG false 不往root传递 配置了一样ref不会输出多次 -->
-	<logger name="com.ovopark" additivity="false">
+	<!-- 1,COMMON.LOG false 不往root传递 配置了一样ref不会输出多次  指定这个name(com.ovopark)包下的输出-->
+	<logger name="com.ovopark" additivity="true">
 		<level value="INFO"/>
 		<!--输入到common-defalut 文件-->
 		<appender-ref ref="DEFAULT-APPENDER"/>
 		<!--输入到common-error 文件-->
 		<appender-ref ref="ERROR-APPENDER"/>
+		<!--控制台-->
+<!--		<appender-ref ref="STDOUT"/>-->
 	</logger>
 
 	<!-- 3,输入输出日志 false 情况不会被root输出 -->
@@ -86,8 +88,8 @@
 
 	<root>
 		<level value="INFO"/>
-		<appender-ref ref="DEFAULT-APPENDER"/>
 		<appender-ref ref="STDOUT"/>
+<!--		<appender-ref ref="DEFAULT-APPENDER"/>-->
 	</root>
 
 	<jmxConfigurator/>
