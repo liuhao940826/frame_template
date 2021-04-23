@@ -10,19 +10,19 @@ import java.io.Serializable;
  */
 public class DisplayCenterTaskAddReq implements Serializable {
 
-    private String  name;
+    private String name;
 
     private Integer deptId;
 
-    private String deptName;
+    private String deptName = "";
 
     private Integer operatorId;
 
-    private String operatorName;
+    private String operatorName = "";
 
     private Integer auditId;
 
-    private String auditName;
+    private String auditName = "";
 
     public String getName() {
         return name;

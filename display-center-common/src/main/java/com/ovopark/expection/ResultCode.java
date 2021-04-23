@@ -38,6 +38,9 @@ public class ResultCode {
     public static ResultCodeInfo UPDATA_FAIL = new ResultCodeInfo(100010, "UPDATA_FAIL", "更新失败");
     public static ResultCodeInfo PARAM_SHOULD_NOT_BE_NULL = new ResultCodeInfo(100009, "PARAM_SHOULD_NOT_BE_NULL", " %s不得为空");
 
+    public static ResultCodeInfo DISPLAY_TASK_NULL = new ResultCodeInfo(200001, "DISPLAY_TASK_NULL", "陈列任务不存在");
+    public static ResultCodeInfo DISPLAY_TASK_STATUS_UNWAIT = new ResultCodeInfo(200002, "DISPLAY_TASK_STATUS_UNWAIT", "非待执行的成列任务");
+    public static ResultCodeInfo DISPLAY_TASK_NON_OPERATOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_OPERATOR", "非待执行人");
 
 
 

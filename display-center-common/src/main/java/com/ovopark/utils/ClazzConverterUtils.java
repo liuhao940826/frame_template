@@ -25,7 +25,7 @@ public class ClazzConverterUtils {
         return json == null ? null : JsonUtils.fromJson(json, type);
     }
 
-    public static <T1, T2> Collection<T1> converterClass(Collection<T2> srcClazzCollection, Class<T1> dstClazz) {
+    public static <T1, T2> List<T1> converterClass(Collection<T2> srcClazzCollection, Class<T1> dstClazz) {
         JSONArray jsonArray = (JSONArray) JSONObject.toJSON(srcClazzCollection);
         return jsonArray == null ? null : JSONArray.parseArray(jsonArray.toJSONString(), dstClazz);
     }

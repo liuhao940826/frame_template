@@ -1,6 +1,8 @@
 package com.ovopark.config;
 
+import com.ovopark.interceptor.PagerPluginInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * @author 余海
@@ -51,12 +54,13 @@ public class DatasourceConfig implements TransactionManagementConfigurer {
         ssfb.setDataSource(dataSource);
         ssfb.setMapperLocations(mapperLocations);
         ssfb.setConfigLocation(configLocation);
-        ssfb.setTypeAliasesPackage("com.ovopark.mapper");
+        ssfb.setTypeAliasesPackage("com.ovopark.po");
 
-//        PageInterceptor pageInterceptor = new PageInterceptor();
-//        Properties properties=new Properties();
-//        pageInterceptor.setProperties(properties);
-//        ssfb.setPlugins(new Interceptor[]{pageInterceptor});
+        //拦截器
+        PagerPluginInterceptor pageInterceptor = new PagerPluginInterceptor();
+        Properties properties=new Properties();
+        pageInterceptor.setProperties(properties);
+        ssfb.setPlugins(new Interceptor[]{pageInterceptor});
 
         return ssfb;
     }

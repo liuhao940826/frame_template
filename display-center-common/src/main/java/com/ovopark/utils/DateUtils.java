@@ -224,6 +224,14 @@ public class DateUtils {
         return sdf.format(new Date(Long.valueOf(seconds * CommonConstants.MILLISECOND_UNIT)));
     }
 
+    /**
+     * 获取现在的时间
+     * @return
+     */
+    public static Date  getNow(){
+        return new Date();
+    }
+
 
     /**
      * 在指定日期的基础上添加月数，返回添加后的日期
