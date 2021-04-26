@@ -10,17 +10,17 @@ import java.util.List;
  * @Date 2021/4/22 上午10:47
  * @Created by liuhao
  */
-public class DisplayCenterTaskAddExpandOuterReq implements Serializable {
+public class DisplayCenterTaskAuditExpandOuterReq implements Serializable {
 
-    private List<DisplayCenterTaskAddExpandReq> list = new ArrayList<>();
+    private List<DisplayCenterTaskAuditExpandReq> list = new ArrayList<>();
 
     private Integer taskId;
 
-    public List<DisplayCenterTaskAddExpandReq> getList() {
+    public List<DisplayCenterTaskAuditExpandReq> getList() {
         return list;
     }
 
-    public void setList(List<DisplayCenterTaskAddExpandReq> list) {
+    public void setList(List<DisplayCenterTaskAuditExpandReq> list) {
         this.list = list;
     }
 

@@ -37,10 +37,16 @@ public class ResultCode {
     public static ResultCodeInfo UPDATA_SUCCESS = new ResultCodeInfo(200, "UPDATA_SUCCESS", "更新成功");
     public static ResultCodeInfo UPDATA_FAIL = new ResultCodeInfo(100010, "UPDATA_FAIL", "更新失败");
     public static ResultCodeInfo PARAM_SHOULD_NOT_BE_NULL = new ResultCodeInfo(100009, "PARAM_SHOULD_NOT_BE_NULL", " %s不得为空");
+    public static ResultCodeInfo XXL_JOB_ERROR = new ResultCodeInfo(100010, "XXL_JOB_ERROR", "定时任务失败");
+
+
+
 
     public static ResultCodeInfo DISPLAY_TASK_NULL = new ResultCodeInfo(200001, "DISPLAY_TASK_NULL", "陈列任务不存在");
     public static ResultCodeInfo DISPLAY_TASK_STATUS_UNWAIT = new ResultCodeInfo(200002, "DISPLAY_TASK_STATUS_UNWAIT", "非待执行的成列任务");
-    public static ResultCodeInfo DISPLAY_TASK_NON_OPERATOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_OPERATOR", "非待执行人");
+    public static ResultCodeInfo DISPLAY_TASK_NON_OPERATOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_OPERATOR", "非执行人");
+    public static ResultCodeInfo DISPLAY_TASK_STATUS_UNAUDIT = new ResultCodeInfo(200004, "DISPLAY_TASK_STATUS_UNAUDIT", "非待审核的成列任务");
+    public static ResultCodeInfo DISPLAY_TASK_NON_AUDITOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_AUDITOR", "非审核人");
 
 
 

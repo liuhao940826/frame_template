@@ -9,8 +9,11 @@
         <result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
         <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
         <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="operator_time" property="operatorTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="audit_id" property="auditId" jdbcType="INTEGER"/>
         <result column="audit_name" property="auditName" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="actual_score" property="actualScore" jdbcType="DECIMAL"/>
         <result column="total_score" property="totalScore" jdbcType="DECIMAL"/>
@@ -22,7 +25,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, name, group_id, dept_id, dept_name, operator_id, operator_name,audit_id, audit_name,
+    id, name, group_id, dept_id, dept_name, operator_id, operator_name,operator_time,audit_id, audit_name,audit_time,
     status,actual_score,total_score,create_time,create_id, update_time, update_id,is_delete
   </sql>
 
@@ -94,40 +97,40 @@
                 #{deptName,jdbcType=VARCHAR},
             </if>
             <if test="operatorId != null">
-              #{operatorId,jdbcType=INTEGER},
+                #{operatorId,jdbcType=INTEGER},
             </if>
             <if test="operatorName != null">
-              #{operatorName,jdbcType=VARCHAR},
+                #{operatorName,jdbcType=VARCHAR},
             </if>
             <if test="auditId != null">
-              #{auditId,jdbcType=INTEGER},
+                #{auditId,jdbcType=INTEGER},
             </if>
             <if test="auditName != null">
-              #{auditName,jdbcType=VARCHAR},
+                #{auditName,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
-              #{status,jdbcType=INTEGER},
+                #{status,jdbcType=INTEGER},
             </if>
             <if test="createId != null">
-              #{createId,jdbcType=INTEGER},
+                #{createId,jdbcType=INTEGER},
             </if>
             <if test="createTime != null">
-              #{createTime,jdbcType=TIMESTAMP},
+                #{createTime,jdbcType=TIMESTAMP},
             </if>
             <if test="updateId != null">
-              #{updateId,jdbcType=INTEGER},
+                #{updateId,jdbcType=INTEGER},
             </if>
             <if test="updateTime != null">
-              #{updateTime,jdbcType=TIMESTAMP},
+                #{updateTime,jdbcType=TIMESTAMP},
             </if>
             <if test="isDelete != null">
-              #{isDelete,jdbcType=INTEGER},
+                #{isDelete,jdbcType=INTEGER},
             </if>
         </trim>
 
 
     </insert>
-    
+
     <select id="queryAppListByRelateTypeByPage" resultType="com.ovopark.po.DisplayCenterTask">
         select name,dept_id,dept_name,operator_id,audit_id,status,create_time from is_display_center_task
         where is_deleted =0
@@ -143,11 +146,57 @@
         <if test="releateType ==null">
             and (audit_id =#{userId} or operator_id =#{userId})
         </if>
+        <if test="deptName!=null">
+            and dept_name  =#{deptName}
+        </if>
+        <if test="name!=null">
+            and name  =#{name}
+        </if>
+        <if test="auditTime!=null">
+            and audit_time  =#{auditTime}
+        </if>
     </select>
-    
+
+    <select id="queryWebListByPage" resultType="com.ovopark.po.DisplayCenterTask">
+        select * from is_display_center_task where is_deleted =0
+        <if
+
+    </select>
+
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.ovopark.po.DisplayCenterTask">
        select * from is_display_center_task where id = #{id} and is_deleted=0
     </select>
-    
 
+    <update id="updateTaskStautsById">
+        UPDATE
+        `is_display_center_task`
+        <set>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="operatorTime!=null">
+                operator_time =#{operatorTime},
+            </if>
+            <if test="auditTime!=null">
+                audit_time =#{auditTime},
+            </if>
+            <if test="actualScore!=null">
+                actual_score =#{actualScore},
+            </if>
+            <if test="totalScore!=null">
+                total_score =#{totalScore},
+            </if>
+        </set>
+        WHERE id = #{id} and is_deleted =0
+    </update>
+
+    <update id="updateJobId">
+        UPDATE
+          `is_display_center_task`
+        SET
+          `job_id` = #{jobId}
+        WHERE id = #{id} and is_deleted =0
+    </update>
+    
 </mapper>

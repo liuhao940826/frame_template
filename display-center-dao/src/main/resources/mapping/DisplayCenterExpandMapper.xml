@@ -12,6 +12,7 @@
     <result column="total_score" property="totalScore" jdbcType="DECIMAL" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP" />
     <result column="create_id" property="createId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="update_id" property="updateId" jdbcType="INTEGER" />
@@ -23,9 +24,44 @@
     create_time,create_id, update_time, update_id,is_delete
   </sql>
 
+  
+  <insert id="batchSaveDisplayCenterExpand" parameterType="java.util.List">
+    INSERT INTO is_display_center_expand (
+    group_id,task_id,previous_url,after_url,title,total_score,
+    status,create_time,create_id, update_time, update_id,is_delete
+    )VALUES
+    <foreach collection="list" item="bo" separator=",">
+      (
+      #{bo.groupId},#{bo.taskId},#{bo.previousUrl},#{bo.afterUrl},#{bo.title},#{bo.totalScore},
+      #{bo.status},#{bo.createTime},#{bo.createId},#{bo.updateTime},#{bo.updateId},#{bo.isDelete}
+      )
+    </foreach>
+  </insert>
 
-
-
-
-
+  
+  <update id="batchUpdateActualScoreAndStatus" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+      update is_display_center_expand
+      <set>
+        <if test="item.actualScore != null">
+          actual_score =#{item.actualScore},
+        </if>
+        <if test="item.status != null">
+          status =#{item.status}
+        </if>
+        <if test="item.auditTime != null">
+          audit_time =#{item.auditTime}
+        </if>
+      </set>
+      WHERE is_delete = 0
+      and id =#{item.id}
+    </foreach>
+  </update>
+  
+  
+  <select id="getDisplayExpandByTaskId" resultType="com.ovopark.po.DisplayCenterExpand">
+        select * from is_display_center_expand where task_id =#{taskId} and is_deleted =0
+  </select>
+  
+  
 </mapper>

@@ -1,5 +1,7 @@
 package com.ovopark.constants;
 
+import java.math.BigDecimal;
+
 /**
  * @author
  * @version 1.0
@@ -25,5 +27,12 @@ public final class CommonConstants {
      * 版本号
      */
     public static final Integer DEFAULT_VERSION = 1;
+
+    /**
+     * 每一项的底数
+     */
+    public static final BigDecimal EACH_SCORE = new BigDecimal(5).setScale(2,BigDecimal.ROUND_HALF_DOWN);
+
+    public static Integer TWO_WEEKS_DAYS= 14;
 
 }

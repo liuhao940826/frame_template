@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /**
@@ -246,6 +247,22 @@ public class DateUtils {
         todayEnd.add(Calendar.MONTH, month);
         return todayEnd.getTime();
     }
+
+    /**
+     * date转cron
+     *
+     * @param date
+     * @return
+     */
+    public static String dateToCron(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("ss mm HH dd MM ? yyyy");
+        String formatTimeStr = null;
+        if (Objects.nonNull(date)) {
+            formatTimeStr = sdf.format(date);
+        }
+        return formatTimeStr;
+    }
+
 
 
     public static void main(String[] args) {

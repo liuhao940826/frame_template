@@ -1,16 +1,17 @@
-package com.ovopark.po;
+package com.ovopark.model.resp;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
- * @Classname DisplayCenterTask
+ * @Classname DisplayCenterTaskAddReq
  * @Description TODO
- * @Date 2021/4/22 上午9:32
+ * @Date 2021/4/22 上午10:47
  * @Created by liuhao
  */
-public class DisplayCenterTask implements Serializable {
+public class DisplayCenterTaskDetailResp implements Serializable {
 
     private Integer id;
 
@@ -36,21 +37,17 @@ public class DisplayCenterTask implements Serializable {
 
     private Integer status;
 
-    private Integer jobId;
-
     private BigDecimal actualScore;
 
     private BigDecimal totalScore;
 
-    private Integer createId;
+    private List<DisplayCenterTaskDetailExpandResp> list;
 
-    private Date createTime;
+    private Integer itemNum=0;
 
-    private Integer updateId;
+    private Integer qualifiedNum;
 
-    private Date updateTime;
-
-    private Integer isDelete;
+    private Integer unQualifiedNum;
 
     public Integer getId() {
         return id;
@@ -108,6 +105,14 @@ public class DisplayCenterTask implements Serializable {
         this.operatorName = operatorName;
     }
 
+    public Date getOperatorTime() {
+        return operatorTime;
+    }
+
+    public void setOperatorTime(Date operatorTime) {
+        this.operatorTime = operatorTime;
+    }
+
     public Integer getAuditId() {
         return auditId;
     }
@@ -122,6 +127,14 @@ public class DisplayCenterTask implements Serializable {
 
     public void setAuditName(String auditName) {
         this.auditName = auditName;
+    }
+
+    public Date getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(Date auditTime) {
+        this.auditTime = auditTime;
     }
 
     public Integer getStatus() {
@@ -148,67 +161,35 @@ public class DisplayCenterTask implements Serializable {
         this.totalScore = totalScore;
     }
 
-    public Integer getCreateId() {
-        return createId;
+    public List<DisplayCenterTaskDetailExpandResp> getList() {
+        return list;
     }
 
-    public void setCreateId(Integer createId) {
-        this.createId = createId;
+    public void setList(List<DisplayCenterTaskDetailExpandResp> list) {
+        this.list = list;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Integer getItemNum() {
+        return itemNum;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setItemNum(Integer itemNum) {
+        this.itemNum = itemNum;
     }
 
-    public Integer getUpdateId() {
-        return updateId;
+    public Integer getQualifiedNum() {
+        return qualifiedNum;
     }
 
-    public void setUpdateId(Integer updateId) {
-        this.updateId = updateId;
+    public void setQualifiedNum(Integer qualifiedNum) {
+        this.qualifiedNum = qualifiedNum;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
+    public Integer getUnQualifiedNum() {
+        return unQualifiedNum;
     }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getIsDelete() {
-        return isDelete;
-    }
-
-    public void setIsDelete(Integer isDelete) {
-        this.isDelete = isDelete;
-    }
-
-    public Integer getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Integer jobId) {
-        this.jobId = jobId;
-    }
-
-    public Date getAuditTime() {
-        return auditTime;
-    }
-
-    public void setAuditTime(Date auditTime) {
-        this.auditTime = auditTime;
-    }
-
-    public Date getOperatorTime() {
-        return operatorTime;
-    }
-
-    public void setOperatorTime(Date operatorTime) {
-        this.operatorTime = operatorTime;
+    public void setUnQualifiedNum(Integer unQualifiedNum) {
+        this.unQualifiedNum = unQualifiedNum;
     }
 }

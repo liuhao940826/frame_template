@@ -2,10 +2,10 @@ package com.ovopark.service;
 
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
-import com.ovopark.model.req.DisplayCenterTaskAddExpandOuterReq;
-import com.ovopark.model.req.DisplayCenterTaskAddReq;
-import com.ovopark.model.req.DisplayCenterTaskAppListReq;
+import com.ovopark.model.req.*;
 import com.ovopark.model.resp.DisplayCenterTaskAppListResp;
+import com.ovopark.model.resp.DisplayCenterTaskDetailResp;
+import com.ovopark.model.resp.DisplayCenterTaskWebListResp;
 import com.ovopark.model.resp.JsonNewResult;
 
 /**
@@ -20,5 +20,11 @@ public interface DisplayCenterTaskService {
 
     JsonNewResult<Page<DisplayCenterTaskAppListResp>> appList(DisplayCenterTaskAppListReq req, Users user);
 
-    JsonNewResult<Void> addExpland(DisplayCenterTaskAddExpandOuterReq req, Users user);
+    JsonNewResult<Void> carryOut(DisplayCenterTaskAddExpandOuterReq req, Users user);
+
+    JsonNewResult<Void> audit(DisplayCenterTaskAuditExpandOuterReq req, Users user);
+
+    JsonNewResult<DisplayCenterTaskDetailResp> detail(DisplayCenterTaskDetailReq req, Users user);
+
+    JsonNewResult<Page<DisplayCenterTaskWebListResp>> DisplayCenterTaskWebListReq(DisplayCenterTaskWebListReq req, Users user);
 }

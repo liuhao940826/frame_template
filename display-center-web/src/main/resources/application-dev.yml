@@ -82,3 +82,7 @@ ovopark:
 config:
   expiredTime: 2592000000
 
+shopjob:
+  url: http://116.62.15.85:8088/xxl-job-admin
+  executorId: 7
+

@@ -1,4 +1,4 @@
-package com.ovopark.frame_template_api;
+package com.ovopark;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -10,19 +10,9 @@ import java.util.List;
  * @Date 2021/4/22 上午10:47
  * @Created by liuhao
  */
-public class DisplayCenterTaskAddExpandOuterReq implements Serializable {
-
-    private List<DisplayCenterTaskAddExpandReq> list = new ArrayList<>();
+public class DisplayCenterTaskDetailReq implements Serializable {
 
     private Integer taskId;
-
-    public List<DisplayCenterTaskAddExpandReq> getList() {
-        return list;
-    }
-
-    public void setList(List<DisplayCenterTaskAddExpandReq> list) {
-        this.list = list;
-    }
 
     public Integer getTaskId() {
         return taskId;
@@ -31,5 +21,4 @@ public class DisplayCenterTaskAddExpandOuterReq implements Serializable {
     public void setTaskId(Integer taskId) {
         this.taskId = taskId;
     }
-
 }
