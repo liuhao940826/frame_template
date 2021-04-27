@@ -30,7 +30,7 @@ elif [ "${SERVER_ENVIROMENT}"x = "formal"x ]
 then
     Xmx="1536m"
 else
-    echo "Environment variables DADA_ENV not found."
+    echo "Environment variables SERVER_ENVIROMENT not found."
     exit -1
 fi
 
