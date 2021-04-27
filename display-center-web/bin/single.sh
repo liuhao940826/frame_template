@@ -5,7 +5,7 @@ APP_NAME="${pro.name}"
 #取当前目录
 BASE_PATH=`cd "$(dirname "$0")"; pwd`
 
-SERVER_ENVIROMENT=$DADA_ENV
+SERVER_ENVIROMENT=$SERVER_ENVIROMENT
 
 LOG_PATH="/data0/logs/${APP_NAME}"
 PID_PATH="/data0/webroot/${APP_NAME}"
@@ -163,7 +163,7 @@ start(){
         if [ "${SERVER_ENVIROMENT}"x = "test"x ]
         then
         #
-            nohup java ${JAVA_OPTS} -javaagent:/jacoco/lib/jacocoagent.jar=includes=com.dadaabc.*,output=tcpserver,port=29721,address=0.0.0.0 -cp ${CLASS_PATH} -jar ${DEFAULT_JAR} --spring.profiles.active=${SERVER_ENVIROMENT} ${APP_NAME}-app >$LOG_PATH/stdout.log 2>&1 &
+            nohup java ${JAVA_OPTS}  -jar ${DEFAULT_JAR} --spring.profiles.active=${SERVER_ENVIROMENT} ${APP_NAME}-app >$LOG_PATH/stdout.log 2>&1 &
         else
             nohup java ${JAVA_OPTS} -cp ${CLASS_PATH} -jar ${DEFAULT_JAR} --spring.profiles.active=${SERVER_ENVIROMENT} ${APP_NAME}-app >$LOG_PATH/stdout.log 2>&1 &
         fi

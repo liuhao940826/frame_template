@@ -5,7 +5,7 @@ APP_NAME="${pro.name}"
 #取当前目录
 BASE_PATH=`cd "$(dirname "$0")"; pwd`
 
-SERVER_ENVIROMENT=$DADA_ENV
+SERVER_ENVIROMENT=SERVER_ENVIROMENT
 
 LOG_PATH="/data0/logs/${APP_NAME}"
 PID_PATH="/data0/webroot/${APP_NAME}"
@@ -30,7 +30,7 @@ elif [ "${SERVER_ENVIROMENT}"x = "formal"x ]
 then
     Xmx="1536m"
 else
-    echo "Environment variables DADA_ENV not found."
+    echo "Environment variables SERVER_ENVIROMENT not found."
     exit -1
 fi
 
