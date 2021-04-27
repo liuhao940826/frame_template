@@ -356,6 +356,20 @@ public class DateUtils {
     }
 
     /**
+     * 在指定日期的基础上添加天数，返回添加后的日期
+     *
+     * @param date
+     * @param days
+     * @return
+     */
+    public static Date addDays(Date date, int days) {
+        Calendar todayEnd = Calendar.getInstance();
+        todayEnd.setTime(date);
+        todayEnd.add(Calendar.DATE, days);
+        return todayEnd.getTime();
+    }
+
+    /**
      * 按用户格式字符串距离今天的天数
      *
      * @param date

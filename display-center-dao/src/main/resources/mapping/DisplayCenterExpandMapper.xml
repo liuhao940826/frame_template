@@ -16,19 +16,19 @@
     <result column="create_id" property="createId" jdbcType="INTEGER" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="update_id" property="updateId" jdbcType="INTEGER" />
-    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="is_deleted" property="isDelete" jdbcType="INTEGER" />
   </resultMap>
 
   <sql id="Base_Column_List" >
     id, group_id, task_id, previous_url, after_url, title, actual_score,total_score, status,
-    create_time,create_id, update_time, update_id,is_delete
+    create_time,create_id, update_time, update_id,is_deleted
   </sql>
 
   
   <insert id="batchSaveDisplayCenterExpand" parameterType="java.util.List">
     INSERT INTO is_display_center_expand (
     group_id,task_id,previous_url,after_url,title,total_score,
-    status,create_time,create_id, update_time, update_id,is_delete
+    status,create_time,create_id, update_time, update_id,is_deleted
     )VALUES
     <foreach collection="list" item="bo" separator=",">
       (
@@ -47,13 +47,10 @@
           actual_score =#{item.actualScore},
         </if>
         <if test="item.status != null">
-          status =#{item.status}
-        </if>
-        <if test="item.auditTime != null">
-          audit_time =#{item.auditTime}
+          status =#{item.status},
         </if>
       </set>
-      WHERE is_delete = 0
+      WHERE is_deleted = 0
       and id =#{item.id}
     </foreach>
   </update>

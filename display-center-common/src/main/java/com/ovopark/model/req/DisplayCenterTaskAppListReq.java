@@ -21,7 +21,9 @@ public class DisplayCenterTaskAppListReq implements Serializable {
     //名字
     private String  name;
     //审核时间
-    private Date auditTime;
+    private String startTime;
+
+    private String endTime;
 
     public Integer getReleateType() {
         return releateType;
@@ -63,11 +65,19 @@ public class DisplayCenterTaskAppListReq implements Serializable {
         this.name = name;
     }
 
-    public Date getAuditTime() {
-        return auditTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setAuditTime(Date auditTime) {
-        this.auditTime = auditTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

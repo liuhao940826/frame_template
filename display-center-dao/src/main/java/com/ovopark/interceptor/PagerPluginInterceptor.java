@@ -5,10 +5,15 @@ import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +29,9 @@ import java.util.Properties;
  * <author>      <time>      <version>    <desc>
  * 修改人姓名        修改时间             版本号              描述
  */
-@Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
+@Component
+@Intercepts({ @Signature(type = StatementHandler.class,
+		method = "prepare", args = { Connection.class, Integer.class }) })
 public class PagerPluginInterceptor implements Interceptor {
 
 	public Object intercept(Invocation invocation) throws Throwable {
@@ -65,7 +72,11 @@ public class PagerPluginInterceptor implements Interceptor {
 	}
 
 	public Object plugin(Object target) {
-		return Plugin.wrap(target, this);
+		if (target instanceof StatementHandler) {
+			return Plugin.wrap(target, this);
+		} else {
+			return target;
+		}
 	}
 
 	public void setProperties(Properties arg0) {

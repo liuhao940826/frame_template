@@ -21,7 +21,8 @@ public interface DisplayCenterTaskMapper {
 
     List<DisplayCenterTask> queryAppListByRelateTypeByPage(@Param("page")Page<DisplayCenterTask> pageTemp,@Param("releateType") Integer releateType,
                                                            @Param("userId") Integer userId,@Param("groupId")Integer groupId,
-                                                           @Param("deptName")String deptName,@Param("name")String name,@Param("auditTime")Date auditTime);
+                                                           @Param("deptName")String deptName,@Param("name")String name,
+                                                           @Param("startTime")String startTime, @Param("endTime")String endTime);
 
 
     DisplayCenterTask selectByPrimaryKey(@Param("id") Integer taskId);

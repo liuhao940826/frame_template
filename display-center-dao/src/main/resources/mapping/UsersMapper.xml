@@ -86,8 +86,7 @@
 		dingding_user_id,thumb_url,thumb_update_time
 	</sql>
 
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-			parameterType="java.lang.Integer">
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Base_Column_List" />
 		from is_users

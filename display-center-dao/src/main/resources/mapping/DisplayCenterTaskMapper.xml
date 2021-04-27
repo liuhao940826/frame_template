@@ -152,8 +152,11 @@
         <if test="name!=null">
             and name  =#{name}
         </if>
-        <if test="auditTime!=null">
-            and audit_time  =#{auditTime}
+        <if test="startTime != null" >
+            and audit_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null" >
+            and audit_time &lt;= #{endTime}
         </if>
     </select>
 

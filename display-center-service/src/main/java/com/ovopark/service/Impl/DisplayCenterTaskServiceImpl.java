@@ -23,7 +23,6 @@ import com.ovopark.service.DisplayCenterTaskService;
 import com.ovopark.utils.BigDecimalUtils;
 import com.ovopark.utils.ClazzConverterUtils;
 import com.ovopark.utils.DateUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +61,7 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
         pageTemp.setPageSize(req.getPageSize());
 
         //我审核
-        List<DisplayCenterTask> list = displayCenterTaskMapper.queryAppListByRelateTypeByPage(pageTemp, req.getReleateType(), user.getId(), user.getGroupId(),req.getDeptName(),req.getName(),req.getAuditTime());
+        List<DisplayCenterTask> list = displayCenterTaskMapper.queryAppListByRelateTypeByPage(pageTemp, req.getReleateType(), user.getId(), user.getGroupId(),req.getDeptName(),req.getName(),req.getStartTime(),req.getEndTime());
 
         //转换集合
         List<DisplayCenterTaskAppListResp> result = ClazzConverterUtils.converterClass(list, DisplayCenterTaskAppListResp.class);
@@ -280,6 +279,7 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
             if(DisplayCenterTaskExpandStatusEnum.REFUSE.getCode().equals(expandReq.getStatus())){
                 isMessageFlag= true;
             }
+
         }
 
         displayCenterExpandMapper.batchUpdateActualScoreAndStatus(auditList);

@@ -40,6 +40,7 @@ public class XxlJobProxy {
      * @return
      */
     public Integer sendCronToJob(String jobType, String parameter, String cron, Integer userId, String name) {
+        //这个可以共用
         String url = xxljobUrl + "/jobinfo/addByShopwebSupport";
         XxlJobInfoBo job = new XxlJobInfoBo();
         job.setJobGroup(Integer.parseInt(executorId));

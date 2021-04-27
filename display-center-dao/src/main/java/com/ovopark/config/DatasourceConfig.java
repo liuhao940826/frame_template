@@ -57,10 +57,10 @@ public class DatasourceConfig implements TransactionManagementConfigurer {
         ssfb.setTypeAliasesPackage("com.ovopark.po");
 
         //拦截器
-        PagerPluginInterceptor pageInterceptor = new PagerPluginInterceptor();
-        Properties properties=new Properties();
-        pageInterceptor.setProperties(properties);
-        ssfb.setPlugins(new Interceptor[]{pageInterceptor});
+//        PagerPluginInterceptor pageInterceptor = new PagerPluginInterceptor();
+//        Properties properties=new Properties();
+//        pageInterceptor.setProperties(properties);
+//        ssfb.setPlugins(new Interceptor[]{pageInterceptor});
 
         return ssfb;
     }
