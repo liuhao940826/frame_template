@@ -36,7 +36,7 @@ public class EntityBase {
     }
     
     public static void setCreateParams(Object object, Integer userId){
-        Date now = DateUtils.getNow();
+        Date now = new Date();
 
         Class<?> clazz = object.getClass();
 
@@ -78,7 +78,7 @@ public class EntityBase {
         Class clazz = object.getClass();
         Method[] declaredMethods= clazz.getDeclaredMethods();
 
-        Date now = DateUtils.getNow();
+        Date now = new Date();
 
         for(Method method : declaredMethods){
             try
