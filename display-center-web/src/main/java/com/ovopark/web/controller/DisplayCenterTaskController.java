@@ -20,6 +20,7 @@ import com.ovopark.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +45,19 @@ public class DisplayCenterTaskController {
 
     @Autowired
     DisplayCenterTaskService displayCenterTaskService;
+
+    @Value("${spring.profiles.active}")
+    private String env;
+
+
+    @RequestMapping(value="/env")
+    @ResponseBody
+    public JsonNewResult<Void> testEnv(@RequestBody DisplayCenterTaskDetailReq req){
+
+        System.out.println("env:"+env);
+
+        return JsonNewResult.success();
+    }
 
 
     @RequestMapping(value="/app/list")
@@ -210,5 +224,14 @@ public class DisplayCenterTaskController {
         }
 
         return dataList;
+    }
+
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
     }
 }
