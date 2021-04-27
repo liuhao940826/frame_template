@@ -1,8 +1,12 @@
 package com.ovopark.web.controller;
 
+import com.ovopark.constants.CommonConstants;
+import com.ovopark.constants.StringKeyConstants;
 import com.ovopark.context.HttpContext;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.Validation;
+import com.ovopark.model.enums.DisplayCenterTaskStatusEnum;
+import com.ovopark.model.enums.DisplayWebListTitleEnum;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
@@ -11,6 +15,8 @@ import com.ovopark.model.resp.DisplayCenterTaskDetailResp;
 import com.ovopark.model.resp.DisplayCenterTaskWebListResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.service.DisplayCenterTaskService;
+import com.ovopark.utils.DateUtils;
+import com.ovopark.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +24,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Classname DisplayCenterTaskController
@@ -125,10 +136,79 @@ public class DisplayCenterTaskController {
                 .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
                 .isValidThrowException();
 
-        return displayCenterTaskService.DisplayCenterTaskWebListReq(req,user);
+        return displayCenterTaskService.DisplayCenterTaskWebList(req,user);
 
     }
 
+    @RequestMapping(value="/web/export/list")
+    @ResponseBody
+    public JsonNewResult<?> exportWebList(HttpServletResponse response, @RequestBody DisplayCenterTaskWebListReq req){
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .isValidThrowException();
+
+        JsonNewResult<Page<DisplayCenterTaskWebListResp>> pageJsonNewResult = displayCenterTaskService.DisplayCenterTaskWebList(req, user);
+
+        Page<DisplayCenterTaskWebListResp> page = pageJsonNewResult.getData().get("data");
+
+        List<String> title = DisplayWebListTitleEnum.getTitle();
+
+        List<List<String>> dataList =assembleRowList(page.getContent());
+
+        JsonNewResult result = new JsonNewResult();
+
+        boolean flag =false;
+        try {
+            flag = ExcelUtils.createWorkBook(response,  null, CommonConstants.TASK_EXCEL_FILE_NAME, title, dataList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(flag){
+            result.setIsError(false);
+            result.setResult(JsonNewResult.RESULT_SUCCESS);
+            return result;
+        }
+
+        result.setIsError(true);
+        result.setResult(JsonNewResult.RESULT_EXCEPTION);
+
+        return result;
+
+    }
+
+    private List<List<String>> assembleRowList(List<DisplayCenterTaskWebListResp> list) {
+
+        List<List<String>> dataList = new ArrayList();
 
 
+        for (DisplayCenterTaskWebListResp resp : list) {
+            List<String> rowData = new ArrayList<>();
+            //名字
+            rowData.add(resp.getName());
+            //门店名字
+            rowData.add(resp.getDeptName());
+            //状态
+            rowData.add(DisplayCenterTaskStatusEnum.formatDesc(resp.getStatus()));
+            //检查项
+            rowData.add(String.valueOf(resp.getItemNum()));
+            //得分
+            rowData.add(String.format(StringKeyConstants.SCORE,resp.getActualScore(),resp.getTotalScore()));
+            //得分率
+            rowData.add(resp.getScorePercent());
+            //执行人
+            rowData.add(resp.getOperatorName());
+            //审核人
+            rowData.add(resp.getAuditName());
+            //创建时间
+            rowData.add(DateUtils.getDateStr(resp.getCreateTime(),DateUtils.FORMAT_LONG_SLASH));
+
+            dataList.add(rowData);
+        }
+
+        return dataList;
+    }
 }

@@ -43,6 +43,11 @@ public class Page<T> implements Serializable {
 
 	}
 
+	public Page(int pageNumber, int pageSize) {
+		this.pageNumber = pageNumber;
+		this.pageSize = pageSize;
+	}
+
 	public Page(List<T> content) {
 		if (null == content) {
 			throw new IllegalArgumentException("Content must not be null!");

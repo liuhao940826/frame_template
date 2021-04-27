@@ -19,6 +19,26 @@ public enum DisplayCenterTaskStatusEnum {
     }
 
 
+    public static String formatDesc(Integer code) {
+        DisplayCenterTaskStatusEnum se = formatOrNull(code);
+        return null == se ? "" : se.getDesc();
+    }
+
+    public static DisplayCenterTaskStatusEnum formatOrNull(Integer code) {
+        if (null == code) {
+            return null;
+        }
+        DisplayCenterTaskStatusEnum[] enums = values();
+        for (DisplayCenterTaskStatusEnum enu : enums) {
+            if (enu.getCode().equals(code)) {
+                return enu;
+            }
+        }
+
+        return null;
+    }
+
+
     public Integer getCode() {
         return code;
     }

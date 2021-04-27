@@ -1,6 +1,7 @@
 package com.ovopark.model.resp;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -10,6 +11,8 @@ import java.util.Date;
  * @Created by liuhao
  */
 public class DisplayCenterTaskWebListResp implements Serializable {
+
+    private Integer id;
 
     private String name;
 
@@ -21,7 +24,12 @@ public class DisplayCenterTaskWebListResp implements Serializable {
 
     private Integer ItemNum;
 
-    private  String scorePercent;
+    private BigDecimal actualScore;
+
+    private BigDecimal totalScore;
+
+    //得分百分比
+    private String scorePercent;
 
     private Date createTime;
 
@@ -129,5 +137,29 @@ public class DisplayCenterTaskWebListResp implements Serializable {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
+    }
+
+    public BigDecimal getActualScore() {
+        return actualScore;
+    }
+
+    public void setActualScore(BigDecimal actualScore) {
+        this.actualScore = actualScore;
+    }
+
+    public BigDecimal getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(BigDecimal totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

@@ -62,6 +62,16 @@
   <select id="getDisplayExpandByTaskId" resultType="com.ovopark.po.DisplayCenterExpand">
         select * from is_display_center_expand where task_id =#{taskId} and is_deleted =0
   </select>
-  
+    
+  <select id="queryExpandByTaskIdList" resultType="com.ovopark.po.DisplayCenterExpand">
+    select * from is_display_center_expand where is_deleted =0
+    <if test="list!=null and list.size>0">
+      AND task_id IN (
+      <foreach collection="list" item="taskId" separator=",">
+        #{taskId}
+      </foreach>
+      )
+    </if>
+  </select>
   
 </mapper>

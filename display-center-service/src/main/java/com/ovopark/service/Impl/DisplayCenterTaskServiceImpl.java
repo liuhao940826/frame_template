@@ -1,6 +1,7 @@
 package com.ovopark.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.ovopark.constants.CommonConstants;
 import com.ovopark.constants.ProxyConstants;
 import com.ovopark.expection.ResultCode;
@@ -19,6 +20,7 @@ import com.ovopark.po.DisplayCenterExpand;
 import com.ovopark.po.DisplayCenterTask;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.DisplayCenterTaskService;
+import com.ovopark.utils.BigDecimalUtils;
 import com.ovopark.utils.ClazzConverterUtils;
 import com.ovopark.utils.DateUtils;
 import org.apache.commons.lang.StringUtils;
@@ -30,6 +32,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Classname DisplayCenterTaskServiceImpl
@@ -87,7 +90,7 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
 
 
     @Override
-    public JsonNewResult<Page<DisplayCenterTaskWebListResp>> DisplayCenterTaskWebListReq(DisplayCenterTaskWebListReq req, Users user) {
+    public JsonNewResult<Page<DisplayCenterTaskWebListResp>> DisplayCenterTaskWebList(DisplayCenterTaskWebListReq req, Users user) {
 
         Page<DisplayCenterTask> pageTemp = new Page<DisplayCenterTask>();
         pageTemp.setPageNumber(req.getPageNo());
@@ -96,10 +99,54 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
         List<DisplayCenterTask> list = displayCenterTaskMapper.queryWebListByPage(pageTemp,user.getGroupId(),req.getName(),
                 req.getDeptName(),req.getStatus(),req.getOperatorName(),req.getAuditName(),req.getStartTime(),req.getEndTime());
 
-        //TODO web端查询
+        if(CollectionUtils.isEmpty(list)){
+            return JsonNewResult.success(new Page<DisplayCenterTaskWebListResp>(req.getPageNo(),req.getPageSize()));
+        }
+        //id的集合
+        List<Integer> taskIdList = list.stream().map(DisplayCenterTask::getId).collect(Collectors.toList());
+        //明细
+        List<DisplayCenterExpand> expandList = displayCenterExpandMapper.queryExpandByTaskIdList(taskIdList);
+        //明细map
+        Map<Integer,List<DisplayCenterExpand>> expandMap =new HashMap<>();
 
+        if (!CollectionUtils.isEmpty(expandList)) {
+            expandMap = expandList.stream().collect(Collectors.toMap(DisplayCenterExpand::getTaskId, value -> Lists.newArrayList(value),
+                    (List<DisplayCenterExpand> newValueList, List<DisplayCenterExpand> oldValueList) -> { oldValueList.addAll(newValueList);
+                        return oldValueList;
+                    }));
+        }
 
-        return null;
+        //处理结果
+        List<DisplayCenterTaskWebListResp> result = ClazzConverterUtils.converterClass(list, DisplayCenterTaskWebListResp.class);
+
+        for (DisplayCenterTaskWebListResp resp : result) {
+
+            BigDecimal actualScore = resp.getActualScore();
+            BigDecimal totalScore = resp.getTotalScore();
+
+            String percent = BigDecimalUtils.calculateBigDecimalPercentStr(actualScore, totalScore, BigDecimalUtils.DEFAULT_SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+            resp.setScorePercent(percent);
+            //检查项
+            List<DisplayCenterExpand> taskExpandList = expandMap.get(resp.getId());
+
+            if(CollectionUtils.isEmpty(taskExpandList)){
+                resp.setItemNum(CommonConstants.ZERO);
+            }else {
+                resp.setItemNum(taskExpandList.size());
+            }
+
+            if (resp.getAuditId().equals(user.getId()) && DisplayCenterTaskStatusEnum.AUDIT.getCode().equals(resp.getStatus())){
+                resp.setIsAudit(DefaultEnum.DEFAULT_TRUE.getCode());
+            }
+        }
+
+        Page<DisplayCenterTaskWebListResp> pageResult = new Page<DisplayCenterTaskWebListResp>();
+
+        BeanUtils.copyProperties(pageTemp, pageResult);
+
+        pageResult.setContent(result);
+
+        return JsonNewResult.success(pageResult);
     }
 
     @Override

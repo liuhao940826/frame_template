@@ -35,4 +35,9 @@ public final class CommonConstants {
 
     public static Integer TWO_WEEKS_DAYS= 14;
 
+    public static Integer ZERO= 0;
+
+    public static String TASK_EXCEL_FILE_NAME ="陈列中心-任务报表";
+
+
 }

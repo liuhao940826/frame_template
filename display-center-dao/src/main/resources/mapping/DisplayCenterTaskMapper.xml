@@ -159,8 +159,30 @@
 
     <select id="queryWebListByPage" resultType="com.ovopark.po.DisplayCenterTask">
         select * from is_display_center_task where is_deleted =0
-        <if
-
+        <if test="groupId!=null">
+            and group_id =#{groupId}
+        </if>
+        <if test="name!=null">
+            and name =#{name}
+        </if>
+        <if test="deptName!=null">
+            and dept_name =#{deptName}
+        </if>
+        <if test="status!=null">
+            and status =#{status}
+        </if>
+        <if test="operatorName!=null">
+            and operator_name =#{operatorName}
+        </if>
+        <if test="auditName!=null">
+            and audit_name =#{auditName}
+        </if>
+        <if test="startTime != null" >
+            and create_time &gt;= #{startTime}
+        </if>
+        <if test="endTime != null" >
+            and create_time &lt;= #{endTime}
+        </if>
     </select>
 
 

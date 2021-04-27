@@ -19,4 +19,6 @@ public interface DisplayCenterExpandMapper {
     void batchUpdateActualScoreAndStatus(@Param("list")List<DisplayCenterExpand> auditList);
 
     List<DisplayCenterExpand> getDisplayExpandByTaskId(@Param("taskId") Integer taskId);
+
+    List<DisplayCenterExpand> queryExpandByTaskIdList(@Param("list")List<Integer> taskIdList);
 }

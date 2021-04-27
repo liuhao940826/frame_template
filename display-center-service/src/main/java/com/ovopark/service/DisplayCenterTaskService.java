@@ -26,5 +26,5 @@ public interface DisplayCenterTaskService {
 
     JsonNewResult<DisplayCenterTaskDetailResp> detail(DisplayCenterTaskDetailReq req, Users user);
 
-    JsonNewResult<Page<DisplayCenterTaskWebListResp>> DisplayCenterTaskWebListReq(DisplayCenterTaskWebListReq req, Users user);
+    JsonNewResult<Page<DisplayCenterTaskWebListResp>> DisplayCenterTaskWebList(DisplayCenterTaskWebListReq req, Users user);
 }
