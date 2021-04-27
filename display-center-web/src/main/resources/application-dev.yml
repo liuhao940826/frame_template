@@ -71,7 +71,7 @@ mybatis:
 
 logging:
   file:
-    path: /Users/liuhao/wdzIdeaProject/display-center/log
+    path: /programe/display-center/log
 
 
 ovopark:
