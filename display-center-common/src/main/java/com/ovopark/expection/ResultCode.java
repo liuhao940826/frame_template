@@ -39,6 +39,7 @@ public class ResultCode {
     public static ResultCodeInfo PARAM_SHOULD_NOT_BE_NULL = new ResultCodeInfo(100009, "PARAM_SHOULD_NOT_BE_NULL", " %s不得为空");
     public static ResultCodeInfo XXL_JOB_ERROR = new ResultCodeInfo(100010, "XXL_JOB_ERROR", "定时任务失败");
     public static ResultCodeInfo WEBSOECK_ERROR = new ResultCodeInfo(100011, "WEBSOECK_ERROR", "消息WEBSOCKET调用失败");
+    public static ResultCodeInfo JPUSH_ERROR = new ResultCodeInfo(100011, "JPUSH_ERROR", "消息推送极光失败");
 
 
 

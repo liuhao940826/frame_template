@@ -9,6 +9,7 @@ import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.SysErrorException;
 import com.ovopark.model.enums.DisplayMainTypeEnum;
 import com.ovopark.model.resp.JsonNewResult;
+import com.ovopark.model.resp.JsonResult;
 import com.ovopark.po.Messages;
 import com.ovopark.po.TaskMessage;
 import com.ovopark.service.MessageService;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +79,7 @@ public class MessageProxy {
 
         Map<String, Object> map = new HashMap<>();
         map.put("title", title);
-        map.put("userIdList", String.valueOf(userId));
+        map.put("userIdList", Arrays.asList(userId));
         map.put("messageType", type);
 
         Map<String, Object> jsonMap = new HashMap<>();
@@ -88,7 +90,11 @@ public class MessageProxy {
         logger.info("极光推送请求参数数据:"+JSON.toJSONString(map)+"tokenType"+tokenType+"token值"+HttpContext.getContextInfoToken());
         String result = OaHttpUtils.sendJsonToOtherServerDefaultWithOutToken(jpushServerUrl, map, HttpContext.getContextInfoToken(),tokenType);
         logger.info("极光推送返回数据:"+result);
+        JsonResult jsonNewResult = JSON.parseObject(result, JsonResult.class);
 
+        if(jsonNewResult==null || !CommonConstants.OK.equalsIgnoreCase(jsonNewResult.getResult())){
+            throw new SysErrorException(ResultCode.JPUSH_ERROR);
+        }
     }
 
 
@@ -150,7 +156,7 @@ public class MessageProxy {
         logger.info("webSocket返回结果"+result);
         JsonNewResult jsonNewResult = JSON.parseObject(result, JsonNewResult.class);
 
-        if(jsonNewResult.getIsError()){
+        if(jsonNewResult==null || jsonNewResult.getIsError()){
             throw new SysErrorException(ResultCode.WEBSOECK_ERROR);
         }
 

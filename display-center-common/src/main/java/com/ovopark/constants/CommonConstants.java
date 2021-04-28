@@ -40,4 +40,6 @@ public final class CommonConstants {
     public static String TASK_EXCEL_FILE_NAME ="陈列中心-任务报表";
 
 
+    public static String OK ="ok";
+
 }

@@ -88,4 +88,4 @@ websocket:
   url: http://121.43.123.76:8088/shopweb-websocket/websocket/sendMessageToUser
 
 jpush:
-  url: http://121.43.123.76:8088/shopweb-support/xinfaMission/sendCrmjPush
+  url: http://localhost:8088/shopweb-support/xinfaMission/sendCrmjPush

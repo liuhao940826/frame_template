@@ -22,8 +22,14 @@ public class MessageConstant {
      * IM收到系统消息
      */
     public static final int TYPE_MSG_RECEIVE = 1000;
-
-    public static int MASSAGE_TYPE_NOTIFY = 1;//通知（特定用户）
+    /**
+     *极光推送陈列中心Type
+     */
+    public static int DISPLAY_CENTER_JPUSH_TYPE =65;
+    /**
+     *极光推送巡检Type
+     */
+    public static int INSPECTION_JPUSH_TYPE =66;
 
 
     //登录code和设备那边统一
