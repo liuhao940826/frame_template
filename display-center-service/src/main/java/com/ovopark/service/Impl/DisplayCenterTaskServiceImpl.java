@@ -295,7 +295,7 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
 
         if(isMessageFlag){
             //发送消息
-            messageProxy.sendWebSocketAndJpush(task.getId(),user.getId(), MessageConstant.DISPLAY_CENTER,MessageConstant.UN_QUALIFIED,user.getGroupId(),
+            messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.DISPLAY_CENTER,MessageConstant.UN_QUALIFIED,user.getGroupId(),
                     MessageConstant.DISPLAY_CENTER_JPUSH_TYPE,task.getId(), DisplayMainTypeEnum.DISPLAY,req.getTokenType());
 
         }

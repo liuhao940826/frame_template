@@ -144,7 +144,7 @@
             and audit_id =#{userId} and status = 2
         </if>
         <if test="releateType ==null">
-            and (audit_id =#{userId} or operator_id =#{userId})
+            and (audit_id =#{userId} or operator_id =#{userId}) and status in (3,4)
         </if>
         <if test="deptName!=null and deptName!='' ">
             and dept_name  =#{deptName}
