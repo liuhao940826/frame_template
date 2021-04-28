@@ -20,6 +20,8 @@ public class DisplayCenterTaskAuditExpandOuterReq implements Serializable {
         return list;
     }
 
+    private Integer tokenType;
+
     public void setList(List<DisplayCenterTaskAuditExpandReq> list) {
         this.list = list;
     }
@@ -32,4 +34,11 @@ public class DisplayCenterTaskAuditExpandOuterReq implements Serializable {
         this.taskId = taskId;
     }
 
+    public Integer getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(Integer tokenType) {
+        this.tokenType = tokenType;
+    }
 }

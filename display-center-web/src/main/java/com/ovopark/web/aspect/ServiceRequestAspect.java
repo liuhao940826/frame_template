@@ -290,6 +290,9 @@ public class ServiceRequestAspect {
         if (auths.length > 0 && StringUtils.isEmpty(token)) {
             token = auths[0];
         }
+
+        HttpContext.setContextInfoToken(token);
+
         return  token;
     }
 

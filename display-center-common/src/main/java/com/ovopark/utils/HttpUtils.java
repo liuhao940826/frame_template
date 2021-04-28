@@ -2,6 +2,11 @@ package com.ovopark.utils;
 
 import com.alibaba.fastjson.JSON;
 import okhttp3.*;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +106,51 @@ public class HttpUtils {
      */
     public static String sendPost(String url, Map<String, String> params, String jsonBody){
         return http(POST, url, params, null, jsonBody, null);
+    }
+
+
+    public static String sendJsonToOtherServerDefault(String url, Map<String,String> map) {
+
+        HttpClient client = new HttpClient();//创建httpClient对象
+        PostMethod post = new PostMethod(url);
+
+        if(map != null && map.size() > 0) {
+
+            NameValuePair[] nameValuePair = new NameValuePair[map.size()];
+            int i = 0;
+            for (String key : map.keySet()) {
+                NameValuePair nameValuePairTmp = new NameValuePair();
+                nameValuePair[i] = nameValuePairTmp;
+                nameValuePair[i].setName(key);
+                nameValuePair[i].setValue(map.get(key));
+                i++;
+            }
+
+            post.setRequestBody(nameValuePair);
+        }
+
+        post.getParams().setParameter(
+                HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
+        HttpConnectionManagerParams managerParams = client
+                .getHttpConnectionManager().getParams();
+        // 设置连接超时时间(单位毫秒)
+        managerParams.setConnectionTimeout(60000);
+        // 设置读数据超时时间(单位毫秒)
+        managerParams.setSoTimeout(60000);
+
+        try {
+            int code=client.executeMethod(post);//发送数据
+            if (code==200) {
+                return post.getResponseBodyAsString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            post.releaseConnection();//关闭连接
+        }
+
+        return null;
+
     }
 
     /**

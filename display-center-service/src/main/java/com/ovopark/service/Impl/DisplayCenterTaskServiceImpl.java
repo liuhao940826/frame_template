@@ -3,6 +3,7 @@ package com.ovopark.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.ovopark.constants.CommonConstants;
+import com.ovopark.constants.MessageConstant;
 import com.ovopark.constants.ProxyConstants;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.SysErrorException;
@@ -12,12 +13,14 @@ import com.ovopark.model.base.EntityBase;
 import com.ovopark.model.enums.DefaultEnum;
 import com.ovopark.model.enums.DisplayCenterTaskExpandStatusEnum;
 import com.ovopark.model.enums.DisplayCenterTaskStatusEnum;
+import com.ovopark.model.enums.DisplayMainTypeEnum;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
 import com.ovopark.model.resp.*;
 import com.ovopark.po.DisplayCenterExpand;
 import com.ovopark.po.DisplayCenterTask;
+import com.ovopark.proxy.MessageProxy;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.DisplayCenterTaskService;
 import com.ovopark.utils.BigDecimalUtils;
@@ -51,6 +54,9 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
 
     @Autowired
     XxlJobProxy xxlJobProxy;
+
+    @Autowired
+    MessageProxy messageProxy;
 
 
     @Override
@@ -240,6 +246,7 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public JsonNewResult<Void> audit(DisplayCenterTaskAuditExpandOuterReq req, Users user) {
 
         Integer taskId = req.getTaskId();
@@ -287,7 +294,10 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
         displayCenterTaskMapper.updateTaskStautsById(taskId,DisplayCenterTaskStatusEnum.PASS.getCode(),null,auditTime,actualScore,null);
 
         if(isMessageFlag){
-            //发送消息 todo
+            //发送消息
+            messageProxy.sendWebSocketAndJpush(task.getId(),user.getId(), MessageConstant.DISPLAY_CENTER,MessageConstant.UN_QUALIFIED,user.getGroupId(),
+                    MessageConstant.MASSAGE_TYPE_NOTIFY,task.getId(), DisplayMainTypeEnum.DISPLAY,req.getTokenType());
+
         }
 
         return JsonNewResult.success();

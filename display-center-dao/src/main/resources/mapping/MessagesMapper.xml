@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.mapper.MessagesMapper" >
+  <resultMap id="BaseResultMap" type="com.ovopark.po.Messages" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="src_user_id" property="srcUserId" jdbcType="INTEGER" />
+    <result column="target_user_id" property="targetUserId" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="object_type" property="objectType" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="VARCHAR" />
+    <result column="object_id" property="objectId" jdbcType="INTEGER" />
+    <result column="object_ids" property="objectIds" jdbcType="VARCHAR" />
+    <result column="sub_id" property="subId" jdbcType="INTEGER" />
+    <result column="object_url" property="objectUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="option_state" property="optionState" jdbcType="TINYINT" />
+    <result column="is_atall" property="isAtall" jdbcType="TINYINT" />
+    <result column="enterprise_id" property="enterpriseId" jdbcType="INTEGER" />
+    <result column="i18n_key" property="i18nKey" jdbcType="VARCHAR" />
+    <result column="i18n_param" property="i18nParam" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="is_deal" property="isDeal" jdbcType="TINYINT" />
+    <!--    <result column="task_id" property="taskId" jdbcType="INTEGER" />-->
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, src_user_id, target_user_id, content, description, object_type, category, object_id,
+    object_ids, sub_id, object_url, status, createtime, option_state, is_atall, enterprise_id,
+    i18n_key, i18n_param, title, is_deal
+  </sql>
+
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.ovopark.po.Messages" >
+    insert into is_messages
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="srcUserId != null" >
+        src_user_id,
+      </if>
+      <if test="targetUserId != null" >
+        target_user_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="objectType != null" >
+        object_type,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="objectId != null" >
+        object_id,
+      </if>
+      <if test="objectIds != null" >
+        object_ids,
+      </if>
+      <if test="subId != null" >
+        sub_id,
+      </if>
+      <if test="objectUrl != null" >
+        object_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="optionState != null" >
+        option_state,
+      </if>
+      <if test="isAtall != null" >
+        is_atall,
+      </if>
+      <if test="enterpriseId != null" >
+        enterprise_id,
+      </if>
+      <if test="i18nKey != null" >
+        i18n_key,
+      </if>
+      <if test="i18nParam != null" >
+        i18n_param,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="isDeal != null" >
+        is_deal,
+      </if>
+      <!--  <if test="taskId != null" >
+          task_id,
+        </if>-->
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="srcUserId != null" >
+        #{srcUserId,jdbcType=INTEGER},
+      </if>
+      <if test="targetUserId != null" >
+        #{targetUserId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="objectType != null" >
+        #{objectType,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="objectId != null" >
+        #{objectId,jdbcType=INTEGER},
+      </if>
+      <if test="objectIds != null" >
+        #{objectIds,jdbcType=VARCHAR},
+      </if>
+      <if test="subId != null" >
+        #{subId,jdbcType=INTEGER},
+      </if>
+      <if test="objectUrl != null" >
+        #{objectUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="optionState != null" >
+        #{optionState,jdbcType=TINYINT},
+      </if>
+      <if test="isAtall != null" >
+        #{isAtall,jdbcType=TINYINT},
+      </if>
+      <if test="enterpriseId != null" >
+        #{enterpriseId,jdbcType=INTEGER},
+      </if>
+      <if test="i18nKey != null" >
+        #{i18nKey,jdbcType=VARCHAR},
+      </if>
+      <if test="i18nParam != null" >
+        #{i18nParam,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="isDeal != null" >
+        #{isDeal,jdbcType=TINYINT},
+      </if>
+      <!--<if test="taskId != null" >
+        #{taskId,jdbcType=INTEGER},
+      </if>-->
+    </trim>
+  </insert>
+
+  
+</mapper>

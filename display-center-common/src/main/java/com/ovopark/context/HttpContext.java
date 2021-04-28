@@ -111,6 +111,25 @@ public class HttpContext {
         httpContextInfo.setUser(user);
     }
 
+    public static String getContextInfoToken(){
+        HttpContextInfo httpContextInfo = httpContextInfoThreadLocal.get();
+        if(null == httpContextInfo){
+            return null;
+        }
+
+        return httpContextInfo.getToken();
+
+    }
+
+    public static void setContextInfoToken(String token){
+        HttpContextInfo httpContextInfo = httpContextInfoThreadLocal.get();
+        if(null == httpContextInfo){
+            return;
+        }
+        httpContextInfo.setToken(token);
+    }
+
+
 
     /**
      * 获取上下文对象
@@ -205,6 +224,8 @@ public class HttpContext {
         //用户信息
         private Users user;
 
+        private String token;
+
         public HttpContextInfo(HttpServletRequest request, HttpServletResponse response){
 
             this.data = new HashMap<>();
@@ -278,6 +299,14 @@ public class HttpContext {
 
         public void setUser(Users user) {
             this.user = user;
+        }
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
         }
     }
 }
