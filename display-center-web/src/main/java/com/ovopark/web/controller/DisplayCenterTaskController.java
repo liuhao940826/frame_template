@@ -83,7 +83,6 @@ public class DisplayCenterTaskController {
 
         Validation.newValidation()
                 .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
-                .addError(req.getOperatorId()==null  , ResultCode.PARAM_ERROR_NAME,"operatorId")
                 .addError(req.getAuditId()==null  , ResultCode.PARAM_ERROR_NAME,"auditId")
                 .addError(req.getDeptId()==null  , ResultCode.PARAM_ERROR_NAME,"deptId")
                 .isValidThrowException();
