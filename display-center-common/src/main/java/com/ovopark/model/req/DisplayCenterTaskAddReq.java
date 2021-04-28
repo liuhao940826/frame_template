@@ -16,10 +16,6 @@ public class DisplayCenterTaskAddReq implements Serializable {
 
     private String deptName = "";
 
-    private Integer operatorId;
-
-    private String operatorName = "";
-
     private Integer auditId;
 
     private String auditName = "";
@@ -46,22 +42,6 @@ public class DisplayCenterTaskAddReq implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
-    }
-
-    public Integer getOperatorId() {
-        return operatorId;
-    }
-
-    public void setOperatorId(Integer operatorId) {
-        this.operatorId = operatorId;
-    }
-
-    public String getOperatorName() {
-        return operatorName;
-    }
-
-    public void setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
     }
 
     public Integer getAuditId() {
