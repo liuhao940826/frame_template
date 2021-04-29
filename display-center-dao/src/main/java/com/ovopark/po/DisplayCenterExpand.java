@@ -28,6 +28,8 @@ public class DisplayCenterExpand implements Serializable {
 
     private BigDecimal totalScore;
 
+    private String  remark;
+
     private Integer status;
 
     private Integer createId;
@@ -103,6 +105,15 @@ public class DisplayCenterExpand implements Serializable {
 
     public DisplayCenterExpand setTotalScore(BigDecimal totalScore) {
         this.totalScore = totalScore;  return this;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public DisplayCenterExpand setRemark(String remark) {
+        this.remark = remark;
+        return this;
     }
 
     public Integer getStatus() {

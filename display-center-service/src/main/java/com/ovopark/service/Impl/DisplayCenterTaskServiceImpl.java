@@ -277,7 +277,8 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
 
         for (DisplayCenterTaskAuditExpandReq expandReq : list) {
 
-            DisplayCenterExpand displayCenterExpand = new DisplayCenterExpand().setId(expandReq.getId()).setActualScore(expandReq.getActualScore()).setStatus(expandReq.getStatus());
+            DisplayCenterExpand displayCenterExpand = new DisplayCenterExpand().setId(expandReq.getId()).setActualScore(expandReq.getActualScore())
+                    .setRemark(expandReq.getRemark()).setStatus(expandReq.getStatus());
             //计算实际得分
             actualScore=  actualScore.add(expandReq.getActualScore());
 
@@ -338,16 +339,23 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
         //不合格数量
         Integer unQualifiedNum = 0;
 
+        Integer currentProgress= 0;
+
         for (DisplayCenterExpand displayCenterExpand : list) {
             if(DisplayCenterTaskExpandStatusEnum.PASS.getCode().equals(displayCenterExpand.getStatus())){
                 qualifiedNum+=1;
-            }
-
-            if(DisplayCenterTaskExpandStatusEnum.REFUSE.getCode().equals(displayCenterExpand.getStatus())){
+            }else if(DisplayCenterTaskExpandStatusEnum.REFUSE.getCode().equals(displayCenterExpand.getStatus())){
                 unQualifiedNum+=1;
             }
+
+
+            if(DisplayCenterTaskExpandStatusEnum.WAIT.getCode().equals(displayCenterExpand.getStatus())){
+                currentProgress+=1;
+            }
+
         }
 
+        resp.setCurrentProgress(currentProgress);
         resp.setQualifiedNum(qualifiedNum);
         resp.setUnQualifiedNum(unQualifiedNum);
         resp.setList(expandRespList);

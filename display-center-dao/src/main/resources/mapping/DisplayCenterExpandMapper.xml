@@ -49,6 +49,9 @@
         <if test="item.status != null">
           status =#{item.status},
         </if>
+        <if test="item.remark != null">
+          remark =#{item.remark},
+        </if>
       </set>
       WHERE is_deleted = 0
       and id =#{item.id}

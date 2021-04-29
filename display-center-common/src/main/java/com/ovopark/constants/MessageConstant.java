@@ -25,7 +25,7 @@ public class MessageConstant {
     /**
      *极光推送陈列中心Type
      */
-    public static int DISPLAY_CENTER_JPUSH_TYPE =65;
+    public static int DISPLAY_CENTER_JPUSH_TYPE =46;
     /**
      *极光推送巡检Type
      */
