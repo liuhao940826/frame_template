@@ -28,7 +28,7 @@ public class DisplayCenterExpand implements Serializable {
 
     private BigDecimal totalScore;
 
-    private String  remark;
+    private String  remark="";
 
     private Integer status;
 
