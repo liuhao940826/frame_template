@@ -61,18 +61,18 @@
   <update id="updateActualScoreAndStatus" parameterType="com.ovopark.po.DisplayCenterExpand">
     update is_display_center_expand
     <set>
-      <if test="item.actualScore != null">
-        actual_score =#{item.actualScore},
+      <if test="actualScore != null">
+        actual_score =#{actualScore},
       </if>
-      <if test="item.status != null">
-        status =#{item.status},
+      <if test="status != null">
+        status =#{status},
       </if>
-      <if test="item.remark != null">
-        remark =#{item.remark},
+      <if test="remark != null">
+        remark =#{remark},
       </if>
     </set>
     WHERE is_deleted = 0
-    and id =#{item.id}
+    and id =#{id}
   </update>
   
   
