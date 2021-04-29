@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class DisplayCenterTaskAppListResp implements Serializable {
 
+    private Integer id;
+
     private String name;
 
     private Integer deptId;
@@ -99,5 +101,13 @@ public class DisplayCenterTaskAppListResp implements Serializable {
 
     public void setAuditId(Integer auditId) {
         this.auditId = auditId;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
