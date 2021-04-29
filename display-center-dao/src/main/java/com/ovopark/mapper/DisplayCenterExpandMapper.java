@@ -21,4 +21,6 @@ public interface DisplayCenterExpandMapper {
     List<DisplayCenterExpand> getDisplayExpandByTaskId(@Param("taskId") Integer taskId);
 
     List<DisplayCenterExpand> queryExpandByTaskIdList(@Param("list")List<Integer> taskIdList);
+
+    void updateActualScoreAndStatus(DisplayCenterExpand displayCenterExpand);
 }

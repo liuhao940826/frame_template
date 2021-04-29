@@ -287,10 +287,12 @@ public class DisplayCenterTaskServiceImpl implements DisplayCenterTaskService {
             if(DisplayCenterTaskExpandStatusEnum.REFUSE.getCode().equals(expandReq.getStatus())){
                 isMessageFlag= true;
             }
-
+            //单独更新
+            displayCenterExpandMapper.updateActualScoreAndStatus(displayCenterExpand);
         }
 
-        displayCenterExpandMapper.batchUpdateActualScoreAndStatus(auditList);
+//        displayCenterExpandMapper.batchUpdateActualScoreAndStatus(auditList);
+
         //任务变成通过
         displayCenterTaskMapper.updateTaskStautsById(taskId,DisplayCenterTaskStatusEnum.PASS.getCode(),null,auditTime,actualScore,null);
 

@@ -58,6 +58,23 @@
     </foreach>
   </update>
   
+  <update id="updateActualScoreAndStatus" parameterType="com.ovopark.po.DisplayCenterExpand">
+    update is_display_center_expand
+    <set>
+      <if test="item.actualScore != null">
+        actual_score =#{item.actualScore},
+      </if>
+      <if test="item.status != null">
+        status =#{item.status},
+      </if>
+      <if test="item.remark != null">
+        remark =#{item.remark},
+      </if>
+    </set>
+    WHERE is_deleted = 0
+    and id =#{item.id}
+  </update>
+  
   
   <select id="getDisplayExpandByTaskId" resultType="com.ovopark.po.DisplayCenterExpand">
         select * from is_display_center_expand where task_id =#{taskId} and is_deleted =0
