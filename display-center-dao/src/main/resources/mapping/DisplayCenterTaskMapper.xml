@@ -147,10 +147,11 @@
             and (audit_id =#{userId} or operator_id =#{userId}) and status in (3,4)
         </if>
         <if test="deptName!=null and deptName!='' ">
-            and dept_name  =#{deptName}
+
+            and dept_name like CONCAT('%','${deptName}','%' )
         </if>
         <if test="name!=null and name!=''">
-            and name  =#{name}
+            and name   like CONCAT('%','${name}','%' )
         </if>
         <if test="startTime != null and startTime!=''" >
             and audit_time &gt;= #{startTime}
@@ -166,10 +167,10 @@
             and group_id =#{groupId}
         </if>
         <if test="name!=null">
-            and name =#{name}
+            and name like CONCAT('%','${name}','%' )
         </if>
         <if test="deptName!=null">
-            and dept_name =#{deptName}
+            and dept_name like CONCAT('%','${deptName}','%' )
         </if>
         <if test="status!=null">
             and status =#{status}
