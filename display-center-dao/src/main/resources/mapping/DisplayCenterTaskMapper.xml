@@ -132,7 +132,7 @@
     </insert>
 
     <select id="queryAppListByRelateTypeByPage" resultType="com.ovopark.po.DisplayCenterTask">
-        select name,dept_id,dept_name,operator_id,audit_id,status,create_time from is_display_center_task
+        select id,name,dept_id,dept_name,operator_id,audit_id,status,create_time from is_display_center_task
         where is_deleted =0
         <if test="groupId !=null">
             and group_id =#{groupId}
