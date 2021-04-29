@@ -35,8 +35,6 @@ public class DisplayCenterTaskDetailResp implements Serializable {
 
     private Date auditTime;
 
-    private String remark;
-
     private Integer status;
 
     private BigDecimal actualScore;
@@ -139,14 +137,6 @@ public class DisplayCenterTaskDetailResp implements Serializable {
 
     public void setAuditTime(Date auditTime) {
         this.auditTime = auditTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public Integer getCurrentProgress() {

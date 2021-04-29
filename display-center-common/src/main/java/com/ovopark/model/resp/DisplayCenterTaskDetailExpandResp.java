@@ -27,6 +27,8 @@ public class DisplayCenterTaskDetailExpandResp implements Serializable {
 
     private BigDecimal totalScore;
 
+    private String remark;
+
     private Integer status;
 
     public Integer getId() {
@@ -99,5 +101,13 @@ public class DisplayCenterTaskDetailExpandResp implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }
