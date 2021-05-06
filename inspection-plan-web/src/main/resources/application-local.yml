@@ -1,24 +1,23 @@
 server:
-  port: 9001
+  port: 9002
   tomcat:
     max-swallow-size: -1
   servlet:
-    context-path: /display-center
+    context-path: /inspection-plan
 
 eureka:
   client:
     service-url:
-      #      defaultZone: http://localhost:8000/eureka # 这里是eureka-server的地址
       defaultZone: http://121.199.19.240:8761/eureka/,http://121.199.19.240:8762/eureka/
   instance:
-    instance-id: display-center #实例名
+    instance-id: inspection-plan #实例名
 
 #项目信息
 info:
   company.name: com.ovopark
   company.addr: China SuZhou
   company.tel: 17621142248
-  app.name: display-center
+  app.name: -center
   app.desc: mic-server-cloud
   author: alan.liu
 
@@ -31,9 +30,9 @@ spring:
       filters: stat
       driver-class-name: com.mysql.cj.jdbc.Driver
       #基本属性
-      jdbc-url: jdbc:mysql://10.252.169.231:3306/shopwebdb?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+      jdbc-url: jdbc:mysql://121.43.123.76:3306/shopwebdb?characterEncoding=UTF-8&useUnicode=true&useSSL=false
       username: root
-      password: Y6HmkenJWB3f8zoX
+      password: WUmtKNTGRiSLXLGr
       #配置初始化大小/最小/最大
       initial-size: 1
       min-idle: 1
@@ -71,8 +70,7 @@ mybatis:
 
 logging:
   file:
-    path: /programe/display-center/log
-
+    path: /Users/liuhao/wdzIdeaProject/inspection-plan/log
 
 ovopark:
   sso:
@@ -91,4 +89,3 @@ websocket:
 
 jpush:
   url: http://121.43.123.76:8088/shopweb-support/xinfaMission/sendCrmjPush
-

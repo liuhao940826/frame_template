@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>display-center</artifactId>
+        <artifactId>inspection-plan</artifactId>
         <groupId>com.ovopark</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.ovopark</groupId>
-    <artifactId>display-center-web</artifactId>
+    <artifactId>inspection-plan-web</artifactId>
     <!--这边不加父类中${pro.version}引用不到-->
     <version>${pro.version}</version>
 
@@ -58,11 +58,11 @@
         <!--内部依赖-->
         <dependency>
             <groupId>com.ovopark</groupId>
-            <artifactId>display-center-service</artifactId>
+            <artifactId>inspection-plan-service</artifactId>
         </dependency>
         <dependency>
             <groupId>com.ovopark</groupId>
-            <artifactId>display-center-common</artifactId>
+            <artifactId>inspection-plan-common</artifactId>
         </dependency>
 
         <dependency>

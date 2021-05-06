@@ -5,11 +5,11 @@
     <packaging>pom</packaging>
     <!--模块-->
     <modules>
-        <module>display-center-service</module>
-        <module>display-center-dao</module>
-        <module>display-center-common</module>
-        <module>display-center-web</module>
-        <module>display-center-api</module>
+        <module>inspection-plan-service</module>
+        <module>inspection-plan-dao</module>
+        <module>inspection-plan-common</module>
+        <module>inspection-plan-web</module>
+        <module>inspection-plan-api</module>
     </modules>
 
     <parent>
@@ -20,15 +20,15 @@
     </parent>
 
     <groupId>com.ovopark</groupId>
-    <artifactId>display-center</artifactId>
+    <artifactId>inspection-plan</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>display-center</name>
+    <name>inspection-plan</name>
     <description>脚手架模板</description>
 
     <properties>
         <skipTests>true</skipTests>
         <java.version>1.8</java.version>
-        <pro.name>display-center</pro.name>
+        <pro.name>inspection-plan</pro.name>
         <env>local</env>
         <commons.version>2.6</commons.version>
         <pro.version>1.0-SNAPSHOT</pro.version>
@@ -182,27 +182,27 @@
             <!--内部依赖-->
             <dependency>
                 <groupId>com.ovopark</groupId>
-                <artifactId>display-center-web</artifactId>
+                <artifactId>inspection-plan-web</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ovopark</groupId>
-                <artifactId>display-center-service</artifactId>
+                <artifactId>inspection-plan-service</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ovopark</groupId>
-                <artifactId>display-center-dao</artifactId>
+                <artifactId>inspection-plan-dao</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ovopark</groupId>
-                <artifactId>display-center-common</artifactId>
+                <artifactId>inspection-plan-common</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ovopark</groupId>
-                <artifactId>display-center-api</artifactId>
+                <artifactId>inspection-plan-api</artifactId>
                 <version>${pro.version}</version>
             </dependency>
 
