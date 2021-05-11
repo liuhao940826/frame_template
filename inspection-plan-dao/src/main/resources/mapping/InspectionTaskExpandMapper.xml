@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.mapper.InspectionTaskExpandMapper" >
+  <resultMap id="BaseResultMap" type="com.ovopark.po.InspectionTaskExpand" >
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+    <result column="task_id" property="taskId" jdbcType="INTEGER"/>
+    <result column="dept_id" property="deptId" jdbcType="INTEGER"/>
+    <result column="description" property="description" jdbcType="VARCHAR"/>
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="create_id" property="createId" jdbcType="INTEGER"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="update_id" property="updateId" jdbcType="INTEGER"/>
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, group_id, task_id, dept_id, description, operator_id, status,
+    create_time,create_id, update_time, update_id,is_deleted,version
+  </sql>
+
+
+  <insert id="batchSaveInspectionTaskExpand" parameterType="java.util.List">
+    INSERT INTO is_inspection_task_expand (
+    group_id,task_id,dept_id,description,operator_id,
+    status,create_time,create_id, update_time, update_id,is_deleted
+    )VALUES
+    <foreach collection="list" item="bo" separator=",">
+      (
+      #{bo.groupId},#{bo.taskId},#{bo.deptId},#{bo.description},#{bo.operatorId},#{bo.status},
+      #{bo.createTime},#{bo.createId},#{bo.updateTime},#{bo.updateId},#{bo.isDelete}
+      )
+    </foreach>
+  </insert>
+
+
+</mapper>

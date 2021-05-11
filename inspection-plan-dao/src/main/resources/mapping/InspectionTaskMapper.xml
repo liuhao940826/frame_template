@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ovopark.mapper.InspectionTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.ovopark.po.InspectionTask" >
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+    <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+    <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+    <result column="audit_id" property="auditId" jdbcType="INTEGER"/>
+    <result column="audit_name" property="auditName" jdbcType="VARCHAR"/>
+    <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+    <result column="job_id" property="jobId" jdbcType="INTEGER"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="complete_percent" property="completePercent" jdbcType="DECIMAL"/>
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+    <result column="update_times" property="updateTimes" jdbcType="INTEGER"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="create_id" property="createId" jdbcType="INTEGER"/>
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="update_id" property="updateId" jdbcType="INTEGER"/>
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER"/>
+    <result column="version" property="version" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, group_id, task_id, operator_id, operator_name, audit_id, audit_time,job_id, status,complete_percent,start_time,end_time,update_times,remark,
+    create_time,create_id, update_time, update_id,is_deleted,version
+  </sql>
+
+
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+          parameterType="com.ovopark.po.InspectionTask">
+    insert into is_inspection_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id!= null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="operatorId != null">
+        operator_id,
+      </if>
+      <if test="operatorName != null">
+        operator_name,
+      </if>
+      <if test="auditId != null">
+        audit_id,
+      </if>
+      <if test="auditName != null">
+        audit_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="startTime != null">
+        start_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createId != null">
+        create_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateId != null">
+        update_id,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_deleted,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorId != null">
+        #{operatorId,jdbcType=INTEGER},
+      </if>
+      <if test="operatorName != null">
+        #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="auditId != null">
+        #{auditId,jdbcType=INTEGER},
+      </if>
+      <if test="auditName != null">
+        #{auditName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="updateJobIdById">
+    update is_inspection_task
+    <set>
+      <if test="jobId != null">
+        job_id =#{jobId},
+      </if>
+    </set>
+    WHERE is_deleted = 0
+    and id =#{id}
+  </select>
+  
+  
+
+</mapper>

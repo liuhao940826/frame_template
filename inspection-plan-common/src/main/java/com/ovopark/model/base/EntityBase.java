@@ -91,10 +91,6 @@ public class EntityBase {
                 {
                     method.invoke(object, now);
                 }
-                else if(method.getName().equals("setIsDelete"))
-                {
-                    method.invoke(object, DeleteEnum.NOT_DELETED.getCode());
-                }
             }
             catch (Exception e)
             {
