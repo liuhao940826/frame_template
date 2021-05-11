@@ -12,7 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
         exclude = {SecurityAutoConfiguration.class})
 @MapperScan("com.ovopark.mapper")
 @EnableEurekaClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = {"com.ovopark.api"})
 @EnableDiscoveryClient
 public class WebApplication {
 

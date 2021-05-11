@@ -62,6 +62,9 @@ spring:
         max-wait: -1ms
         max-idle: 10
         min-idle: 5
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+
 
 mybatis:
   mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径

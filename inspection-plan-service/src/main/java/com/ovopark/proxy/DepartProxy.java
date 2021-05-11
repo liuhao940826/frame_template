@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class DepartProxy {
 
-    @Autowired
+    @Resource
     DepartmentApi departmentApi;
 
 
@@ -42,7 +43,6 @@ public class DepartProxy {
         if(CollectionUtils.isEmpty(data)){
             return new HashMap<>();
         }
-
 
         Map<Integer, String> result = data.stream().collect(Collectors.toMap(IdAndNameVo::getId, IdAndNameVo::getName));
 
