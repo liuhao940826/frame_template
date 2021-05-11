@@ -1,7 +1,6 @@
 package com.ovopark.mapper;
 
 import com.ovopark.po.InspectionDeptTag;
-import com.ovopark.po.InspectionTaskExpand;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,4 +15,8 @@ public interface InspectionDeptTagMapper {
 
 
     void batchSaveInspectionDeptTag(@Param("list") List<InspectionDeptTag> targetTagList);
+
+    List<InspectionDeptTag> selectTagIdListByTaskAndDeptList(@Param("taskId") Integer taskId,@Param("groupId") Integer groupId,@Param("list") List<Integer> deptIdList);
+
+    int deleteByTaskId(@Param("taskId")Integer taskId);
 }

@@ -2,7 +2,9 @@ package com.ovopark.service;
 
 import com.ovopark.model.login.Users;
 import com.ovopark.model.req.InspectionPlanTaskAddReq;
+import com.ovopark.model.req.InspectionPlanTaskDeleteReq;
 import com.ovopark.model.req.InspectionPlanTaskDetailReq;
+import com.ovopark.model.req.InspectionPlanTaskUrgedReq;
 import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
 import com.ovopark.model.resp.JsonNewResult;
 
@@ -18,4 +20,8 @@ public interface InspectionTaskService {
     JsonNewResult<Void> add(InspectionPlanTaskAddReq req, Users user);
 
     JsonNewResult<InspectionPlanTaskDetailResp> detail(InspectionPlanTaskDetailReq req, Users user);
+
+    JsonNewResult<Void> delete(InspectionPlanTaskDeleteReq req, Users user);
+
+    JsonNewResult<Void> urged(InspectionPlanTaskUrgedReq req, Users user);
 }

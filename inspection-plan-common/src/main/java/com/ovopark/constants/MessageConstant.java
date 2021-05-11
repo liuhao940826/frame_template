@@ -9,10 +9,10 @@ package com.ovopark.constants;
  */
 public class MessageConstant {
 
-    public static final String DISPLAY_CENTER = "陈列中心";
+    public static final String INSPECTION_PLAN= "巡检计划";
 
 
-    public static final String DISPLAY_CENTER_CATEGORY="DISPLAY_CENTER_CATEGORY";
+    public static final String INSPECTION_PLAN_CATEGORY="INSPECTION_PLAN_CATEGORY";
 
     public static final String CLIENT_IOS = "iOS";
 
@@ -25,7 +25,7 @@ public class MessageConstant {
     /**
      *极光推送陈列中心Type
      */
-    public static int DISPLAY_CENTER_JPUSH_TYPE =46;
+    public static int DISPLAY_CENTER_JPUSH_TYPE =65;
     /**
      *极光推送巡检Type
      */
@@ -34,6 +34,10 @@ public class MessageConstant {
 
     //登录code和设备那边统一
     public static String UN_QUALIFIED ="您创建的陈列巡检任务，存在不合格项，点击查看详情'";
+
+
+    //巡检集合消息文案
+    public static String URGED_AUDIT ="您有一个巡检计划任务,需要审核 %s";
 
 
 

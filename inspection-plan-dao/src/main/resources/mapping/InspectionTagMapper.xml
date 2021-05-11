@@ -118,5 +118,16 @@
   </select>
   
   
+  <select id="queryTagByTagIdList" resultType="com.ovopark.po.InspectionTag">
+    select * from is_inspection_tag where group_id =#{groupId} and is_deleted =0
+    <if test="list != null and list.size>0">
+      AND id IN (
+      <foreach collection="list" item="id" separator=",">
+        #{id}
+      </foreach>
+      )
+    </if>
+  </select>
+  
   
 </mapper>

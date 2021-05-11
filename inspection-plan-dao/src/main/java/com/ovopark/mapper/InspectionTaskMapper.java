@@ -15,4 +15,6 @@ public interface InspectionTaskMapper {
     void updateJobIdById(@Param("jobId") Integer jobId, @Param("id")Integer id);
 
     InspectionTask selectbyPrimaryId(@Param("id")Integer id);
+
+    int deleteByPrimaryId(@Param("id")Integer taskId);
 }

@@ -40,5 +40,9 @@
     select * from is_inspection_task_expand where  task_id=#{taskId}  and group_id=#{groupId} and  is_deleted =0
   </select>
   
+  <update id="deleteByTaskId">
+     update is_inspection_task_expand set is_deleted = 1 where task_id=#{taskId} and is_deleted=0
+  </update>
+  
   
 </mapper>

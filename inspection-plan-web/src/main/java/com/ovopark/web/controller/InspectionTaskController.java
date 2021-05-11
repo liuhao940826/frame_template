@@ -4,9 +4,7 @@ import com.ovopark.context.HttpContext;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.Validation;
 import com.ovopark.model.login.Users;
-import com.ovopark.model.req.DisplayCenterTaskAddReq;
-import com.ovopark.model.req.InspectionPlanTaskAddReq;
-import com.ovopark.model.req.InspectionPlanTaskDetailReq;
+import com.ovopark.model.req.*;
 import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.service.InspectionTaskService;
@@ -65,9 +63,38 @@ public class InspectionTaskController {
     }
 
 
+    @RequestMapping(value="/delete")
+    @ResponseBody
+    public JsonNewResult<Void> delete(@RequestBody InspectionPlanTaskDeleteReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.delete(req,user);
+    }
+
+    @RequestMapping(value="/urged")
+    @ResponseBody
+    public JsonNewResult<Void> urged(@RequestBody InspectionPlanTaskUrgedReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.urged(req,user);
+    }
 
 
-    //TODO 过期的没写
+
+
+    //TODO 过期回调的没写
     @RequestMapping(value="/expire")
     @ResponseBody
     public JsonNewResult<Void> expire(@RequestBody InspectionPlanTaskAddReq req) {

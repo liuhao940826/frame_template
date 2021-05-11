@@ -136,7 +136,7 @@
     </trim>
   </insert>
   
-  <select id="updateJobIdById">
+  <update id="updateJobIdById">
     update is_inspection_task
     <set>
       <if test="jobId != null">
@@ -145,8 +145,12 @@
     </set>
     WHERE is_deleted = 0
     and id =#{id}
-  </select>
+  </>
     
+  <update id="deleteByPrimaryId">
+     update is_inspection_task set is_deleted = 1 where id=#{id} and is_deleted=0
+  </update>
+  
   
   <select id="selectbyPrimaryId" resultType="com.ovopark.po.InspectionTask">
         select * from is_inspection_task where  id =#{id} and is_deleted = 0

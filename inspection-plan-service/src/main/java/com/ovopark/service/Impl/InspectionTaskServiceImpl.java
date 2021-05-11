@@ -2,27 +2,30 @@ package com.ovopark.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ovopark.builder.InspectionTaskBuilder;
+import com.ovopark.constants.MessageConstant;
 import com.ovopark.constants.ProxyConstants;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.SysErrorException;
 import com.ovopark.mapper.InspectionDeptTagMapper;
+import com.ovopark.mapper.InspectionTagMapper;
 import com.ovopark.mapper.InspectionTaskExpandMapper;
 import com.ovopark.mapper.InspectionTaskMapper;
 import com.ovopark.model.base.EntityBase;
+import com.ovopark.model.enums.DisplayMainTypeEnum;
 import com.ovopark.model.enums.InspectionTaskExpandStatusEnum;
 import com.ovopark.model.enums.InspectionTaskStatusEnum;
 import com.ovopark.model.login.Users;
-import com.ovopark.model.req.InspectionPlanExpandAddReq;
-import com.ovopark.model.req.InspectionPlanTagAddReq;
-import com.ovopark.model.req.InspectionPlanTaskAddReq;
-import com.ovopark.model.req.InspectionPlanTaskDetailReq;
+import com.ovopark.model.req.*;
 import com.ovopark.model.resp.InspectionPlanExpandDetailResp;
+import com.ovopark.model.resp.InspectionPlanTagDetailResp;
 import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.po.InspectionDeptTag;
+import com.ovopark.po.InspectionTag;
 import com.ovopark.po.InspectionTask;
 import com.ovopark.po.InspectionTaskExpand;
 import com.ovopark.proxy.DepartProxy;
+import com.ovopark.proxy.MessageProxy;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.InspectionTaskService;
 import com.ovopark.utils.ClazzConverterUtils;
@@ -32,10 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -57,10 +57,16 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
     InspectionDeptTagMapper inspectionDeptTagMapper;
 
     @Autowired
+    InspectionTagMapper inspectionTagMapper;
+
+    @Autowired
     XxlJobProxy xxlJobProxy;
 
     @Autowired
     DepartProxy departProxy;
+
+    @Autowired
+    MessageProxy messageProxy;
 
 
     /**
@@ -196,28 +202,119 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         //<门店id,门店名字>
         Map<Integer, String> deptNameMap = new HashMap<>();
+        //<标签id, 标签对象>
+        Map<Integer, String> tagMap = new HashMap<>();
+
+        //<门店id, 标签集合>
+        Map<Integer, List<InspectionDeptTag>> groupByDeptIdTagMap = new HashMap<>();
 
         if(!CollectionUtils.isEmpty(expandList)){
             expandRespList = ClazzConverterUtils.converterClass(expandList, InspectionPlanExpandDetailResp.class);
             //门店id集合
             List<Integer> deptIdList = expandList.stream().map(InspectionTaskExpand::getDeptId).collect(Collectors.toList());
-
+            //<门店id,门店名称>
             deptNameMap = departProxy.getDeptNameMap(deptIdList);
+            //门店和标签的关联集合
+            List<InspectionDeptTag>  deptTagList = inspectionDeptTagMapper.selectTagIdListByTaskAndDeptList(taskId,user.getGroupId(),deptIdList);
 
+            if(!CollectionUtils.isEmpty(deptTagList)){
+
+                List<Integer> tagIdList = deptTagList.stream().map(InspectionDeptTag::getTagId).collect(Collectors.toList());
+                //map集合
+                groupByDeptIdTagMap = deptTagList.stream().collect(Collectors.groupingBy(InspectionDeptTag::getDeptId));
+
+                //所有的标签集合
+                List<InspectionTag> tagList = inspectionTagMapper.queryTagByTagIdList(user.getGroupId(),tagIdList);
+                //<标签id, 标签名字>
+                tagMap = tagList.stream().collect(Collectors.toMap(InspectionTag::getId, InspectionTag::getName));
+
+            }
+            //明细集合
+            for (InspectionPlanExpandDetailResp inspectionPlanExpandDetailResp : expandRespList) {
+
+                Integer deptId = inspectionPlanExpandDetailResp.getDeptId();
+
+                //门店名称
+                inspectionPlanExpandDetailResp.setDeptName(deptNameMap.get(deptId));
+                //获取门店关联的标签集合
+                List<InspectionDeptTag> eachDeptTagList = groupByDeptIdTagMap.get(deptId);
+
+                if(!CollectionUtils.isEmpty(eachDeptTagList)){
+
+                    List<InspectionPlanTagDetailResp> tagList = inspectionPlanExpandDetailResp.getTagList();
+
+                    for (InspectionDeptTag inspectionDeptTag : eachDeptTagList) {
+
+                        Integer tagId = inspectionDeptTag.getTagId();
+
+                        InspectionPlanTagDetailResp tagResp = new InspectionPlanTagDetailResp(tagId, tagMap.get(tagId));
+                        //tag添加到集合
+                        tagList.add(tagResp);
+                    }
+                }
+            }
         }
+        //设置明细
+        resp.setInspectionExpandList(expandRespList);
 
-
-
-
-
-
-
-        return null;
+        return JsonNewResult.success(resp);
 
     }
 
+    /**
+     * 删除
+     * @param req
+     * @param user
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public JsonNewResult<Void> delete(InspectionPlanTaskDeleteReq req, Users user) {
 
+        Integer taskId = req.getId();
 
+        InspectionTask task = inspectionTaskMapper.selectbyPrimaryId(taskId);
 
+        if(task==null){
+            throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
+        }
 
+        Integer jobId = task.getJobId();
+
+        inspectionTaskMapper.deleteByPrimaryId(taskId);
+
+        inspectionTaskExpandMapper.deleteByTaskId(taskId);
+
+        inspectionDeptTagMapper.deleteByTaskId(taskId);
+        //暂留回滚逻辑
+        xxlJobProxy.stopJob(jobId);
+
+        return JsonNewResult.success();
+
+    }
+
+    /**
+     * 催办
+     * @param req
+     * @param user
+     * @return
+     */
+    @Override
+    public JsonNewResult<Void> urged(InspectionPlanTaskUrgedReq req, Users user) {
+
+        Integer taskId = req.getId();
+
+        InspectionTask task = inspectionTaskMapper.selectbyPrimaryId(taskId);
+
+        if(task==null){
+            throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
+        }
+
+        //发送消息
+        messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.URGED_AUDIT,task.getName()),user.getGroupId(),
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), DisplayMainTypeEnum.INSPECTION,req.getTokenType());
+
+        return JsonNewResult.success();
+
+    }
 }

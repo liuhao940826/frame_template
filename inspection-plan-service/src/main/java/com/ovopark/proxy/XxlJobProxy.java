@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -71,6 +72,59 @@ public class XxlJobProxy {
 
         return jobId;
     }
+
+    /**
+     * 开始任务
+     *
+     * @param jobId
+     * @return
+     */
+    public Map<String, Object> startJob(Integer jobId) {
+        String url = xxljobUrl + "/jobinfo/startByShopwebSupport";
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("jobId",jobId);
+        String result = HttpUtils.sendPost(url, null,JSON.toJSONString(param));
+        Map<String, Object> maps = JSONObject.parseObject(result);
+
+        return maps;
+    }
+
+    /**
+     * 暂停任务
+     *
+     * @param jobId
+     * @return
+     */
+    public Map<String, Object> stopJob(Integer jobId) {
+        String url = xxljobUrl + "/jobinfo/stopByShopwebSupport";
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("jobId",jobId);
+        String result = HttpUtils.sendPost(url, null,JSON.toJSONString(param));
+        Map<String, Object> maps = JSONObject.parseObject(result);
+
+        return maps;
+    }
+
+    /**
+     * 删除任务
+     *
+     * @param jobId
+     * @return
+     */
+    public Map<String, Object> removeJob(Integer jobId) {
+        String url = xxljobUrl + "/jobinfo/removeByShopwebSupport";
+
+        Map<String, Object> param = new HashMap<>();
+        param.put("jobId",jobId);
+        String result = HttpUtils.sendPost(url, null,JSON.toJSONString(param));
+
+        Map<String, Object> maps = JSONObject.parseObject(result);
+
+        return maps;
+    }
+
 
 
     public String getXxljobUrl() {

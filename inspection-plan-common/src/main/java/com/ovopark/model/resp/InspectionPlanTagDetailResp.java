@@ -29,4 +29,12 @@ public class InspectionPlanTagDetailResp implements Serializable {
     public void setTagName(String tagName) {
         this.tagName = tagName;
     }
+
+    public InspectionPlanTagDetailResp() {
+    }
+
+    public InspectionPlanTagDetailResp(Integer tagId, String tagName) {
+        this.tagId = tagId;
+        this.tagName = tagName;
+    }
 }

@@ -20,4 +20,6 @@ public interface InspectionTagMapper {
     int deleteByPrimaryId(@Param("id") Integer id);
 
     List<InspectionTag> selectTagListByCategoryIdList(@Param("list") List<Integer> categoryIdList, @Param("groupId") Integer groupId);
+
+    List<InspectionTag> queryTagByTagIdList(@Param("groupId")Integer groupId, @Param("list") List<Integer> tagIdList);
 }
