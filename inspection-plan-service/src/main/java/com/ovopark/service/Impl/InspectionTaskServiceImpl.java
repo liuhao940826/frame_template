@@ -2,8 +2,9 @@ package com.ovopark.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.ovopark.builder.InspectionTaskBuilder;
-import com.ovopark.constants.CommonConstants;
 import com.ovopark.constants.ProxyConstants;
+import com.ovopark.expection.ResultCode;
+import com.ovopark.expection.SysErrorException;
 import com.ovopark.mapper.InspectionDeptTagMapper;
 import com.ovopark.mapper.InspectionTaskExpandMapper;
 import com.ovopark.mapper.InspectionTaskMapper;
@@ -14,21 +15,28 @@ import com.ovopark.model.login.Users;
 import com.ovopark.model.req.InspectionPlanExpandAddReq;
 import com.ovopark.model.req.InspectionPlanTagAddReq;
 import com.ovopark.model.req.InspectionPlanTaskAddReq;
+import com.ovopark.model.req.InspectionPlanTaskDetailReq;
+import com.ovopark.model.resp.InspectionPlanExpandDetailResp;
+import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.po.InspectionDeptTag;
 import com.ovopark.po.InspectionTask;
 import com.ovopark.po.InspectionTaskExpand;
+import com.ovopark.proxy.DepartProxy;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.InspectionTaskService;
+import com.ovopark.utils.ClazzConverterUtils;
 import com.ovopark.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Classname InspectionTaskImpl
@@ -50,6 +58,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
     @Autowired
     XxlJobProxy xxlJobProxy;
+
+    @Autowired
+    DepartProxy departProxy;
 
 
     /**
@@ -164,6 +175,48 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             targetTagList.add(inspectionDeptTag);
         }
     }
+
+
+    @Override
+    public JsonNewResult<InspectionPlanTaskDetailResp> detail(InspectionPlanTaskDetailReq req, Users user) {
+        //任务id
+        Integer taskId = req.getId();
+
+        InspectionTask task = inspectionTaskMapper.selectbyPrimaryId(taskId);
+
+        if (task == null) {
+            throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
+        }
+        //明细
+        List<InspectionTaskExpand> expandList = inspectionTaskExpandMapper.selectExpandListByTaskId(taskId, user.getGroupId());
+
+        InspectionPlanTaskDetailResp resp = ClazzConverterUtils.converterClass(task, InspectionPlanTaskDetailResp.class);
+
+        List<InspectionPlanExpandDetailResp> expandRespList = new ArrayList<InspectionPlanExpandDetailResp>();
+
+        //<门店id,门店名字>
+        Map<Integer, String> deptNameMap = new HashMap<>();
+
+        if(!CollectionUtils.isEmpty(expandList)){
+            expandRespList = ClazzConverterUtils.converterClass(expandList, InspectionPlanExpandDetailResp.class);
+            //门店id集合
+            List<Integer> deptIdList = expandList.stream().map(InspectionTaskExpand::getDeptId).collect(Collectors.toList());
+
+            deptNameMap = departProxy.getDeptNameMap(deptIdList);
+
+        }
+
+
+
+
+
+
+
+        return null;
+
+    }
+
+
 
 
 

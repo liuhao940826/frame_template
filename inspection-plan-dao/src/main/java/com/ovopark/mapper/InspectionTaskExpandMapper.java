@@ -16,4 +16,5 @@ public interface InspectionTaskExpandMapper {
 
     void batchSaveInspectionTaskExpand(@Param("list") List<InspectionTaskExpand> expandList);
 
+    List<InspectionTaskExpand> selectExpandListByTaskId(@Param("taskId") Integer taskId,@Param("groupId")Integer groupId);
 }

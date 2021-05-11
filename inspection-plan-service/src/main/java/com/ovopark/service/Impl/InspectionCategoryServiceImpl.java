@@ -29,7 +29,7 @@ public class InspectionCategoryServiceImpl implements InspectionCategoryService 
     public JsonNewResult<Void> add(InspectionCategoryAddReq req, Users user) {
 
         //分类
-        InspectionCategory category =  new InspectionCategory(req.getName(),user.getGroupId());
+        InspectionCategory category =  new InspectionCategory(req.getName(),req.getGroupId());
 
         //赋值公共属性
         EntityBase.setCreateParams(category, user);

@@ -14,6 +14,8 @@ public class InspectionTagAddReq implements Serializable {
 
     private Integer categoryId;
 
+    private Integer groupId;
+
     public String getName() {
         return name;
     }
@@ -28,5 +30,13 @@ public class InspectionTagAddReq implements Serializable {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 }

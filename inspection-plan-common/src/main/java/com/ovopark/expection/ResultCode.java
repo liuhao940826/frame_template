@@ -42,13 +42,13 @@ public class ResultCode {
     public static ResultCodeInfo JPUSH_ERROR = new ResultCodeInfo(100011, "JPUSH_ERROR", "消息推送极光失败");
 
 
+    //feign服务
+    public static ResultCodeInfo DEPARTMENT_FEIGN_ERROR = new ResultCodeInfo(110001, "DEPARTMENT_FEIGN_ERROR", "门店服务调用失败");
 
 
-    public static ResultCodeInfo DISPLAY_TASK_NULL = new ResultCodeInfo(200001, "DISPLAY_TASK_NULL", "陈列任务不存在");
-    public static ResultCodeInfo DISPLAY_TASK_STATUS_UNWAIT = new ResultCodeInfo(200002, "DISPLAY_TASK_STATUS_UNWAIT", "非待执行的成列任务");
-    public static ResultCodeInfo DISPLAY_TASK_NON_OPERATOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_OPERATOR", "非执行人");
-    public static ResultCodeInfo DISPLAY_TASK_STATUS_UNAUDIT = new ResultCodeInfo(200004, "DISPLAY_TASK_STATUS_UNAUDIT", "非待审核的成列任务");
-    public static ResultCodeInfo DISPLAY_TASK_NON_AUDITOR = new ResultCodeInfo(200003, "DISPLAY_TASK_NON_AUDITOR", "非审核人");
+
+
+    public static ResultCodeInfo INSPECTION_PLAN_TASK_NULL = new ResultCodeInfo(200001, "INSPECTION_PLAN_TASK_NULL", "巡检计划不存在");
 
 
 

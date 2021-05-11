@@ -13,4 +13,6 @@ public interface InspectionTaskMapper {
     void insertSelective(InspectionTask task);
 
     void updateJobIdById(@Param("jobId") Integer jobId, @Param("id")Integer id);
+
+    InspectionTask selectbyPrimaryId(@Param("id")Integer id);
 }

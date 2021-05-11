@@ -1,5 +1,8 @@
 package com.ovopark.model.resp;
 
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ public class InspectionTagCategoryListResp {
 
     private String  name;
 
-    private List<InspectionTagListResp> tags;
+    private List<InspectionTagListResp> tags =new ArrayList<>();
 
 
     public Integer getId() {
@@ -40,7 +43,11 @@ public class InspectionTagCategoryListResp {
     }
 
     public void setTags(List<InspectionTagListResp> tags) {
-        this.tags = tags;
+
+        if(!CollectionUtils.isEmpty(tags)){
+            this.tags = tags;
+        }
+
     }
 
     public Integer getGroupId() {

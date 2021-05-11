@@ -45,7 +45,7 @@ public class InspectionTagServiceImpl implements InspectionTagService {
     @Override
     public JsonNewResult<Void> add(InspectionTagAddReq req, Users user) {
 
-        InspectionTag tag = new InspectionTag(user.getGroupId(),req.getCategoryId(),req.getName());
+        InspectionTag tag = new InspectionTag(req.getGroupId(),req.getCategoryId(),req.getName());
 
         //赋值公共属性
         EntityBase.setCreateParams(tag, user);
@@ -59,7 +59,7 @@ public class InspectionTagServiceImpl implements InspectionTagService {
     @Override
     public JsonNewResult<Void> update(InspectionTagUpdateReq req, Users user) {
 
-        InspectionTag tag = new InspectionTag(user.getGroupId(),req.getCategoryId(),req.getName());
+        InspectionTag tag = new InspectionTag(req.getGroupId(),req.getCategoryId(),req.getName());
 
         //赋值公共属性
         EntityBase.setUpdateParams(tag, user);

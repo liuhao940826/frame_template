@@ -146,7 +146,11 @@
     WHERE is_deleted = 0
     and id =#{id}
   </select>
+    
   
+  <select id="selectbyPrimaryId" resultType="com.ovopark.po.InspectionTask">
+        select * from is_inspection_task where  id =#{id} and is_deleted = 0
+  </select>
   
 
 </mapper>

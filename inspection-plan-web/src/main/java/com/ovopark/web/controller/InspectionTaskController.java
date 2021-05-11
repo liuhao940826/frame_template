@@ -6,6 +6,8 @@ import com.ovopark.expection.Validation;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.req.DisplayCenterTaskAddReq;
 import com.ovopark.model.req.InspectionPlanTaskAddReq;
+import com.ovopark.model.req.InspectionPlanTaskDetailReq;
+import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.service.InspectionTaskService;
 import org.slf4j.Logger;
@@ -48,8 +50,24 @@ public class InspectionTaskController {
         return inspectionTaskService.add(req,user);
     }
 
+    @RequestMapping(value="/detail")
+    @ResponseBody
+    public JsonNewResult<InspectionPlanTaskDetailResp> detail(@RequestBody InspectionPlanTaskDetailReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.detail(req,user);
+    }
 
 
+
+
+    //TODO 过期的没写
     @RequestMapping(value="/expire")
     @ResponseBody
     public JsonNewResult<Void> expire(@RequestBody InspectionPlanTaskAddReq req) {

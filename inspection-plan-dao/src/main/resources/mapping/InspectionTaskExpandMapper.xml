@@ -35,5 +35,10 @@
     </foreach>
   </insert>
 
-
+  
+  <select id="selectExpandListByTaskId" resultType="com.ovopark.po.InspectionTaskExpand">
+    select * from is_inspection_task_expand where  task_id=#{taskId}  and group_id=#{groupId} and  is_deleted =0
+  </select>
+  
+  
 </mapper>
