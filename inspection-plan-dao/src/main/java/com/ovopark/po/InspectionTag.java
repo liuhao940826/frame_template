@@ -111,6 +111,13 @@ public class InspectionTag implements Serializable {
         this.name = name;
     }
 
+    public InspectionTag(Integer id, Integer groupId, Integer categoryId, String name) {
+        this.id = id;
+        this.groupId = groupId;
+        this.categoryId = categoryId;
+        this.name = name;
+    }
+
     public InspectionTag(Integer id) {
         this.id = id;
     }

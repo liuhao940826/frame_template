@@ -27,9 +27,9 @@ public class MessageConstant {
      */
     public static int DISPLAY_CENTER_JPUSH_TYPE =65;
     /**
-     *极光推送巡检Type
+     *极光推送巡检Type 说是要放在计划巡店里面所以改成46 本来定的是66
      */
-    public static int INSPECTION_JPUSH_TYPE =66;
+    public static int INSPECTION_JPUSH_TYPE =46;
 
 
     //登录code和设备那边统一

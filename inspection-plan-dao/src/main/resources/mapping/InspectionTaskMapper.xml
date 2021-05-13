@@ -145,7 +145,7 @@
     </set>
     WHERE is_deleted = 0
     and id =#{id}
-  </>
+  </update>
     
   <update id="deleteByPrimaryId">
      update is_inspection_task set is_deleted = 1 where id=#{id} and is_deleted=0
