@@ -44,7 +44,7 @@ public class InspectionCategoryServiceImpl implements InspectionCategoryService 
     public JsonNewResult<Void> update(InspectionCategoryUpdateReq req, Users user) {
 
         //分类
-        InspectionCategory category =  new InspectionCategory(req.getName(),req.getId());
+        InspectionCategory category =  new InspectionCategory(req.getId(),req.getName());
 
         //赋值公共属性
         EntityBase.setUpdateParams(category, user);

@@ -14,6 +14,10 @@ public class InspectionTaskBuilder {
 
     private InspectionTask task = new InspectionTask();
 
+    public InspectionTaskBuilder id(Integer  id) {
+        task.setId(id);
+        return this;
+    }
 
     public InspectionTaskBuilder name(String  name) {
         task.setName(name);

@@ -63,6 +63,22 @@ public class InspectionTaskController {
     }
 
 
+    @RequestMapping(value="/udpate")
+    @ResponseBody
+    public JsonNewResult<Void> udpate(@RequestBody InspectionPlanTaskUpdateReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.udpate(req,user);
+    }
+
+
+
     @RequestMapping(value="/delete")
     @ResponseBody
     public JsonNewResult<Void> delete(@RequestBody InspectionPlanTaskDeleteReq req) {

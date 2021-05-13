@@ -15,13 +15,18 @@ import com.ovopark.po.TaskMessage;
 import com.ovopark.service.MessageService;
 import com.ovopark.utils.DateUtils;
 import com.ovopark.utils.HttpUtils;
-import com.ovopark.utils.OaHttpUtils;
+import com.ovopark.utils.OkHttp3Util;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,7 +80,7 @@ public class MessageProxy {
      * @param title
      * @param message
      */
-    private void JpushAndWebSocket(Integer userId, String title, String message, Integer type, Integer relatedId, String objectType,Integer tokenType) {
+    private void JpushAndWebSocket(Integer userId, String title, String message, Integer type, Integer relatedId, String objectType, Integer tokenType) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("title", title);
@@ -83,18 +88,31 @@ public class MessageProxy {
         map.put("messageType", type);
 
         Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("taskId",relatedId);
-        jsonMap.put("objectType",objectType);
-        map.put("taskJson",jsonMap);
-        map.put("reason",message);
-        logger.info("极光推送请求参数数据:"+JSON.toJSONString(map)+"tokenType"+tokenType+"token值"+HttpContext.getContextInfoToken());
-        String result = OaHttpUtils.sendJsonToOtherServerDefaultWithOutToken(jpushServerUrl, map, HttpContext.getContextInfoToken(),tokenType);
-        logger.info("极光推送返回数据:"+result);
-        JsonResult jsonNewResult = JSON.parseObject(result, JsonResult.class);
+        jsonMap.put("taskId", relatedId);
+        jsonMap.put("objectType", objectType);
+        map.put("taskJson", jsonMap);
+        map.put("reason", message);
+        logger.info("极光推送请求参数数据:" + JSON.toJSONString(map) + "tokenType" + tokenType + "token值" + HttpContext.getContextInfoToken());
+//        String result = OkHttpUtils.sendPostToOtherServerWithAuth(jpushServerUrl, map, HttpContext.getContextInfoToken(),tokenType);
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                logger.info("极光推送 onFailure: " + e.getMessage());
 
-        if(jsonNewResult==null || !CommonConstants.OK.equalsIgnoreCase(jsonNewResult.getResult())){
-            throw new SysErrorException(ResultCode.JPUSH_ERROR);
-        }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                ResponseBody body = response.body();
+                if (body != null) {
+                    logger.info("极光推送Success 返回结果:" + response.body().string());
+                    body.close();
+                }
+            }
+        };
+
+        OkHttp3Util.doPostCallBack(jpushServerUrl, map, callback , HttpContext.getContextInfoToken(), tokenType);
+
     }
 
 
@@ -145,6 +163,7 @@ public class MessageProxy {
         message.setDescription(JSONObject.toJSONString(param));
         message.setId(id);
         message.setStatus(0);
+        message.setCategory(category);
 
         Map<String, String> map = new HashMap<>();
         map.put("userId", targetUserId + "");

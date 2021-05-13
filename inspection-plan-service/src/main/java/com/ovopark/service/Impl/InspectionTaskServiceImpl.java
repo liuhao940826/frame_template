@@ -129,6 +129,31 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
     }
 
     /**
+     * 更新
+     * @param req
+     * @param user
+     * @return
+     */
+    @Override
+    public JsonNewResult<Void> udpate(InspectionPlanTaskUpdateReq req, Users user) {
+        //构建builder
+        InspectionTaskBuilder builder = new InspectionTaskBuilder();
+
+        //构建任务
+        InspectionTask task = builder.id(req.getId()).name(req.getName()).auditId(req.getAuditId())
+                .auditName(req.getAuditName()).startTime(req.getStartTime()).endTime(req.getEndTime()).remark(req.getRemark()).build();
+
+        //赋值公共属性
+        EntityBase.setCreateParams(task, user);
+
+
+
+
+
+        return null;
+    }
+
+    /**
      *
      * @param req
      * @param user
