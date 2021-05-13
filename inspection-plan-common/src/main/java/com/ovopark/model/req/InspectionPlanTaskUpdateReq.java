@@ -27,7 +27,12 @@ public class InspectionPlanTaskUpdateReq implements Serializable {
 
     private String remark;
 
-    private List<InspectionPlanExpandUpdateReq> inspectionExpandList =  new ArrayList<>();
+    /**
+     * 保留的明细id 不能懂的放在保留的里面 其他的全部放在改变得了里面
+     */
+    private List<Integer> retainList = new ArrayList<>();
+
+    private List<InspectionPlanExpandAddReq> inspectionExpandList =  new ArrayList<>();
 
     public Date getStartTime() {
         return startTime;
@@ -77,12 +82,20 @@ public class InspectionPlanTaskUpdateReq implements Serializable {
         this.auditName = auditName;
     }
 
-    public List<InspectionPlanExpandUpdateReq> getInspectionExpandList() {
+    public List<InspectionPlanExpandAddReq> getInspectionExpandList() {
         return inspectionExpandList;
     }
 
-    public void setInspectionExpandList(List<InspectionPlanExpandUpdateReq> inspectionExpandList) {
+    public void setInspectionExpandList(List<InspectionPlanExpandAddReq> inspectionExpandList) {
         this.inspectionExpandList = inspectionExpandList;
+    }
+
+    public List<Integer> getRetainList() {
+        return retainList;
+    }
+
+    public void setRetainList(List<Integer> retainList) {
+        this.retainList = retainList;
     }
 
     public Integer getId() {

@@ -4,8 +4,11 @@ import com.ovopark.context.HttpContext;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.Validation;
 import com.ovopark.model.login.Users;
+import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
+import com.ovopark.model.resp.InspectionPlanTaskAppListResp;
 import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
+import com.ovopark.model.resp.InspectionPlanTaskExpandListResp;
 import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.service.InspectionTaskService;
 import org.slf4j.Logger;
@@ -32,6 +35,19 @@ public class InspectionTaskController {
     @Autowired
     InspectionTaskService inspectionTaskService;
 
+
+    @RequestMapping(value="/app/list")
+    @ResponseBody
+    public JsonNewResult<Page<InspectionPlanTaskAppListResp>> appList(@RequestBody InspectionPlanTaskAppListReq req){
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .isValidThrowException();
+
+        return inspectionTaskService.appList(req,user);
+    }
 
     @RequestMapping(value="/add")
     @ResponseBody
@@ -61,6 +77,23 @@ public class InspectionTaskController {
 
         return inspectionTaskService.detail(req,user);
     }
+
+
+    @RequestMapping(value="/expandList")
+    @ResponseBody
+    public JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(@RequestBody InspectionPlanTaskDetailReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.expandList(req,user);
+    }
+
+
 
 
     @RequestMapping(value="/udpate")
@@ -107,24 +140,51 @@ public class InspectionTaskController {
         return inspectionTaskService.urged(req,user);
     }
 
-
-
-
-    //TODO 过期回调的没写
-    @RequestMapping(value="/expire")
+    @RequestMapping(value="/audit")
     @ResponseBody
-    public JsonNewResult<Void> expire(@RequestBody InspectionPlanTaskAddReq req) {
+    public JsonNewResult<Void> audit(@RequestBody InspectionPlanTaskAuditReq req) {
 
         Users user = HttpContext.getContextInfoUser();
 
         Validation.newValidation()
                 .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
-                .addError(req.getAuditId()==null  , ResultCode.PARAM_ERROR_NAME,"auditId")
-                .addError(CollectionUtils.isEmpty(req.getInspectionExpandList()),ResultCode.PARAM_ERROR_NAME,"inspectionExpandList")
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
                 .isValidThrowException();
 
-        return inspectionTaskService.add(req,user);
+        return inspectionTaskService.audit(req,user);
     }
+
+
+
+    @RequestMapping(value="/expire")
+    @ResponseBody
+    public JsonNewResult<Void> expire(@RequestBody InspectionPlanTaskExpireReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.expire(req,user);
+    }
+
+    @RequestMapping(value="/callBack")
+    @ResponseBody
+    public JsonNewResult<Void> callBack(@RequestBody InspectionPlanTaskCallBackReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getTaskId()==null  , ResultCode.PARAM_ERROR_NAME,"taskId")
+                .addError(req.getExpandId()==null  , ResultCode.PARAM_ERROR_NAME,"expandId")
+                .isValidThrowException();
+
+        return inspectionTaskService.callBack(req,user);
+    }
+
 
 
 

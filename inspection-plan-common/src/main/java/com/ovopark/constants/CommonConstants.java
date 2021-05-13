@@ -14,6 +14,8 @@ public final class CommonConstants {
 
     public final static String NULL = "NULL";
 
+    public static final Integer UPDATE_TIMES =  3;
+
     /**
      * 获取用户信息的请求路径
      */

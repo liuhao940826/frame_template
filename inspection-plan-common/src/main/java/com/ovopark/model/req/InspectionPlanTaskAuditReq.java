@@ -1,19 +1,20 @@
-package com.ovopark.po;
+package com.ovopark.model.req;
+
+import java.io.Serializable;
 
 /**
- * @Classname Depart
+ * @Classname InspectionPlanTaskAuditReq
  * @Description TODO
- * @Date 2021/3/12 下午5:37
+ * @Date 2021/4/22 上午10:47
  * @Created by liuhao
  */
-public class Depart {
+public class InspectionPlanTaskAuditReq implements Serializable {
 
     private Integer id;
 
-    private String name;
+    private String  reason;
 
     private Integer status;
-
 
     public Integer getId() {
         return id;
@@ -23,12 +24,13 @@ public class Depart {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    public String getReason() {
+        return reason;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Integer getStatus() {

@@ -12,6 +12,8 @@
     <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
     <result column="job_id" property="jobId" jdbcType="INTEGER"/>
     <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="complete_expand_count" property="completePercent" jdbcType="INTEGER"/>
+    <result column="total_expand_count" property="completePercent" jdbcType="INTEGER"/>
     <result column="complete_percent" property="completePercent" jdbcType="DECIMAL"/>
     <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
     <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
@@ -58,6 +60,12 @@
       </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="completeExpandCount != null">
+        complete_expand_count,
+      </if>
+      <if test="totalExpandCount != null">
+        total_expand_count,
       </if>
       <if test="startTime != null">
         start_time,
@@ -109,6 +117,12 @@
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+      <if test="completeExpandCount != null">
+        #{completeExpandCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalExpandCount != null">
+        #{totalExpandCount, jdbcType=INTEGER},
+      </if>
       <if test="startTime != null">
         #{startTime,jdbcType=TIMESTAMP},
       </if>
@@ -150,11 +164,103 @@
   <update id="deleteByPrimaryId">
      update is_inspection_task set is_deleted = 1 where id=#{id} and is_deleted=0
   </update>
-  
-  
+
+  <update id="updateByPrimaryId" parameterType="com.ovopark.po.InspectionTask">
+    update is_inspection_task
+    <set>
+      <if test="name != null and name !=''">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="auditId != null">
+        audit_id = #{auditId,jdbcType=INTEGER},
+      </if>
+      <if test="auditName != null and auditName !=''">
+        audit_name = #{auditName,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTimes != null">
+        update_times = #{updateTimes,jdbcType=INTEGER},
+      </if>
+      <if test="completeExpandCount != null">
+        complete_expand_count =#{completeExpandCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalExpandCount != null">
+        total_expand_count =#{totalExpandCount, jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null and remark !=''">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="updateId != null">
+        update_id = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version!=null">
+        version=version+1,
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER} and version=#{version,jdbcType=INTEGER};
+  </update>
+
+
   <select id="selectbyPrimaryId" resultType="com.ovopark.po.InspectionTask">
         select * from is_inspection_task where  id =#{id} and is_deleted = 0
   </select>
+
+
+  <update id="updateStatusById">
+    update is_inspection_task
+    <set>
+      <if test="status != null">
+        status =#{status},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id =#{id}
+  </update>
   
+  <update id="updateCompleteExpandCount">
+    update is_inspection_task set complete_expand_count =#{completeExpandCount} and id =#{id}
+  </update>
+
+  <select id="queryAppListByRelateTypeByPage" resultType="com.ovopark.po.InspectionTask">
+    select * from is_inspection_task where is_deleted =0
+    <if test="groupId !=null">
+      and group_id =#{groupId}
+    </if>
+    <if test="releateType ==1">
+      and operator_id =#{userId} and status in (3,4)
+    </if>
+    <if test="releateType ==2">
+      and audit_id =#{userId} and status = 1
+    </if>
+    <if test="releateType ==null">
+      and  (audit_id =#{userId} and status =1 )or (operator_id =#{userId} and status in (3,4))
+    </if>
+    <if test="name!=null and name!=''">
+      and name like CONCAT('%','${name}','%' )
+    </if>
+    <if test="startTime != null and startTime!=''">
+      and audit_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime!=''">
+      and audit_time &lt;= #{endTime}
+    </if>
+    <if test="list != null and list.size>0">
+      AND id IN (
+      <foreach collection="list" item="id" separator=",">
+        #{id}
+      </foreach>
+      )
+    </if>
+  </select>
 
 </mapper>

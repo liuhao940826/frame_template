@@ -18,5 +18,9 @@ public interface InspectionDeptTagMapper {
 
     List<InspectionDeptTag> selectTagIdListByTaskAndDeptList(@Param("taskId") Integer taskId,@Param("groupId") Integer groupId,@Param("list") List<Integer> deptIdList);
 
-    int deleteByTaskId(@Param("taskId")Integer taskId);
+    List<InspectionDeptTag> selectTagIdListByTaskList(@Param("groupId") Integer groupId,@Param("list") List<Integer> taskIdList);
+
+    int deleteByTaskIdWithOutDeptIdList(@Param("taskId")Integer taskId,@Param("list")List<Integer> retainDeptList);
+
+    List<Integer> selectTaskIdByGroupIdAndTagIdList(@Param("groupId")Integer groupId,@Param("list") List<Integer> tagIdList);
 }

@@ -1,8 +1,11 @@
 package com.ovopark.service;
 
 import com.ovopark.model.login.Users;
+import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
+import com.ovopark.model.resp.InspectionPlanTaskAppListResp;
 import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
+import com.ovopark.model.resp.InspectionPlanTaskExpandListResp;
 import com.ovopark.model.resp.JsonNewResult;
 
 /**
@@ -23,4 +26,14 @@ public interface InspectionTaskService {
     JsonNewResult<Void> urged(InspectionPlanTaskUrgedReq req, Users user);
 
     JsonNewResult<Void> udpate(InspectionPlanTaskUpdateReq req, Users user);
+
+    JsonNewResult<Void> audit(InspectionPlanTaskAuditReq req, Users user);
+
+    JsonNewResult<Void> expire(InspectionPlanTaskExpireReq req, Users user);
+
+    JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(InspectionPlanTaskDetailReq req, Users user);
+
+    JsonNewResult<Page<InspectionPlanTaskAppListResp>> appList(InspectionPlanTaskAppListReq req, Users user);
+
+    JsonNewResult<Void> callBack(InspectionPlanTaskCallBackReq req, Users user);
 }

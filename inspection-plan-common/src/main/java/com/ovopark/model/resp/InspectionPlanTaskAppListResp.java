@@ -1,7 +1,5 @@
 package com.ovopark.model.resp;
 
-import com.ovopark.model.req.InspectionPlanExpandAddReq;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,15 +11,11 @@ import java.util.List;
  * @Date 2021/5/11 下午8:01
  * @Created by liuhao
  */
-public class InspectionPlanTaskDetailResp implements Serializable {
+public class InspectionPlanTaskAppListResp implements Serializable {
 
     private Integer id;
 
     private String name;
-
-    private Integer auditId;
-
-    private String auditName = "";
 
     private Date startTime;
 
@@ -31,11 +25,11 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     private Integer status;
 
-    private Integer isOperator=0;
+    private Integer completeExpandCount=0;
 
-    private Integer isAudit=0;
+    private Integer totalExpandCount=0;
 
-    private List<InspectionPlanExpandDetailResp> inspectionExpandList =  new ArrayList<>();
+    private List<InspectionPlanTagDetailResp> tagList = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -51,22 +45,6 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getAuditId() {
-        return auditId;
-    }
-
-    public void setAuditId(Integer auditId) {
-        this.auditId = auditId;
-    }
-
-    public String getAuditName() {
-        return auditName;
-    }
-
-    public void setAuditName(String auditName) {
-        this.auditName = auditName;
     }
 
     public Date getStartTime() {
@@ -101,28 +79,28 @@ public class InspectionPlanTaskDetailResp implements Serializable {
         this.remark = remark;
     }
 
-    public List<InspectionPlanExpandDetailResp> getInspectionExpandList() {
-        return inspectionExpandList;
+
+    public List<InspectionPlanTagDetailResp> getTagList() {
+        return tagList;
     }
 
-    public void setInspectionExpandList(List<InspectionPlanExpandDetailResp> inspectionExpandList) {
-        this.inspectionExpandList = inspectionExpandList;
+    public void setTagList(List<InspectionPlanTagDetailResp> tagList) {
+        this.tagList = tagList;
     }
 
-    public Integer getIsOperator() {
-        return isOperator;
+    public Integer getCompleteExpandCount() {
+        return completeExpandCount;
     }
 
-    public void setIsOperator(Integer isOperator) {
-        this.isOperator = isOperator;
+    public void setCompleteExpandCount(Integer completeExpandCount) {
+        this.completeExpandCount = completeExpandCount;
     }
 
-
-    public Integer getIsAudit() {
-        return isAudit;
+    public Integer getTotalExpandCount() {
+        return totalExpandCount;
     }
 
-    public void setIsAudit(Integer isAudit) {
-        this.isAudit = isAudit;
+    public void setTotalExpandCount(Integer totalExpandCount) {
+        this.totalExpandCount = totalExpandCount;
     }
 }

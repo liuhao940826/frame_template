@@ -29,6 +29,18 @@ public class InspectionTaskBuilder {
         return this;
     }
 
+    public InspectionTaskBuilder completeExpandCount(Integer completeExpandCount){
+        task.setCompleteExpandCount(completeExpandCount);
+        return this;
+    }
+
+
+    public InspectionTaskBuilder totalExpandCount(Integer totalExpandCount){
+        task.setTotalExpandCount(totalExpandCount);
+        return this;
+    }
+
+
     public InspectionTaskBuilder operatorId(Integer operatorId) {
         task.setOperatorId(operatorId);
         return this;

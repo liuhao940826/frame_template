@@ -13,6 +13,10 @@ import java.util.List;
  */
 public class InspectionPlanTaskDetailReq implements Serializable {
 
+    private Integer pageNo;
+
+    private Integer pageSize;
+
     private Integer id;
 
     public Integer getId() {
@@ -21,5 +25,21 @@ public class InspectionPlanTaskDetailReq implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(Integer pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

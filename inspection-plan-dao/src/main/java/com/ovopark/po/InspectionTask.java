@@ -32,6 +32,10 @@ public class InspectionTask implements Serializable {
 
     private Integer status;
 
+    private Integer completeExpandCount;
+
+    private Integer totalExpandCount;
+
     private BigDecimal completePercent;
 
     private Date startTime;
@@ -66,8 +70,9 @@ public class InspectionTask implements Serializable {
         return name;
     }
 
-    public void setName(String name) {
+    public InspectionTask setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Integer getGroupId() {
@@ -99,16 +104,18 @@ public class InspectionTask implements Serializable {
         return auditId;
     }
 
-    public void setAuditId(Integer auditId) {
+    public InspectionTask setAuditId(Integer auditId) {
         this.auditId = auditId;
+        return this;
     }
 
     public String getAuditName() {
         return auditName;
     }
 
-    public void setAuditName(String auditName) {
+    public InspectionTask setAuditName(String auditName) {
         this.auditName = auditName;
+        return this;
     }
 
     public Integer getStatus() {
@@ -148,8 +155,9 @@ public class InspectionTask implements Serializable {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public InspectionTask setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+        return this;
     }
 
     public Integer getIsDelete() {
@@ -176,45 +184,67 @@ public class InspectionTask implements Serializable {
         this.auditTime = auditTime;
     }
 
+    public Integer getCompleteExpandCount() {
+        return completeExpandCount;
+    }
+
+    public InspectionTask setCompleteExpandCount(Integer completeExpandCount) {
+        this.completeExpandCount = completeExpandCount;
+        return this;
+    }
+
+    public Integer getTotalExpandCount() {
+        return totalExpandCount;
+    }
+
+    public InspectionTask setTotalExpandCount(Integer totalExpandCount) {
+        this.totalExpandCount = totalExpandCount;
+        return this;
+    }
 
     public BigDecimal getCompletePercent() {
         return completePercent;
     }
 
-    public void setCompletePercent(BigDecimal completePercent) {
+    public InspectionTask setCompletePercent(BigDecimal completePercent) {
         this.completePercent = completePercent;
+        return this;
     }
 
     public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public InspectionTask setStartTime(Date startTime) {
         this.startTime = startTime;
+        return this;
     }
 
     public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public InspectionTask setEndTime(Date endTime) {
         this.endTime = endTime;
+        return this;
     }
 
     public Integer getUpdateTimes() {
         return updateTimes;
     }
 
-    public void setUpdateTimes(Integer updateTimes) {
+    public InspectionTask setUpdateTimes(Integer updateTimes) {
         this.updateTimes = updateTimes;
+        return this;
     }
 
     public String getRemark() {
         return remark;
     }
 
-    public void setRemark(String remark) {
+    public InspectionTask setRemark(String remark) {
         this.remark = remark;
+        return this;
     }
 
     public Integer getVersion() {
@@ -224,5 +254,8 @@ public class InspectionTask implements Serializable {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
+
+
 
 }

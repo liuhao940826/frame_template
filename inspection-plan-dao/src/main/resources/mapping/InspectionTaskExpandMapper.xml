@@ -40,9 +40,24 @@
     select * from is_inspection_task_expand where  task_id=#{taskId}  and group_id=#{groupId} and  is_deleted =0
   </select>
   
-  <update id="deleteByTaskId">
+  <update id="deleteByTaskIdWithOutExpandList">
      update is_inspection_task_expand set is_deleted = 1 where task_id=#{taskId} and is_deleted=0
+      <if test="list != null and list.size>0">
+        AND id not IN (
+        <foreach collection="list" item="id" separator=",">
+          #{id}
+        </foreach>
+        )
+      </if>
   </update>
   
+  
+  <select id="queryExpandListByTaskIdByPage" resultType="com.ovopark.po.InspectionTaskExpand">
+    select * from is_inspection_task_expand where is_deleted=0 and task_id =#{taskId}
+  </select>
+  
+  <update id="updateStatusById">
+    update is_inspection_task_expand set status = #{status} where id =#{id} and is_deleted=0
+  </update>
   
 </mapper>

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class ClazzConverterUtils {
 
     public static <T1, T2> List<T1> converterClass(Collection<T2> srcClazzCollection, Class<T1> dstClazz) {
         JSONArray jsonArray = (JSONArray) JSONObject.toJSON(srcClazzCollection);
-        return jsonArray == null ? null : JSONArray.parseArray(jsonArray.toJSONString(), dstClazz);
+        return jsonArray == null ? new ArrayList<>() : JSONArray.parseArray(jsonArray.toJSONString(), dstClazz);
     }
 
     public static <T1, T2> T1[] converterClass(T2[] srcClazzArray, Class<T1> dstClazz) {

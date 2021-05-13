@@ -9,7 +9,7 @@ package com.ovopark.constants;
  */
 public final class ProxyConstants {
 
-    public static final String XXL_JOB_HANDLE_TYPE_DISPLAY_TASK = "displayTaskHandler";
+    public static final String XXL_JOB_HANDLE_TYPE_INSPECTION_PLAN = "inspectionTaskJobHandler";
 
     public static final String REMARK = "陈列中心任务,%s 自动通过 ";
 
