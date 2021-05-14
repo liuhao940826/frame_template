@@ -3,10 +3,7 @@ package com.ovopark.service;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
-import com.ovopark.model.resp.InspectionPlanTaskAppListResp;
-import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
-import com.ovopark.model.resp.InspectionPlanTaskExpandListResp;
-import com.ovopark.model.resp.JsonNewResult;
+import com.ovopark.model.resp.*;
 
 /**
  * @Classname InspectionTask
@@ -36,4 +33,6 @@ public interface InspectionTaskService {
     JsonNewResult<Page<InspectionPlanTaskAppListResp>> appList(InspectionPlanTaskAppListReq req, Users user);
 
     JsonNewResult<Void> callBack(InspectionPlanTaskCallBackReq req, Users user);
+
+    JsonNewResult<InspectionPlanTaskWebExpandListResp> webExpandList(InspectionPlanWebExpandReq req, Users user);
 }

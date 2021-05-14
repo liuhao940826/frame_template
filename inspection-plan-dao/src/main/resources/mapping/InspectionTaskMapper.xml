@@ -243,7 +243,7 @@
       and audit_id =#{userId} and status = 1
     </if>
     <if test="releateType ==null">
-      and  (audit_id =#{userId} and status =1 )or (operator_id =#{userId} and status in (3,4))
+      and (audit_id =#{userId} or operator_id =#{userId} )
     </if>
     <if test="name!=null and name!=''">
       and name like CONCAT('%','${name}','%' )

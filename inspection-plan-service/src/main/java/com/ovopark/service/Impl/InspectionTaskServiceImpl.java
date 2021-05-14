@@ -390,8 +390,13 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         pageTemp.setPageNumber(req.getPageNo());
         pageTemp.setPageSize(req.getPageSize());
 
+         List<Integer> taskIdList = new ArrayList<>();
+
         //这是个大变量
-        List<Integer> taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
+        if(CollectionUtils.isEmpty(req.getTagIdList())){
+            taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
+        }
+
         //任务
         List<InspectionTask> list = inspectionTaskMapper.queryAppListByRelateTypeByPage(pageTemp, req.getReleateType(), user.getId(), groupId, req.getName(), req.getStartTime(), req.getEndTime(), taskIdList);
         //手动gc 释放大变量
@@ -568,6 +573,87 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         return JsonNewResult.success(resp);
 
     }
+
+
+    @Override
+    public JsonNewResult<InspectionPlanTaskWebExpandListResp> webExpandList(InspectionPlanWebExpandReq req, Users user) {
+
+        Integer taskId = req.getTaskId();
+
+        //获取
+        InspectionTask orgTask = inspectionTaskMapper.selectbyPrimaryId(taskId);
+
+        if (orgTask == null) {
+            throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
+        }
+        //明细的集合
+        List<InspectionTaskExpand> list = inspectionTaskExpandMapper.selectExpandListByTaskId(taskId,user.getGroupId());
+
+        //<标签id, 标签对象>
+        Map<Integer, String> tagMap = new HashMap<>();
+
+        if(CollectionUtils.isEmpty(list)){
+            return JsonNewResult.success(new InspectionPlanTaskWebExpandListResp());
+        }
+
+        List<Integer> deptIdList = list.stream().map(InspectionTaskExpand::getDeptId).collect(Collectors.toList());
+        //<门店id, 标签集合>
+        Map<Integer, List<InspectionDeptTag>> groupByDeptIdTagMap = new HashMap<>();
+
+        //门店和标签的关联集合
+        List<InspectionDeptTag> deptTagList = inspectionDeptTagMapper.selectTagIdListByTaskAndDeptList(taskId,user.getGroupId(),deptIdList);
+
+        if(!CollectionUtils.isEmpty(deptTagList)){
+
+            List<Integer> tagIdList = deptTagList.stream().map(InspectionDeptTag::getTagId).collect(Collectors.toList());
+            //map集合
+            groupByDeptIdTagMap = deptTagList.stream().collect(Collectors.groupingBy(InspectionDeptTag::getDeptId));
+
+            //所有的标签集合
+            List<InspectionTag> tagList = inspectionTagMapper.queryTagByTagIdList(user.getGroupId(),tagIdList);
+            //<标签id, 标签名字>
+            tagMap = tagList.stream().collect(Collectors.toMap(InspectionTag::getId, InspectionTag::getName));
+
+        }
+
+        //明细id,.
+        Map<Integer, InspectionPlanTaskWebExpandListInnerResp>  resultMap = new HashMap();
+
+        //明细集合
+        for (InspectionTaskExpand expand : list) {
+
+            InspectionTaskExpandStatusEnum expandStatusEnum = InspectionTaskExpandStatusEnum.formatOrNull(expand.getStatus());
+            //明细状态对象
+            InspectionPlanTaskWebExpandListInnerResp innerResp = new InspectionPlanTaskWebExpandListInnerResp(expand.getStatus(),expandStatusEnum==null?"":expandStatusEnum.getDesc());
+
+            Integer deptId = expand.getDeptId();
+            //获取门店关联的标签集合
+            List<InspectionDeptTag> eachDeptTagList = groupByDeptIdTagMap.get(deptId);
+
+            if(!CollectionUtils.isEmpty(eachDeptTagList)){
+
+                for (InspectionDeptTag inspectionDeptTag : eachDeptTagList) {
+
+                    List<String> tagNameList = innerResp.getTagNameList();
+
+                    Integer tagId = inspectionDeptTag.getTagId();
+                    //标签名字
+                    String tagName = tagMap.get(tagId);
+
+                    tagNameList.add(tagName);
+                }
+
+                resultMap.put(expand.getId(),innerResp);
+            }
+        }
+
+        return JsonNewResult.success(new InspectionPlanTaskWebExpandListResp(resultMap));
+    }
+
+
+
+
+
 
     /**
      * 删除

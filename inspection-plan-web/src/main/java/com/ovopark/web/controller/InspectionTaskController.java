@@ -6,10 +6,7 @@ import com.ovopark.expection.Validation;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
-import com.ovopark.model.resp.InspectionPlanTaskAppListResp;
-import com.ovopark.model.resp.InspectionPlanTaskDetailResp;
-import com.ovopark.model.resp.InspectionPlanTaskExpandListResp;
-import com.ovopark.model.resp.JsonNewResult;
+import com.ovopark.model.resp.*;
 import com.ovopark.service.InspectionTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,6 +180,21 @@ public class InspectionTaskController {
                 .isValidThrowException();
 
         return inspectionTaskService.callBack(req,user);
+    }
+
+
+    @RequestMapping(value="/web/expandList")
+    @ResponseBody
+    public JsonNewResult<InspectionPlanTaskWebExpandListResp> webExpandList(@RequestBody InspectionPlanWebExpandReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getTaskId()==null  , ResultCode.PARAM_ERROR_NAME,"taskId")
+                .isValidThrowException();
+
+        return inspectionTaskService.webExpandList(req,user);
     }
 
 

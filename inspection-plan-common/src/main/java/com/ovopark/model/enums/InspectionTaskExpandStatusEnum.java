@@ -25,4 +25,17 @@ public enum InspectionTaskExpandStatusEnum {
     }
 
 
+    public static InspectionTaskExpandStatusEnum formatOrNull(Integer code) {
+        if (null == code) {
+            return null;
+        }
+        InspectionTaskExpandStatusEnum[] enums = values();
+        for (InspectionTaskExpandStatusEnum enu : enums) {
+            if (enu.getCode().equals(code)) {
+                return enu;
+            }
+        }
+
+        return null;
+    }
 }

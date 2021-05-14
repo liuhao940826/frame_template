@@ -24,4 +24,5 @@ public interface InspectionTaskExpandMapper {
     List<InspectionTaskExpand> queryExpandListByTaskIdByPage(@Param("page")Page<InspectionTaskExpand> pageTemp, @Param("taskId")Integer taskId);
 
     int updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
+
 }
