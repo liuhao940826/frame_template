@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum DisplayMainTypeEnum {
+public enum InspectionPlanMainTypeEnum {
 
     DISPLAY(0,"陈列中心"),
     INSPECTION(1,"巡检计划"),
@@ -14,7 +14,7 @@ public enum DisplayMainTypeEnum {
     private Integer code;
     private String desc;
 
-    DisplayMainTypeEnum(Integer code, String desc) {
+    InspectionPlanMainTypeEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -29,12 +29,12 @@ public enum DisplayMainTypeEnum {
     }
 
 
-    public static DisplayMainTypeEnum formatOrNull(Integer code) {
+    public static InspectionPlanMainTypeEnum formatOrNull(Integer code) {
         if (null == code) {
             return null;
         }
-        DisplayMainTypeEnum[] enums = values();
-        for (DisplayMainTypeEnum enu : enums) {
+        InspectionPlanMainTypeEnum[] enums = values();
+        for (InspectionPlanMainTypeEnum enu : enums) {
             if (enu.getCode().equals(code)) {
                 return enu;
             }
@@ -44,18 +44,18 @@ public enum DisplayMainTypeEnum {
     }
 
 
-    public static DisplayMainTypeEnum format(Integer code) {
-        DisplayMainTypeEnum se = formatOrNull(code);
+    public static InspectionPlanMainTypeEnum format(Integer code) {
+        InspectionPlanMainTypeEnum se = formatOrNull(code);
         return null == se ? DISPLAY : se;
     }
 
 
     public static List<String> getTitle(){
-        DisplayMainTypeEnum[] enums = values();
-        List<DisplayMainTypeEnum> list = Arrays.asList(enums);
+        InspectionPlanMainTypeEnum[] enums = values();
+        List<InspectionPlanMainTypeEnum> list = Arrays.asList(enums);
 
-        List<String> sortTitle = list.stream().sorted(Comparator.comparing(DisplayMainTypeEnum::getCode))
-                .map(DisplayMainTypeEnum::getDesc).collect(Collectors.toList());
+        List<String> sortTitle = list.stream().sorted(Comparator.comparing(InspectionPlanMainTypeEnum::getCode))
+                .map(InspectionPlanMainTypeEnum::getDesc).collect(Collectors.toList());
 
         return sortTitle;
     }

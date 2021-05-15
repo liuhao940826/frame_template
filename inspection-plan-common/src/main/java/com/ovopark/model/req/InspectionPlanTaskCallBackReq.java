@@ -14,6 +14,8 @@ public class InspectionPlanTaskCallBackReq implements Serializable {
 
     private Integer expandId;
 
+    private String deptName;
+
     public Integer getTaskId() {
         return taskId;
     }
@@ -28,5 +30,13 @@ public class InspectionPlanTaskCallBackReq implements Serializable {
 
     public void setExpandId(Integer expandId) {
         this.expandId = expandId;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

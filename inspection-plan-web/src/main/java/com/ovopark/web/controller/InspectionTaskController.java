@@ -46,6 +46,23 @@ public class InspectionTaskController {
         return inspectionTaskService.appList(req,user);
     }
 
+    @RequestMapping(value="/web/list")
+    @ResponseBody
+    public JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(@RequestBody InspectionPlanTaskWebListReq req){
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .isValidThrowException();
+
+        return inspectionTaskService.webList(req,user);
+    }
+
+
+
+
+
     @RequestMapping(value="/add")
     @ResponseBody
     public JsonNewResult<Void> add(@RequestBody InspectionPlanTaskAddReq req) {
@@ -160,13 +177,18 @@ public class InspectionTaskController {
         Users user = HttpContext.getContextInfoUser();
 
         Validation.newValidation()
-                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+//                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
                 .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
                 .isValidThrowException();
 
         return inspectionTaskService.expire(req,user);
     }
 
+    /**
+     * 可能需要加白名单的机制
+     * @param req
+     * @return
+     */
     @RequestMapping(value="/callBack")
     @ResponseBody
     public JsonNewResult<Void> callBack(@RequestBody InspectionPlanTaskCallBackReq req) {
@@ -196,6 +218,9 @@ public class InspectionTaskController {
 
         return inspectionTaskService.webExpandList(req,user);
     }
+
+
+
 
 
 

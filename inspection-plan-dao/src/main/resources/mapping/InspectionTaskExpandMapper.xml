@@ -39,7 +39,18 @@
   <select id="selectExpandListByTaskId" resultType="com.ovopark.po.InspectionTaskExpand">
     select * from is_inspection_task_expand where  task_id=#{taskId}  and group_id=#{groupId} and  is_deleted =0
   </select>
-  
+
+  <select id="selectExpandListByTaskIdList" resultType="com.ovopark.po.InspectionTaskExpand">
+    select * from is_inspection_task_expand where group_id=#{groupId} and is_deleted =0
+    <if test="list != null and list.size>0">
+      AND task_id  IN (
+      <foreach collection="list" item="taskId" separator=",">
+        #{taskId}
+      </foreach>
+      )
+    </if>
+  </select>
+
   <update id="deleteByTaskIdWithOutExpandList">
      update is_inspection_task_expand set is_deleted = 1 where task_id=#{taskId} and is_deleted=0
       <if test="list != null and list.size>0">

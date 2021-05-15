@@ -35,4 +35,6 @@ public interface InspectionTaskService {
     JsonNewResult<Void> callBack(InspectionPlanTaskCallBackReq req, Users user);
 
     JsonNewResult<InspectionPlanTaskWebExpandListResp> webExpandList(InspectionPlanWebExpandReq req, Users user);
+
+    JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(InspectionPlanTaskWebListReq req, Users user);
 }

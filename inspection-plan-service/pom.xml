@@ -20,14 +20,6 @@
             <artifactId>inspection-plan-dao</artifactId>
             <version>${pro.version}</version>
         </dependency>
-
-        <!--feign内部依赖-->
-        <dependency>
-            <groupId>com.ovopark</groupId>
-            <artifactId>shopweb-core-sdk</artifactId>
-            <version>${fegin.version}</version>
-        </dependency>
-
     </dependencies>
 
 

@@ -1,8 +1,5 @@
 package com.ovopark.utils;
 
-import com.ovopark.constants.CommonConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
@@ -10,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * @author jeecg-boot
+ * @author liuhao
  * @version 1.0
  * @description 描述
  * @create 2019-11-25 17:28
@@ -408,7 +405,7 @@ public class DateUtils {
      * @return
      */
     public static Date getZoneTimeOfDay(String startTime,String pattern) {
-        if(!org.springframework.util.StringUtils.isEmpty(startTime)){
+        if(!StringUtils.isEmpty(startTime)){
             Calendar cal = Calendar.getInstance();
             cal.setTime(parse(startTime, pattern));
             cal.set(Calendar.HOUR_OF_DAY, 8);
@@ -430,7 +427,7 @@ public class DateUtils {
      * @return
      */
     public static Date getStartTimeOfDay(String startTime,String pattern) {
-        if(!org.springframework.util.StringUtils.isEmpty(startTime)){
+        if(!StringUtils.isEmpty(startTime)){
             Calendar cal = Calendar.getInstance();
             cal.setTime(parse(startTime, pattern));
             cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -481,7 +478,7 @@ public class DateUtils {
      * @return
      */
     public static Date getEndTimeOfDay(String endTime,String pattern) {
-        if(!org.springframework.util.StringUtils.isEmpty(endTime)){
+        if(!StringUtils.isEmpty(endTime)){
             Calendar cal = Calendar.getInstance();
             cal.setTime(parse(endTime, pattern));
             cal.set(Calendar.HOUR_OF_DAY, 23);
@@ -622,17 +619,17 @@ public class DateUtils {
     }
 
     public static Date changeStr2StartDate(String time){
-        if(org.springframework.util.StringUtils.isEmpty(time)) return null;
+        if(StringUtils.isEmpty(time)) return null;
         return getStartTimeOfDay(changeStr2Date(time));
     }
 
     public static Date changeStr2EndDate(String time){
-        if(org.springframework.util.StringUtils.isEmpty(time)) return null;
+        if(StringUtils.isEmpty(time)) return null;
         return getEndTimeOfDay(changeStr2Date(time));
     }
 
     public static Date changeStr2Date(String time) {
-        if(org.springframework.util.StringUtils.isEmpty(time)) return null;
+        if(StringUtils.isEmpty(time)) return null;
 
         final int shortLen = FORMAT_SHORT.length();
         final int longLen = FORMAT_LONG.length();
@@ -1037,7 +1034,7 @@ public class DateUtils {
      */
     public static Boolean compareTime(String sourceTime,String targetTime,String format ) throws ParseException {
 
-        if(org.springframework.util.StringUtils.isEmpty(format)){
+        if(StringUtils.isEmpty(format)){
             format =FORMAT_LONG;
         }
 
@@ -1110,6 +1107,12 @@ public class DateUtils {
         return formatTimeStr;
     }
 
+
+    public static void main(String[] args) {
+        String s = dateToCron(new Date());
+        System.out.println(s);
+
+    }
 
 
 

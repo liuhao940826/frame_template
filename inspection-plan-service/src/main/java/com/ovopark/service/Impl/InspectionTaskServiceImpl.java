@@ -1,18 +1,17 @@
 package com.ovopark.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.ovopark.builder.InspectionTaskBuilder;
 import com.ovopark.constants.CommonConstants;
+import com.ovopark.constants.LogConstant;
 import com.ovopark.constants.MessageConstant;
 import com.ovopark.constants.ProxyConstants;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.SysErrorException;
 import com.ovopark.mapper.*;
 import com.ovopark.model.base.EntityBase;
-import com.ovopark.model.enums.DefaultEnum;
-import com.ovopark.model.enums.DisplayMainTypeEnum;
-import com.ovopark.model.enums.InspectionTaskExpandStatusEnum;
-import com.ovopark.model.enums.InspectionTaskStatusEnum;
+import com.ovopark.model.enums.*;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
@@ -22,6 +21,7 @@ import com.ovopark.proxy.DepartProxy;
 import com.ovopark.proxy.MessageProxy;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.InspectionTaskService;
+import com.ovopark.utils.BigDecimalUtils;
 import com.ovopark.utils.ClazzConverterUtils;
 import com.ovopark.utils.DateUtils;
 import org.springframework.beans.BeanUtils;
@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,10 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
     @Autowired
     InspectionAuditReasonMapper inspectionAuditReasonMapper;
+
+
+    @Autowired
+    InspectionOperatorLogMapper inspectionOperatorLogMapper;
 
 
     @Autowired
@@ -111,9 +116,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionTaskExpandMapper.batchSaveInspectionTaskExpand(expandList);
         //明细标签关联表保存数据
         inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
-
+        Date endTime = task.getEndTime();
         //cron表达式 截止日期
-        String cron = DateUtils.dateToCron(task.getEndTime());
+        String cron = DateUtils.dateToCron(endTime);
 
         //处理过期
         Map<String, Object> param = new HashMap<String, Object>();
@@ -124,6 +129,17 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         //更新定时任务id
         inspectionTaskMapper.updateJobIdById(jobId,task.getId());
+        //日志处理
+        String content = String.format(LogConstant.CREATE, user.getUserName());
+
+        InspectionOperatorLog log  = new InspectionOperatorLog(groupId,task.getId(),user.getId(),user.getUserName(),content);
+
+        //赋值公共属性
+        EntityBase.setCreateParams(log, user);
+
+        inspectionOperatorLogMapper.insertSelective(log);
+        //操作日志
+        insertLog( user, task.getId(), LogConstant.CREATE,user.getUserName());
 
         return JsonNewResult.success();
 
@@ -215,6 +231,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //明细标签关联表保存数据
         inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
 
+        //操作日志
+        insertLog( user, orgTask.getId(), LogConstant.UPDATE,user.getUserName());
+
         return JsonNewResult.success();
     }
 
@@ -239,6 +258,15 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         EntityBase.setCreateParams(inspectionAuditReason, user);
 
         inspectionAuditReasonMapper.insert(inspectionAuditReason);
+
+        if(InspectionTaskStatusEnum.PASS.getCode().equals(status)){
+            //操作日志 通过
+            insertLog(user, orgTask.getId(), LogConstant.PASS,user.getUserName());
+
+        }else if(InspectionTaskStatusEnum.REFUSE.getCode().equals(status)) {
+            //操作日志 驳回
+            insertLog(user, orgTask.getId(), LogConstant.REFUSE,user.getUserName());
+        }
 
         return JsonNewResult.success();
     }
@@ -283,12 +311,21 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         int isOk = inspectionTaskExpandMapper.updateStatusById(expandId,InspectionTaskExpandStatusEnum.PASS.getCode());
 
         completeExpandCount+=1;
+
+        BigDecimal percent = BigDecimalUtils.calculatePercent(completeExpandCount, orgTask.getTotalExpandCount(),BigDecimalUtils.DEFAULT_SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+
         //更新 完成数量+1
-        inspectionTaskMapper.updateCompleteExpandCount(taskId,completeExpandCount);
+        inspectionTaskMapper.updateCompleteExpandCount(taskId,completeExpandCount,percent);
+
+        //操作日志
+        insertLog(user, taskId, LogConstant.CALLBACK,user.getUserName(),req.getDeptName());
 
         if(completeExpandCount.equals(orgTask.getTotalExpandCount())){
             //判断任务完成
             inspectionTaskMapper.updateStatusById(taskId,InspectionTaskStatusEnum.FINISH.getCode(),null);
+            //操作日志
+            insertLog(user, taskId, LogConstant.COMPELATE,orgTask.getName());
+
         }
 
         return JsonNewResult.success();
@@ -479,6 +516,140 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             }
             //设置标签集合
             inspectionPlanTaskAppListResp.setTagList(eachTaskTagList);
+        }
+
+        pageResult.setContent(result);
+
+        return JsonNewResult.success(pageResult);
+
+    }
+
+    /**
+     * web的列表
+     * @param req
+     * @param user
+     * @return
+     */
+    @Override
+    public JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(InspectionPlanTaskWebListReq req, Users user) {
+
+        //组织id
+        Integer groupId = user.getGroupId();
+
+        Page<InspectionTask> pageTemp = new Page<InspectionTask>();
+        pageTemp.setPageNumber(req.getPageNo());
+        pageTemp.setPageSize(req.getPageSize());
+
+        List<Integer> taskIdList = new ArrayList<>();
+
+        //这是个大变量
+        if(CollectionUtils.isEmpty(req.getTagIdList())){
+            taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
+        }
+
+        //任务
+        List<InspectionTask> list = inspectionTaskMapper.queryWebListByPage(pageTemp,groupId ,req.getName(), req.getOperatorName(), req.getStatus(),
+                req.getAuditName(), req.getStartTime(), req.getEndTime(), InspectionPlanExpressionEnum.formatOrNull(req.getCompletePercentExpression()).getExpression(),req.getCompletePercent(),taskIdList);
+
+        //手动gc 释放大变量
+        System.gc();
+
+        Page<InspectionPlanTaskWebListResp> pageResult = new Page<InspectionPlanTaskWebListResp>();
+        BeanUtils.copyProperties(pageTemp, pageResult);
+
+        //为空返回
+        if(CollectionUtils.isEmpty(list)){
+            return JsonNewResult.success(pageResult);
+        }
+
+        //转换集合
+        List<InspectionPlanTaskWebListResp> result = ClazzConverterUtils.converterClass(list, InspectionPlanTaskWebListResp.class);
+
+        //任务id
+        List<Integer> resultTaskIdList = result.stream().map(InspectionPlanTaskWebListResp ::getId).collect(Collectors.toList());
+
+        //明细
+        List<InspectionTaskExpand> expandList = inspectionTaskExpandMapper.selectExpandListByTaskIdList(resultTaskIdList, user.getGroupId());
+
+        Map<Integer,List<InspectionTaskExpand>> expandMap  =new  HashMap<Integer,List<InspectionTaskExpand>>();
+
+        if (!CollectionUtils.isEmpty(expandList)) {
+            expandMap = expandList.stream().collect(Collectors.toMap(InspectionTaskExpand::getTaskId, value -> Lists.newArrayList(value),
+                    (List<InspectionTaskExpand> newValueList, List<InspectionTaskExpand> oldValueList) -> {
+                        oldValueList.addAll(newValueList);
+                        return oldValueList;
+                    }));
+        }
+
+
+        //获取查询到的任务和标记的关联
+        List<InspectionDeptTag> inspectionDeptTagsList = inspectionDeptTagMapper.selectTagIdListByTaskList(groupId, resultTaskIdList);
+
+        if(CollectionUtils.isEmpty(inspectionDeptTagsList)){
+
+            pageResult.setContent(result);
+
+            return JsonNewResult.success(pageResult);
+        }
+
+        //map<任务id,标签id集合>
+        Map<Integer, Set<Integer>> taskTagMap = new HashMap<>();
+        //遍历处理任务和标签的id集合
+        for (InspectionDeptTag inspectionDeptTag : inspectionDeptTagsList) {
+
+            Integer taskId = inspectionDeptTag.getTaskId();
+            //没有新增
+            if(CollectionUtils.isEmpty(taskTagMap.get(taskId))){
+                HashSet<Integer> tagIdSet = new HashSet<>();
+                tagIdSet.add(inspectionDeptTag.getTagId());
+                taskTagMap.put(taskId,tagIdSet);
+            }else {
+                //有添加
+                Set<Integer> tagIdSet = taskTagMap.get(taskId);
+                tagIdSet.add(inspectionDeptTag.getTagId());
+            }
+        }
+        //获取所有的去重的标签id
+        Set<Integer> distinctTagIdSet = inspectionDeptTagsList.stream().map(InspectionDeptTag::getTagId).collect(Collectors.toSet());
+
+        List<Integer> distinctTagIdList = new ArrayList<>(distinctTagIdSet);
+
+        //<标签id, 标签名字>
+        Map<Integer, String> tagMap = new HashMap<>();
+
+        List<InspectionTag> tagList = inspectionTagMapper.queryTagByTagIdList(groupId, distinctTagIdList);
+
+        if(!CollectionUtils.isEmpty(tagList)){
+            //<标签id, 标签名字>
+            tagMap = tagList.stream().collect(Collectors.toMap(InspectionTag::getId, InspectionTag::getName));
+        }
+
+        //手动gc
+        System.gc();
+
+        for (InspectionPlanTaskWebListResp resp : result) {
+            //处理时间
+            resp.setEndTimeStr(DateUtils.getDateStr(resp.getEndTime(), DateUtils.FORMAT_TIME));
+            resp.setStartTimeStr(DateUtils.getDateStr(resp.getEndTime(), DateUtils.FORMAT_TIME));
+            //设置门店数量
+            List<InspectionTaskExpand> taskExpandList = expandMap.get(resp.getId());
+            resp.setDeptNum(CollectionUtils.isEmpty(taskExpandList)?0:taskExpandList.size());
+
+            List<InspectionPlanTagDetailResp> eachTaskTagList = new ArrayList<>();
+
+            Integer taskId = resp.getId();
+
+            Set<Integer> tagSet = taskTagMap.get(taskId);
+
+            for (Integer tagId : tagSet) {
+
+                String tagName = tagMap.get(tagId);
+
+                eachTaskTagList.add(new InspectionPlanTagDetailResp(tagId, tagName));
+
+            }
+            //设置标签集合
+            resp.setTagList(eachTaskTagList);
         }
 
         pageResult.setContent(result);
@@ -704,11 +875,28 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
         }
 
+        //操作日志
+        insertLog(user, task.getId(), LogConstant.URGED,user.getUserName());
+
         //发送消息
         messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.URGED_AUDIT,task.getName()),user.getGroupId(),
-                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), DisplayMainTypeEnum.INSPECTION,req.getTokenType());
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType());
 
         return JsonNewResult.success();
 
     }
+
+    public void insertLog(Users user,Integer taskId,String operatorType,String ... param){
+        //日志处理
+        String content = String.format(operatorType, param);
+
+        InspectionOperatorLog log  = new InspectionOperatorLog(user.getGroupId(),taskId,user.getId(),user.getUserName(),content);
+
+        //赋值公共属性
+        EntityBase.setCreateParams(log, user);
+
+        inspectionOperatorLogMapper.insertSelective(log);
+    }
+
+
 }

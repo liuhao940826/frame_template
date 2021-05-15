@@ -5,6 +5,7 @@ import com.ovopark.po.InspectionTask;
 import com.ovopark.po.InspectionTaskExpand;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,5 +33,10 @@ public interface InspectionTaskMapper {
                                                               @Param("name")String name, @Param("startTime")String startTime, @Param("endTime")String endTime,
                                                               @Param("list") List<Integer> taskIdList);
 
-    int updateCompleteExpandCount(@Param("id")Integer taskId, @Param("completeExpandCount")Integer completeExpandCount);
+    int updateCompleteExpandCount(@Param("id")Integer taskId, @Param("completeExpandCount")Integer completeExpandCount,@Param("percent")BigDecimal percent);
+
+    List<InspectionTask> queryWebListByPage(@Param("page")Page<InspectionTask> pageTemp, @Param("groupId")Integer groupId,@Param("name")String name,
+                                            @Param("operatorName")String operatorName, @Param("status")Integer status, @Param("auditName")String auditName,
+                                            @Param("startTime")String startTime, @Param("endTime")String endTime, @Param("expression")String expression,
+                                            @Param("percent") BigDecimal completePercent, @Param("list")List<Integer> taskIdList);
 }

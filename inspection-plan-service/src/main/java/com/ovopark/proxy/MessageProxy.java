@@ -2,14 +2,12 @@ package com.ovopark.proxy;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ovopark.constants.CommonConstants;
 import com.ovopark.constants.MessageConstant;
 import com.ovopark.context.HttpContext;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.SysErrorException;
-import com.ovopark.model.enums.DisplayMainTypeEnum;
+import com.ovopark.model.enums.InspectionPlanMainTypeEnum;
 import com.ovopark.model.resp.JsonNewResult;
-import com.ovopark.model.resp.JsonResult;
 import com.ovopark.po.Messages;
 import com.ovopark.po.TaskMessage;
 import com.ovopark.service.MessageService;
@@ -66,7 +64,7 @@ public class MessageProxy {
      * @param message
      */
     public void sendWebSocketAndJpush(Integer targetUserId, Integer userId, String title, String message, Integer groupId,
-                                       Integer type, Integer relatedId, DisplayMainTypeEnum mainType,
+                                       Integer type, Integer relatedId, InspectionPlanMainTypeEnum mainType,
                                        Integer tokenType) {
         JpushAndWebSocket(targetUserId, title, message, type, relatedId, mainType.getDesc(),tokenType);
         sendWebSocket(message, userId, targetUserId, groupId, MessageConstant.TYPE_MSG_RECEIVE, type, relatedId, mainType.getDesc());

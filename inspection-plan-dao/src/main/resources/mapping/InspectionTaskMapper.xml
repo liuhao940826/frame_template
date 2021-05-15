@@ -228,7 +228,16 @@
   </update>
   
   <update id="updateCompleteExpandCount">
-    update is_inspection_task set complete_expand_count =#{completeExpandCount} and id =#{id}
+    update is_inspection_task
+    <set>
+      <if test="completeExpandCount != null">
+        complete_expand_count =#{completeExpandCount},
+      </if>
+      <if test="percent != null">
+        complete_percent=#{percent},
+      </if>
+    </set>
+    where id =#{id}
   </update>
 
   <select id="queryAppListByRelateTypeByPage" resultType="com.ovopark.po.InspectionTask">
@@ -262,5 +271,45 @@
       )
     </if>
   </select>
-
+  
+  
+  <select id="queryWebListByPage" resultType="com.ovopark.po.InspectionTask">
+    select * from is_inspection_task where is_deleted =0
+    <if test="groupId !=null">
+      and group_id =#{groupId}
+    </if>
+    <if test="name!=null and name!=''">
+      and name like CONCAT('%','${name}','%' )
+    </if>
+    <if test="operatorName!=null and operatorName!=''">
+      and operator_name =#{operatorName}
+    </if>
+    <if test="status!=null">
+      and status =#{status}
+    </if>
+    <if test="auditName!=null and auditName!=''">
+      and audit_name =#{auditName}
+    </if>
+    <if test="startTime != null and startTime!=''">
+      and start_time &gt;= #{startTime}
+    </if>
+    <if test="endTime != null and endTime!=''">
+      and end_time &lt;= #{endTime}
+    </if>
+    <if test="expression != null and expression!='' and percent !=null">
+     and  complete_percent #{expression} #{percent}
+    </if>
+    <if test="list != null and list.size>0">
+      AND id IN (
+      <foreach collection="list" item="id" separator=",">
+        #{id}
+      </foreach>
+      )
+    </if>
+  </select>
+  
+  
+  
+  
+  
 </mapper>

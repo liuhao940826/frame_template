@@ -23,7 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -36,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -45,6 +48,7 @@ import java.util.Random;
  */
 @Aspect
 @Component
+@Order(1)
 public class ServiceRequestAspect {
     private static final Logger logger = LoggerFactory.getLogger(ServiceRequestAspect.class);
     private static final Logger defaultLogger = LoggerFactory.getLogger("R-R-LOG");
@@ -172,6 +176,21 @@ public class ServiceRequestAspect {
      * @param response
      */
     private boolean vaildToken(HttpServletRequest request,HttpServletResponse response) {
+
+
+        String url = request.getRequestURL().toString();
+
+        List<String> whiteList = configurationConstants.getWhiteList();
+
+        if(!CollectionUtils.isEmpty(whiteList)){
+            for (String whiteUrl : whiteList) {
+
+                if(url.contains(whiteUrl)){
+                    return true;
+                }
+            }
+        }
+
 
         boolean isNewLogin = false;
         String token = request.getParameter("token");

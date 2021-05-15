@@ -1,16 +1,11 @@
 package com.ovopark.model.base;
 
 import com.ovopark.constants.CommonConstants;
-import com.ovopark.context.HttpContext;
 import com.ovopark.model.enums.DeleteEnum;
 import com.ovopark.model.login.Users;
-import com.ovopark.utils.DateUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;

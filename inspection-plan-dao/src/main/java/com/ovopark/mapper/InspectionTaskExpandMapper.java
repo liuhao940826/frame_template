@@ -19,6 +19,8 @@ public interface InspectionTaskExpandMapper {
 
     List<InspectionTaskExpand> selectExpandListByTaskId(@Param("taskId") Integer taskId,@Param("groupId")Integer groupId);
 
+    List<InspectionTaskExpand> selectExpandListByTaskIdList(@Param("list")List<Integer> taskIdList,@Param("groupId")Integer groupId);
+
     int deleteByTaskIdWithOutExpandList(@Param("taskId")Integer taskId,@Param("list") List<Integer> withOutExpandId);
 
     List<InspectionTaskExpand> queryExpandListByTaskIdByPage(@Param("page")Page<InspectionTaskExpand> pageTemp, @Param("taskId")Integer taskId);
