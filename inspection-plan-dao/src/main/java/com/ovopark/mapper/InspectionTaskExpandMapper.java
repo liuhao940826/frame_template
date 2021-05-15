@@ -23,7 +23,7 @@ public interface InspectionTaskExpandMapper {
 
     int deleteByTaskIdWithOutExpandList(@Param("taskId")Integer taskId,@Param("list") List<Integer> withOutExpandId);
 
-    List<InspectionTaskExpand> queryExpandListByTaskIdByPage(@Param("page")Page<InspectionTaskExpand> pageTemp, @Param("taskId")Integer taskId);
+    List<InspectionTaskExpand> queryExpandListByTaskIdByPage(@Param("page")Page<InspectionTaskExpand> pageTemp, @Param("taskId")Integer taskId,@Param("status")Integer status);
 
     int updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
 

@@ -12,7 +12,7 @@ import java.util.*;
  * @description 描述
  * @create 2019-11-25 17:28
  */
-public class DateUtils {
+public class DateUtil {
 
 
     /**
@@ -193,7 +193,7 @@ public class DateUtils {
     public static Date getLastDayOfWeek(Date date) {
         Date d = getFirstDayOfWeek(date);
 
-        return DateUtils.addDay(d, 6);
+        return DateUtil.addDay(d, 6);
     }
 
 
@@ -636,11 +636,11 @@ public class DateUtils {
         final int noSecondLen = FORMAT_NO_SECNOD.length();
 
         if(time.length() == shortLen) {
-            return DateUtils.parse(time, DateUtils.FORMAT_SHORT);
+            return DateUtil.parse(time, DateUtil.FORMAT_SHORT);
         }else if(time.length() == longLen){
-            return DateUtils.parse(time, DateUtils.FORMAT_LONG);
+            return DateUtil.parse(time, DateUtil.FORMAT_LONG);
         }else if(time.length() == noSecondLen) {
-            return DateUtils.parse(time, DateUtils.FORMAT_NO_SECNOD);
+            return DateUtil.parse(time, DateUtil.FORMAT_NO_SECNOD);
         }else if(time.length() == 13) {
             return new Date(Long.valueOf(time));
         }
@@ -690,8 +690,8 @@ public class DateUtils {
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTime(date);
         int result = calendar.get(Calendar.WEEK_OF_YEAR);
-        if (result == 1 && date.after(DateUtils.parse(DateUtils.getYear(date) + "-12-01", "yyyy-MM-dd"))) {
-            calendar.setTime(DateUtils.addDay(date, -7));
+        if (result == 1 && date.after(DateUtil.parse(DateUtil.getYear(date) + "-12-01", "yyyy-MM-dd"))) {
+            calendar.setTime(DateUtil.addDay(date, -7));
             result = calendar.get(Calendar.WEEK_OF_YEAR) + 1;
         }
         return result;
@@ -728,7 +728,7 @@ public class DateUtils {
         cal.set(year, 0, 1, 0, 0, 0);
         SimpleDateFormat sdf=new SimpleDateFormat(FORMAT_SHORT);
         String beginDate = sdf.format(cal.getTime());
-        return DateUtils.parse(beginDate, FORMAT_SHORT);
+        return DateUtil.parse(beginDate, FORMAT_SHORT);
     }
 
     public static Date getYearEndDate (int year) {
@@ -736,7 +736,7 @@ public class DateUtils {
         cal.set(year, 11, 31, 0 ,0 ,0);
         SimpleDateFormat sdf=new SimpleDateFormat(FORMAT_SHORT);
         String beginDate = sdf.format(cal.getTime());
-        return DateUtils.getEndTimeOfDay(DateUtils.parse(beginDate, FORMAT_SHORT));
+        return DateUtil.getEndTimeOfDay(DateUtil.parse(beginDate, FORMAT_SHORT));
     }
 
     /**
@@ -814,30 +814,30 @@ public class DateUtils {
             String timeStr = getShowTimeStr(dateStr, timeType);
             times.add(timeStr);
             switch(timeType) {
-                case DateUtils.TIME_MINUTE:
+                case DateUtil.TIME_MINUTE:
                     cal.add(Calendar.MINUTE,1);
                     break;
-                case DateUtils.TIME_HOUR:
+                case DateUtil.TIME_HOUR:
                     cal.add(Calendar.HOUR,1);
                     break;
-                case DateUtils.TIME_DAY:
-                case DateUtils.TIME_DAY_FULL:
-                case DateUtils.TIME_DATE:
+                case DateUtil.TIME_DAY:
+                case DateUtil.TIME_DAY_FULL:
+                case DateUtil.TIME_DATE:
                     cal.add(Calendar.DATE,1);
                     break;
-                case DateUtils.TIME_WEEK_FIRST_DAY:
-                case DateUtils.TIME_WEEK:
+                case DateUtil.TIME_WEEK_FIRST_DAY:
+                case DateUtil.TIME_WEEK:
                     cal.add(Calendar.DATE,7);
                     break;
-                case DateUtils.TIME_MONTH:
-                case DateUtils.TIME_MONTH_FULL:
+                case DateUtil.TIME_MONTH:
+                case DateUtil.TIME_MONTH_FULL:
                     cal.add(Calendar.MONTH,1);
                     break;
-                case DateUtils.TIME_QUARTER:
+                case DateUtil.TIME_QUARTER:
                     cal.add(Calendar.MONTH,3);
                     break;
-                case DateUtils.TIME_YEAR:
-                case DateUtils.TIME_YEAR_FULL:
+                case DateUtil.TIME_YEAR:
+                case DateUtil.TIME_YEAR_FULL:
                     cal.add(Calendar.YEAR,1);
             }
         }
@@ -865,24 +865,24 @@ public class DateUtils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         switch (timeType) {
-            case DateUtils.TIME_MINUTE:
+            case DateUtil.TIME_MINUTE:
                 // 以分钟为单位
                 output = dateStr.substring(11, 16);
                 break;
-            case DateUtils.TIME_HOUR:
+            case DateUtil.TIME_HOUR:
                 // 以小时为时间单位综合
                 output = dateStr.substring(11, 16);
                 break;
-            case DateUtils.TIME_DAY:
+            case DateUtil.TIME_DAY:
                 output = dateStr.substring(5, 10);
                 break;
-            case DateUtils.TIME_DAY_FULL:
+            case DateUtil.TIME_DAY_FULL:
                 output = dateStr;
                 break;
-            case DateUtils.TIME_DATE:
+            case DateUtil.TIME_DATE:
                 output = dateStr.substring(0, 10);
                 break;
-            case DateUtils.TIME_WEEK:
+            case DateUtil.TIME_WEEK:
                 if(cal.get(Calendar.WEEK_OF_YEAR)==1){
                     output = cal.get(Calendar.YEAR)+1 +"年第" + cal.get(Calendar.WEEK_OF_YEAR) + "周";
                 }else{
@@ -890,29 +890,29 @@ public class DateUtils {
                 }
 
                 break;
-            case DateUtils.TIME_MONTH:
+            case DateUtil.TIME_MONTH:
                 // 以月为单位综合
                 int month = cal.get(Calendar.MONTH) + 1;
                 String year = cal.get(Calendar.YEAR) + "";
                 String monthStr = month < 10 ? "0" + month : "" + month;
                 output =year.substring(2, year.length())+"-"+monthStr;
                 break;
-            case DateUtils.TIME_MONTH_FULL:
+            case DateUtil.TIME_MONTH_FULL:
                 // 以月为单位综合
-                output = format(getFirstDayOfMonth(date),DateUtils.FORMAT_LONG);
+                output = format(getFirstDayOfMonth(date), DateUtil.FORMAT_LONG);
                 break;
-            case DateUtils.TIME_QUARTER:
+            case DateUtil.TIME_QUARTER:
                 output =  cal.get(Calendar.YEAR) +"年第" + (cal.get(Calendar.MONTH) / 3 + 1) + "季度";
                 break;
-            case DateUtils.TIME_YEAR:
+            case DateUtil.TIME_YEAR:
                 output = cal.get(Calendar.YEAR) + "";
                 break;
-            case DateUtils.TIME_YEAR_FULL:
+            case DateUtil.TIME_YEAR_FULL:
                 output = cal.get(Calendar.YEAR) + "";
                 break;
-            case DateUtils.TIME_WEEK_FIRST_DAY:
+            case DateUtil.TIME_WEEK_FIRST_DAY:
                 // 以年为单位综合
-                output = format(getFirstDayOfWeek(cal.getTime()),DateUtils.FORMAT_SHORT);
+                output = format(getFirstDayOfWeek(cal.getTime()), DateUtil.FORMAT_SHORT);
                 break;
             default:
                 // 以小时为时间单位综合
@@ -1088,8 +1088,8 @@ public class DateUtils {
     }
 
     public static Date getDateEnd(Date date) {
-        String dateEndStr =  DateUtils.getDateStr(date, DateUtils.FORMAT_SHORT)+ " 23:59:59";
-        return DateUtils.StringToDate(dateEndStr, DateUtils.FORMAT_SHORT);
+        String dateEndStr =  DateUtil.getDateStr(date, DateUtil.FORMAT_SHORT)+ " 23:59:59";
+        return DateUtil.StringToDate(dateEndStr, DateUtil.FORMAT_SHORT);
     }
 
     /**

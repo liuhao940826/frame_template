@@ -43,6 +43,9 @@
       <if test="content != null">
         content,
       </if>
+      <if test="createId != null">
+        create_id,
+      </if>
       <if test="createTime != null">
         create_time,
       </if>

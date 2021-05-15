@@ -64,7 +64,13 @@
   
   
   <select id="queryExpandListByTaskIdByPage" resultType="com.ovopark.po.InspectionTaskExpand">
-    select * from is_inspection_task_expand where is_deleted=0 and task_id =#{taskId}
+    select * from is_inspection_task_expand where is_deleted=0
+    <if test="taskId != null">
+      and task_id =#{taskId}
+    </if>
+    <if test="status != null">
+      and status =#{status}
+    </if>
   </select>
   
   <update id="updateStatusById">

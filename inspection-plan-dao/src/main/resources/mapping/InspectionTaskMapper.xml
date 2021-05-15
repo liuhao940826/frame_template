@@ -186,6 +186,9 @@
       <if test="totalExpandCount != null">
         total_expand_count =#{totalExpandCount, jdbcType=INTEGER},
       </if>
+      <if test="completePercent != null">
+        complete_percent=#{completePercent},
+      </if>
       <if test="startTime != null">
         start_time = #{startTime,jdbcType=TIMESTAMP},
       </if>
@@ -258,10 +261,10 @@
       and name like CONCAT('%','${name}','%' )
     </if>
     <if test="startTime != null and startTime!=''">
-      and audit_time &gt;= #{startTime}
+      and start_time &gt;= #{startTime}
     </if>
     <if test="endTime != null and endTime!=''">
-      and audit_time &lt;= #{endTime}
+      and end_time &lt;= #{endTime}
     </if>
     <if test="list != null and list.size>0">
       AND id IN (
@@ -297,7 +300,7 @@
       and end_time &lt;= #{endTime}
     </if>
     <if test="expression != null and expression!='' and percent !=null">
-     and  complete_percent #{expression} #{percent}
+     and  complete_percent  ${expression}   #{percent}
     </if>
     <if test="list != null and list.size>0">
       AND id IN (

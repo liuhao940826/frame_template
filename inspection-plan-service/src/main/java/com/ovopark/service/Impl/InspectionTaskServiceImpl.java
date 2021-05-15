@@ -23,7 +23,7 @@ import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.InspectionTaskService;
 import com.ovopark.utils.BigDecimalUtils;
 import com.ovopark.utils.ClazzConverterUtils;
-import com.ovopark.utils.DateUtils;
+import com.ovopark.utils.DateUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,7 +118,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
         Date endTime = task.getEndTime();
         //cron表达式 截止日期
-        String cron = DateUtils.dateToCron(endTime);
+        String cron = DateUtil.dateToCron(endTime);
 
         //处理过期
         Map<String, Object> param = new HashMap<String, Object>();
@@ -203,7 +203,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             //停止原本任务
             xxlJobProxy.stopJob(orgTask.getJobId());
 
-            String cron = DateUtils.dateToCron(req.getEndTime());
+            String cron = DateUtil.dateToCron(req.getEndTime());
             //处理过期
             Map<String, Object> param = new HashMap<String, Object>();
             param.put("id", orgTask.getId());
@@ -212,9 +212,16 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             //赋值新的jobId
             orgTask.setJobId(jobId);
         }
+
+
+        //处理百分比
+        BigDecimal percent = BigDecimalUtils.calculatePercent(orgTask.getCompleteExpandCount(), totalExpandCount,BigDecimalUtils.DEFAULT_SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+
         //状态回到待审核
-        orgTask.setName(req.getName()).setAuditId(req.getAuditId()).setAuditName(req.getAuditName()).setCompleteExpandCount(completeExpandCount).setTotalExpandCount(totalExpandCount)
-                .setStartTime(req.getStartTime()).setEndTime(req.getEndTime()).setRemark(req.getRemark()).setStatus(InspectionTaskStatusEnum.AUDIT.getCode());
+        orgTask.setName(req.getName()).setAuditId(req.getAuditId()).setAuditName(req.getAuditName())
+                .setTotalExpandCount(totalExpandCount).setCompletePercent(percent)
+                .setStartTime(req.getStartTime()).setEndTime(req.getEndTime()).setRemark(req.getRemark())
+                .setStatus(InspectionTaskStatusEnum.AUDIT.getCode());
 
         //赋值公共属性
         EntityBase.setUpdateParams(orgTask, user);
@@ -338,16 +345,38 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
      * @return
      */
     @Override
-    public JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(InspectionPlanTaskDetailReq req, Users user) {
+    public JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(InspectionPlanAppExpandReq req, Users user) {
 
         Page<InspectionTaskExpand> pageTemp = new Page<InspectionTaskExpand>();
         pageTemp.setPageNumber(req.getPageNo());
         pageTemp.setPageSize(req.getPageSize());
 
         //我审核
-        List<InspectionTaskExpand> list = inspectionTaskExpandMapper.queryExpandListByTaskIdByPage(pageTemp,req.getId());
-        //转换集合
-        List<InspectionPlanTaskExpandListResp> result = ClazzConverterUtils.converterClass(list, InspectionPlanTaskExpandListResp.class);
+        List<InspectionTaskExpand> list = inspectionTaskExpandMapper.queryExpandListByTaskIdByPage(pageTemp,req.getId(),req.getStatus());
+
+
+        //<门店id,门店名字>
+        Map<Integer, String> deptNameMap = new HashMap<>();
+        //<标签id, 标签对象>
+        Map<Integer, String> tagMap = new HashMap<>();
+
+        //<门店id, 标签集合>
+        Map<Integer, List<InspectionDeptTag>> groupByDeptIdTagMap = new HashMap<>();
+
+        List<InspectionPlanTaskExpandListResp> result = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(list)) {
+            //转换集合
+            result = ClazzConverterUtils.converterClass(list, InspectionPlanTaskExpandListResp.class);
+            //门店id集合
+            List<Integer> deptIdList = result.stream().map(InspectionPlanTaskExpandListResp::getDeptId).collect(Collectors.toList());
+            //<门店id,门店名称>
+            deptNameMap = departProxy.getDeptNameMap(deptIdList);
+        }
+
+        for (InspectionPlanTaskExpandListResp resp : result) {
+            resp.setDeptName(deptNameMap.get(resp.getDeptId()));
+        }
 
         Page<InspectionPlanTaskExpandListResp> pageResult = new Page<InspectionPlanTaskExpandListResp>();
 
@@ -516,6 +545,10 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             }
             //设置标签集合
             inspectionPlanTaskAppListResp.setTagList(eachTaskTagList);
+
+
+            inspectionPlanTaskAppListResp.setStartTimeStr(DateUtil.format(inspectionPlanTaskAppListResp.getStartTime(),DateUtil.FORMAT_SHORT));
+            inspectionPlanTaskAppListResp.setEndTimeStr(DateUtil.format(inspectionPlanTaskAppListResp.getEndTime(),DateUtil.FORMAT_SHORT));
         }
 
         pageResult.setContent(result);
@@ -629,8 +662,8 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         for (InspectionPlanTaskWebListResp resp : result) {
             //处理时间
-            resp.setEndTimeStr(DateUtils.getDateStr(resp.getEndTime(), DateUtils.FORMAT_TIME));
-            resp.setStartTimeStr(DateUtils.getDateStr(resp.getEndTime(), DateUtils.FORMAT_TIME));
+            resp.setEndTimeStr(DateUtil.getDateStr(resp.getEndTime(), DateUtil.FORMAT_TIME));
+            resp.setStartTimeStr(DateUtil.getDateStr(resp.getEndTime(), DateUtil.FORMAT_TIME));
             //设置门店数量
             List<InspectionTaskExpand> taskExpandList = expandMap.get(resp.getId());
             resp.setDeptNum(CollectionUtils.isEmpty(taskExpandList)?0:taskExpandList.size());

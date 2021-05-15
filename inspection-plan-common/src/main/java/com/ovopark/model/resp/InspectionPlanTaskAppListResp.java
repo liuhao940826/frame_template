@@ -19,7 +19,11 @@ public class InspectionPlanTaskAppListResp implements Serializable {
 
     private Date startTime;
 
+    private String startTimeStr;
+
     private Date endTime;
+
+    private String endTimeStr;
 
     private String remark;
 
@@ -102,5 +106,21 @@ public class InspectionPlanTaskAppListResp implements Serializable {
 
     public void setTotalExpandCount(Integer totalExpandCount) {
         this.totalExpandCount = totalExpandCount;
+    }
+
+    public String getStartTimeStr() {
+        return startTimeStr;
+    }
+
+    public void setStartTimeStr(String startTimeStr) {
+        this.startTimeStr = startTimeStr;
+    }
+
+    public String getEndTimeStr() {
+        return endTimeStr;
+    }
+
+    public void setEndTimeStr(String endTimeStr) {
+        this.endTimeStr = endTimeStr;
     }
 }

@@ -95,7 +95,7 @@ public class InspectionTaskController {
 
     @RequestMapping(value="/expandList")
     @ResponseBody
-    public JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(@RequestBody InspectionPlanTaskDetailReq req) {
+    public JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(@RequestBody InspectionPlanAppExpandReq req) {
 
         Users user = HttpContext.getContextInfoUser();
 

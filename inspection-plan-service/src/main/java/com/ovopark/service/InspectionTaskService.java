@@ -28,7 +28,7 @@ public interface InspectionTaskService {
 
     JsonNewResult<Void> expire(InspectionPlanTaskExpireReq req, Users user);
 
-    JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(InspectionPlanTaskDetailReq req, Users user);
+    JsonNewResult<Page<InspectionPlanTaskExpandListResp>> expandList(InspectionPlanAppExpandReq req, Users user);
 
     JsonNewResult<Page<InspectionPlanTaskAppListResp>> appList(InspectionPlanTaskAppListReq req, Users user);
 

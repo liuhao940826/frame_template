@@ -21,6 +21,8 @@ public class InspectionPlanTaskExpandListResp implements Serializable {
 
     private Integer deptId;
 
+    private String deptName;
+
     private String  description;
 
     private Integer operatorId;
@@ -81,5 +83,13 @@ public class InspectionPlanTaskExpandListResp implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 }

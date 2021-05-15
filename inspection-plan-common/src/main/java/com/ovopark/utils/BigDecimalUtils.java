@@ -118,6 +118,10 @@ public class BigDecimalUtils {
      */
     public static BigDecimal calculateBigDecimalPercent(BigDecimal target , BigDecimal total,Integer scale,Integer roundMode){
 
+        if(target.compareTo(total)==0){
+            return new BigDecimal(100).setScale(scale,roundMode);
+        }
+
 
         if(scale==null){
             scale =  DEFAULT_SCALE;
@@ -147,6 +151,10 @@ public class BigDecimalUtils {
      * @return
      */
     public static BigDecimal calculatePercent(Integer targetCount , Integer totalCount,Integer scale,Integer roundMode){
+
+        if(targetCount.equals(totalCount)){
+            return new BigDecimal(100).setScale(scale,roundMode);
+        }
 
         BigDecimal target = new BigDecimal(targetCount);
         BigDecimal total = new BigDecimal(totalCount);

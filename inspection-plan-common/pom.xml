@@ -86,13 +86,9 @@
             <artifactId>shopweb-core-sdk</artifactId>
             <version>1.0</version>
             <exclusions>
-                <exclusion> <!-- we prefer our explicit version, though it should be the same -->
-                    <groupId>com.ovopark</groupId>
-                    <artifactId>shopweb-core-common</artifactId>
-                </exclusion>
                 <exclusion>
-                    <artifactId>fastjson</artifactId>
-                    <groupId>com.alibaba</groupId>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

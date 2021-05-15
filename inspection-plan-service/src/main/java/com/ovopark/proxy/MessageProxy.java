@@ -11,7 +11,7 @@ import com.ovopark.model.resp.JsonNewResult;
 import com.ovopark.po.Messages;
 import com.ovopark.po.TaskMessage;
 import com.ovopark.service.MessageService;
-import com.ovopark.utils.DateUtils;
+import com.ovopark.utils.DateUtil;
 import com.ovopark.utils.HttpUtils;
 import com.ovopark.utils.OkHttp3Util;
 import okhttp3.Call;
@@ -125,7 +125,7 @@ public class MessageProxy {
      */
     private void sendWebSocket(String content, Integer userId, Integer targetUserId, Integer enterpriseId, Integer messageType, Integer type, Integer relatedId, String objectType) {
         Date now = new Date();
-        String nowStr = DateUtils.format(now);
+        String nowStr = DateUtil.format(now);
 //        String objectType = ConstantsUtil.WebSocket.STORE_PLAN_TYPE;
         String category = MessageConstant.INSPECTION_PLAN_CATEGORY;
         //webSocket
