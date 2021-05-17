@@ -129,15 +129,6 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         //更新定时任务id
         inspectionTaskMapper.updateJobIdById(jobId,task.getId());
-        //日志处理
-        String content = String.format(LogConstant.CREATE, user.getUserName());
-
-        InspectionOperatorLog log  = new InspectionOperatorLog(groupId,task.getId(),user.getId(),user.getUserName(),content);
-
-        //赋值公共属性
-        EntityBase.setCreateParams(log, user);
-
-        inspectionOperatorLogMapper.insertSelective(log);
         //操作日志
         insertLog( user, task.getId(), LogConstant.CREATE,user.getUserName());
 
