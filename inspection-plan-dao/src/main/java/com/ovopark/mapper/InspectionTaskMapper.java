@@ -39,4 +39,8 @@ public interface InspectionTaskMapper {
                                             @Param("operatorName")String operatorName, @Param("status")Integer status, @Param("auditName")String auditName,
                                             @Param("startTime")String startTime, @Param("endTime")String endTime, @Param("expression")String expression,
                                             @Param("percent") BigDecimal completePercent, @Param("list")List<Integer> taskIdList);
+
+    List<InspectionTask> selectTaskByIdList(@Param("list") List<Integer> taskIdList, @Param("groupId") Integer groupId);
+
+    void deleteByIdList(@Param("list") List<Integer> taskIdList,@Param("groupId")Integer groupId);
 }

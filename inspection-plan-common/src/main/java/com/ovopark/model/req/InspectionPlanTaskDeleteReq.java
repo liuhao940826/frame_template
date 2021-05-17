@@ -1,6 +1,7 @@
 package com.ovopark.model.req;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Classname InspectionPlanTaskDeleteReq
@@ -12,11 +13,21 @@ public class InspectionPlanTaskDeleteReq implements Serializable {
 
     private Integer id;
 
+    private List<Integer> idList;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public List<Integer> getIdList() {
+        return idList;
+    }
+
+    public void setIdList(List<Integer> idList) {
+        this.idList = idList;
     }
 }

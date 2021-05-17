@@ -37,4 +37,6 @@ public interface InspectionTaskService {
     JsonNewResult<InspectionPlanTaskWebExpandListResp> webExpandList(InspectionPlanWebExpandReq req, Users user);
 
     JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(InspectionPlanTaskWebListReq req, Users user);
+
+    JsonNewResult<Void> batchDelete(InspectionPlanTaskDeleteReq req, Users user);
 }

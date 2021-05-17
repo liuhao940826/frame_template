@@ -461,6 +461,10 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //这是个大变量
         if(CollectionUtils.isEmpty(req.getTagIdList())){
             taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
+
+            if(CollectionUtils.isEmpty(taskIdList)){
+                return JsonNewResult.success(new Page<InspectionPlanTaskAppListResp>());
+            }
         }
 
         //任务
@@ -576,8 +580,13 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         List<Integer> taskIdList = new ArrayList<>();
 
         //这是个大变量
+        //这是个大变量
         if(CollectionUtils.isEmpty(req.getTagIdList())){
             taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
+
+            if(CollectionUtils.isEmpty(taskIdList)){
+                return JsonNewResult.success(new Page<InspectionPlanTaskWebListResp>());
+            }
         }
 
         //任务
@@ -884,11 +893,44 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionTaskExpandMapper.deleteByTaskIdWithOutExpandList(taskId,new ArrayList<>());
 
         inspectionDeptTagMapper.deleteByTaskIdWithOutDeptIdList(taskId,new ArrayList<>());
-        //暂留回滚逻辑
-        xxlJobProxy.stopJob(jobId);
+        //
+        Date now = new Date();
+
+        if(now.before(task.getEndTime())){
+            //暂留回滚逻辑
+            xxlJobProxy.stopJob(jobId);
+        }
+
 
         return JsonNewResult.success();
 
+    }
+
+
+    @Override
+    public JsonNewResult<Void> batchDelete(InspectionPlanTaskDeleteReq req, Users user) {
+
+        List<Integer> taskIdList = req.getIdList();
+
+        List<InspectionTask> taskList =inspectionTaskMapper.selectTaskByIdList(taskIdList,user.getGroupId());
+
+        Date now = new Date();
+        //任务id
+        List<Integer> jobIdList = taskList.stream().filter(t1->now.before(t1.getEndTime())).map(InspectionTask::getJobId).collect(Collectors.toList());
+
+        inspectionTaskMapper.deleteByIdList(taskIdList,user.getGroupId());
+
+        inspectionTaskExpandMapper.deleteByTaskIdListWithOutExpandList(taskIdList,new ArrayList<>(),user.getGroupId());
+
+        inspectionDeptTagMapper.deleteByTaskIdListWithOutDeptIdList(taskIdList,new ArrayList<>(),user.getGroupId());
+
+
+        for (Integer jobId : jobIdList) {
+            //暂留回滚逻辑
+            xxlJobProxy.stopJob(jobId);
+        }
+
+        return JsonNewResult.success();
     }
 
     /**

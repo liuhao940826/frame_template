@@ -140,6 +140,24 @@ public class InspectionTaskController {
         return inspectionTaskService.delete(req,user);
     }
 
+
+
+    @RequestMapping(value="/batchDelete")
+    @ResponseBody
+    public JsonNewResult<Void> batchDelete(@RequestBody InspectionPlanTaskDeleteReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(CollectionUtils.isEmpty(req.getIdList())  , ResultCode.PARAM_ERROR_NAME,"idList")
+                .isValidThrowException();
+
+        return inspectionTaskService.batchDelete(req,user);
+    }
+
+
+
     @RequestMapping(value="/urged")
     @ResponseBody
     public JsonNewResult<Void> urged(@RequestBody InspectionPlanTaskUrgedReq req) {

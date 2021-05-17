@@ -67,6 +67,25 @@
     </if>
   </update>
   
+  <update id="deleteByTaskIdListWithOutDeptIdList">
+    update is_inspection_dept_tag set is_deleted = 1 where group_id=#{groupId} and is_deleted=0
+    <if test="list != null and list.size>0">
+      AND dept_id not IN (
+      <foreach collection="list" item="deptId" separator=",">
+        #{deptId}
+      </foreach>
+      )
+    </if>
+    <if test="taskIdList != null and list.size>0">
+      AND task_id  IN (
+      <foreach collection="taskIdList" item="taskId" separator=",">
+        #{taskId}
+      </foreach>
+      )
+    </if>
+  </update>
+  
+  
   <select id="selectTaskIdByGroupIdAndTagIdList" resultType="java.lang.Integer">
     select distinct(task_id) from is_inspection_dept_tag where group_id=#{groupId}
     <if test="list != null and list.size>0">

@@ -4,6 +4,7 @@ import com.ovopark.model.page.Page;
 import com.ovopark.po.InspectionTaskExpand;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,4 +28,5 @@ public interface InspectionTaskExpandMapper {
 
     int updateStatusById(@Param("id") Integer id, @Param("status") Integer status);
 
+    int deleteByTaskIdListWithOutExpandList(@Param("taskIdList")List<Integer> taskIdList, @Param("expandList") List<Integer> withOutExpandId,@Param("groupId") Integer groupId);
 }
