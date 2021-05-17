@@ -26,8 +26,8 @@ public class LogConstant {
 
 
     //巡检集合消息文案
-    public static String PASS ="%审核通过";
+    public static String PASS ="%s审核通过";
 
     //巡检集合消息文案
-    public static String REFUSE ="%驳回了任务";
+    public static String REFUSE ="%s驳回了任务";
 }

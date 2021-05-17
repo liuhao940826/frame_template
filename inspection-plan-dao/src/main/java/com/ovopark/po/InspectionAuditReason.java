@@ -19,7 +19,7 @@ public class InspectionAuditReason implements Serializable {
 
     private Integer status;
 
-    private String reason;
+    private String reason="";
 
     private Integer createId;
 

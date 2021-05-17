@@ -246,6 +246,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_NULL);
         }
 
+        if(!InspectionTaskStatusEnum.AUDIT.getCode().equals(orgTask.getStatus())){
+            throw new SysErrorException(ResultCode.INSPECTION_PLAN_TASK_WAIT_STATUS);
+        }
+
+
         Integer status = req.getStatus();
 
         Date audtiTime = new Date();

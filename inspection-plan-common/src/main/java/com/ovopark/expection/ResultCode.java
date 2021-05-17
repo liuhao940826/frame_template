@@ -50,6 +50,7 @@ public class ResultCode {
 
     public static ResultCodeInfo INSPECTION_PLAN_TASK_NULL = new ResultCodeInfo(200001, "INSPECTION_PLAN_TASK_NULL", "巡检计划不存在");
     public static ResultCodeInfo INSPECTION_PLAN_TASK_UPDATE_TIMES_OVER = new ResultCodeInfo(200002, "INSPECTION_PLAN_TASK_UPDATE_TIMES_OVER", "巡检计划更次次数过多");
+    public static ResultCodeInfo INSPECTION_PLAN_TASK_WAIT_STATUS = new ResultCodeInfo(200003, "INSPECTION_PLAN_TASK_WAIT_STATUS", "巡检计划不是待审核状态");
 
 
 

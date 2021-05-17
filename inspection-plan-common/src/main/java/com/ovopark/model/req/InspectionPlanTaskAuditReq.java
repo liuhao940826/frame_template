@@ -12,7 +12,7 @@ public class InspectionPlanTaskAuditReq implements Serializable {
 
     private Integer id;
 
-    private String  reason;
+    private String  reason="";
 
     private Integer status;
 
@@ -30,7 +30,7 @@ public class InspectionPlanTaskAuditReq implements Serializable {
     }
 
     public void setReason(String reason) {
-        this.reason = reason;
+            this.reason = reason;
     }
 
     public Integer getStatus() {
