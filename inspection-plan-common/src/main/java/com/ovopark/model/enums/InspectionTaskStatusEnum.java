@@ -8,7 +8,7 @@ public enum InspectionTaskStatusEnum {
     PASS(3,"审核通过"),
     INSPECT(4,"巡店中"),
     FINISH(5,"已完成"),
-    EXPIRE(5,"已过期")
+    EXPIRE(6,"已过期")
     ;
 
     private Integer code;

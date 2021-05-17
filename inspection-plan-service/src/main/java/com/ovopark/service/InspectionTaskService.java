@@ -5,6 +5,8 @@ import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
 import com.ovopark.model.resp.*;
 
+import java.util.List;
+
 /**
  * @Classname InspectionTask
  * @Description TODO
@@ -39,4 +41,6 @@ public interface InspectionTaskService {
     JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(InspectionPlanTaskWebListReq req, Users user);
 
     JsonNewResult<Void> batchDelete(InspectionPlanTaskDeleteReq req, Users user);
+
+    JsonNewResult<List<InspectionPlanTaskAppLogListResp>> appLogList(InspectionPlanTaskAppLogListReq req, Users user);
 }

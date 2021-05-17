@@ -669,6 +669,23 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //手动gc
         System.gc();
 
+        List<InspectionPlanTaskAppLogListResp> logResult = new ArrayList<>();
+
+        Map<Integer, List<InspectionPlanTaskAppLogListResp>> logMap = new HashMap<>();
+
+        List<InspectionOperatorLog>  logList =inspectionOperatorLogMapper.selectLogListByGroupAndTaskIdList(taskIdList,groupId);
+
+        if(!CollectionUtils.isEmpty(logList)){
+            logResult= ClazzConverterUtils.converterClass(logList, InspectionPlanTaskAppLogListResp.class);
+
+            logMap = logResult.stream().collect(Collectors.toMap(InspectionPlanTaskAppLogListResp::getTaskId, value -> Lists.newArrayList(value),
+                    (List<InspectionPlanTaskAppLogListResp> newValueList, List<InspectionPlanTaskAppLogListResp> oldValueList) -> {
+                        oldValueList.addAll(newValueList);
+                        return oldValueList;
+                    }));
+        }
+
+
         for (InspectionPlanTaskWebListResp resp : result) {
             //处理时间
             resp.setEndTimeStr(DateUtil.getDateStr(resp.getEndTime(), DateUtil.FORMAT_TIME));
@@ -692,6 +709,8 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             }
             //设置标签集合
             resp.setTagList(eachTaskTagList);
+            //设置日志
+            resp.setLogList(logMap.get(resp.getId()));
         }
 
         pageResult.setContent(result);
@@ -716,11 +735,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         InspectionPlanTaskDetailResp resp = ClazzConverterUtils.converterClass(task, InspectionPlanTaskDetailResp.class);
 
         //判断是否是执行人或者审核人
-        if(task.getOperatorId().equals(user.getId())){
+        if(task.getOperatorId().equals(user.getId())  && Arrays.asList(InspectionTaskStatusEnum.PASS.getCode(),InspectionTaskStatusEnum.INSPECT.getCode()).contains(task.getStatus())){
             resp.setIsOperator(DefaultEnum.DEFAULT_TRUE.getCode());
         }
 
-        if(task.getAuditId().equals(user.getId())){
+        if(task.getAuditId().equals(user.getId()) && InspectionTaskStatusEnum.AUDIT.getCode().equals(task.getStatus())){
             resp.setIsAudit(DefaultEnum.DEFAULT_TRUE.getCode());
         }
 
@@ -931,6 +950,29 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         return JsonNewResult.success();
+    }
+
+
+    @Override
+    public JsonNewResult<List<InspectionPlanTaskAppLogListResp>> appLogList(InspectionPlanTaskAppLogListReq req, Users user) {
+
+        Integer groupId = user.getGroupId();
+
+        Integer taskId = req.getTaskId();
+
+        List<Integer> taskIdList = Arrays.asList(taskId);
+
+        List<InspectionPlanTaskAppLogListResp> result = new ArrayList<>();
+
+        List<InspectionOperatorLog>  logList =inspectionOperatorLogMapper.selectLogListByGroupAndTaskIdList(taskIdList,groupId);
+
+        if(CollectionUtils.isEmpty(logList)){
+            return JsonNewResult.success(result);
+        }
+
+        result= ClazzConverterUtils.converterClass(logList, InspectionPlanTaskAppLogListResp.class);
+
+        return JsonNewResult.success(result);
     }
 
     /**

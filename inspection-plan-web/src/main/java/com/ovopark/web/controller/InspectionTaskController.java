@@ -1,13 +1,18 @@
 package com.ovopark.web.controller;
 
+import com.ovopark.constants.CommonConstants;
 import com.ovopark.context.HttpContext;
 import com.ovopark.expection.ResultCode;
 import com.ovopark.expection.Validation;
+import com.ovopark.model.enums.InpectionPlanWebListTitleEnum;
+import com.ovopark.model.enums.InspectionTaskStatusEnum;
 import com.ovopark.model.login.Users;
 import com.ovopark.model.page.Page;
 import com.ovopark.model.req.*;
 import com.ovopark.model.resp.*;
 import com.ovopark.service.InspectionTaskService;
+import com.ovopark.utils.ExcelUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Classname InspectionTaskController
@@ -46,6 +56,21 @@ public class InspectionTaskController {
         return inspectionTaskService.appList(req,user);
     }
 
+
+    @RequestMapping(value="/app/log/list")
+    @ResponseBody
+    public JsonNewResult<List<InspectionPlanTaskAppLogListResp>> appLog(@RequestBody InspectionPlanTaskAppLogListReq req){
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .isValidThrowException();
+
+        return inspectionTaskService.appLogList(req,user);
+    }
+
+
     @RequestMapping(value="/web/list")
     @ResponseBody
     public JsonNewResult<Page<InspectionPlanTaskWebListResp>> webList(@RequestBody InspectionPlanTaskWebListReq req){
@@ -60,7 +85,97 @@ public class InspectionTaskController {
     }
 
 
+    @RequestMapping(value="/web/export/list")
+    @ResponseBody
+    public JsonNewResult<?> exportWebList(HttpServletResponse response, @RequestBody InspectionPlanTaskWebListReq req){
 
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .isValidThrowException();
+
+        JsonNewResult<Page<InspectionPlanTaskWebListResp>> pageJsonNewResult = inspectionTaskService.webList(req, user);
+
+        Page<InspectionPlanTaskWebListResp> page = pageJsonNewResult.getData().get("data");
+
+        List<String> title = InpectionPlanWebListTitleEnum.getTitle();
+
+        List<List<String>> dataList =assembleRowList(page.getContent());
+
+        JsonNewResult result = new JsonNewResult();
+
+        boolean flag =false;
+        try {
+            flag = ExcelUtils.createWorkBook(response,  null, CommonConstants.TASK_EXCEL_FILE_NAME, title, dataList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(flag){
+            result.setIsError(false);
+            result.setResult(JsonNewResult.RESULT_SUCCESS);
+            return result;
+        }
+
+        result.setIsError(true);
+        result.setResult(JsonNewResult.RESULT_EXCEPTION);
+
+        return result;
+
+
+
+    }
+
+    private List<List<String>> assembleRowList(List<InspectionPlanTaskWebListResp> list) {
+
+        List<List<String>> dataList = new ArrayList();
+
+        for (InspectionPlanTaskWebListResp resp : list) {
+            //行数据
+            List<String> rowData = new ArrayList<>();
+            //名字
+            rowData.add(resp.getName());
+            //操作人
+            rowData.add(resp.getOperatorName());
+            //标签名字
+            List<String> tagNameList = new ArrayList<>();
+
+            for (InspectionPlanTagDetailResp inspectionPlanTagDetailResp : resp.getTagList()) {
+                tagNameList.add(inspectionPlanTagDetailResp.getTagName());
+            }
+            //标签名字
+            rowData.add(StringUtils.join(tagNameList,","));
+
+            //门店数量
+            rowData.add(String.valueOf(resp.getDeptNum()));
+            //开始时间
+            rowData.add(resp.getStartTimeStr());
+            //结束时间
+            rowData.add(resp.getEndTimeStr());
+
+            InspectionTaskStatusEnum statusEnum = InspectionTaskStatusEnum.format(resp.getStatus());
+            //状态
+            rowData.add(statusEnum==null?"":statusEnum.getDesc());
+            //完成度
+            rowData.add(resp.getCompletePercent().toString());
+            //备注
+            rowData.add(resp.getRemark());
+            //历史记录
+            List<String> logContentList = new ArrayList<>();
+
+            for (InspectionPlanTaskAppLogListResp logListResp : resp.getLogList()) {
+                logContentList.add(logListResp.getContent());
+            }
+
+            String logContentStr = String.join("\n", logContentList);
+
+            rowData.add(logContentStr);
+
+            dataList.add(rowData);
+        }
+        return dataList;
+    }
 
 
     @RequestMapping(value="/add")

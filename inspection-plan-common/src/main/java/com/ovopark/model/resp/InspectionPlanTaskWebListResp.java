@@ -50,6 +50,8 @@ public class InspectionPlanTaskWebListResp implements Serializable {
 
     private List<InspectionPlanTagDetailResp> tagList = new ArrayList<>();
 
+    private List<InspectionPlanTaskAppLogListResp> logList = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
@@ -192,5 +194,13 @@ public class InspectionPlanTaskWebListResp implements Serializable {
 
     public void setDeptNum(Integer deptNum) {
         this.deptNum = deptNum;
+    }
+
+    public List<InspectionPlanTaskAppLogListResp> getLogList() {
+        return logList;
+    }
+
+    public void setLogList(List<InspectionPlanTaskAppLogListResp> logList) {
+        this.logList = logList;
     }
 }

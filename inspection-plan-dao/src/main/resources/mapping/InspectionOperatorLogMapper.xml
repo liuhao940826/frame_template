@@ -95,6 +95,18 @@
       </if>
     </trim>
   </insert>
-
+  
+  <select id="selectLogListByGroupAndTaskIdList" resultType="com.ovopark.po.InspectionOperatorLog">
+        select * from is_inspection_operator_log where group_id = #{groupId} and is_deleted =0
+    <if test="list != null and list.size>0">
+      AND task_id IN (
+      <foreach collection="list" item="taskId" separator=",">
+        #{taskId}
+      </foreach>
+      )
+    </if>
+  </select>
+  
+  
 
 </mapper>
