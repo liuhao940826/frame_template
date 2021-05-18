@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class InspectionPlanExpandDetailResp implements Serializable {
 
+    private Integer id;
+
     private Integer deptId;
 
     private String deptName;
@@ -62,5 +64,13 @@ public class InspectionPlanExpandDetailResp implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
