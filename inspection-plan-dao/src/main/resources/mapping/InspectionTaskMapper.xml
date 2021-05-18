@@ -193,6 +193,9 @@
       <if test="updateTimes != null">
         update_times = #{updateTimes,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
       <if test="completeExpandCount != null">
         complete_expand_count =#{completeExpandCount,jdbcType=INTEGER},
       </if>
