@@ -665,21 +665,21 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //手动gc
         System.gc();
 
-        List<InspectionPlanTaskAppLogListResp> logResult = new ArrayList<>();
-
-        Map<Integer, List<InspectionPlanTaskAppLogListResp>> logMap = new HashMap<>();
-
-        List<InspectionOperatorLog>  logList =inspectionOperatorLogMapper.selectLogListByGroupAndTaskIdList(taskIdList,groupId);
-
-        if(!CollectionUtils.isEmpty(logList)){
-            logResult= ClazzConverterUtils.converterClass(logList, InspectionPlanTaskAppLogListResp.class);
-
-            logMap = logResult.stream().collect(Collectors.toMap(InspectionPlanTaskAppLogListResp::getTaskId, value -> Lists.newArrayList(value),
-                    (List<InspectionPlanTaskAppLogListResp> newValueList, List<InspectionPlanTaskAppLogListResp> oldValueList) -> {
-                        oldValueList.addAll(newValueList);
-                        return oldValueList;
-                    }));
-        }
+//        List<InspectionPlanTaskAppLogListResp> logResult = new ArrayList<>();
+//
+//        Map<Integer, List<InspectionPlanTaskAppLogListResp>> logMap = new HashMap<>();
+//
+//        List<InspectionOperatorLog>  logList =inspectionOperatorLogMapper.selectLogListByGroupAndTaskIdList(taskIdList,groupId);
+//
+//        if(!CollectionUtils.isEmpty(logList)){
+//            logResult= ClazzConverterUtils.converterClass(logList, InspectionPlanTaskAppLogListResp.class);
+//
+//            logMap = logResult.stream().collect(Collectors.toMap(InspectionPlanTaskAppLogListResp::getTaskId, value -> Lists.newArrayList(value),
+//                    (List<InspectionPlanTaskAppLogListResp> newValueList, List<InspectionPlanTaskAppLogListResp> oldValueList) -> {
+//                        oldValueList.addAll(newValueList);
+//                        return oldValueList;
+//                    }));
+//        }
 
 
         for (InspectionPlanTaskWebListResp resp : result) {
@@ -706,7 +706,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             //设置标签集合
             resp.setTagList(eachTaskTagList);
             //设置日志
-            resp.setLogList(logMap.get(resp.getId()));
+//            resp.setLogList(logMap.get(resp.getId()));
         }
 
         pageResult.setContent(result);
