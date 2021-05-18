@@ -27,6 +27,8 @@ public class InspectionPlanTaskAddReq implements Serializable {
 
     private List<InspectionPlanExpandAddReq> inspectionExpandList =  new ArrayList<>();
 
+    private Integer tokenType;
+
     public Date getStartTime() {
         return startTime;
     }
@@ -81,5 +83,13 @@ public class InspectionPlanTaskAddReq implements Serializable {
 
     public void setInspectionExpandList(List<InspectionPlanExpandAddReq> inspectionExpandList) {
         this.inspectionExpandList = inspectionExpandList;
+    }
+
+    public Integer getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(Integer tokenType) {
+        this.tokenType = tokenType;
     }
 }

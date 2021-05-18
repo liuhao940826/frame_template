@@ -16,6 +16,8 @@ public class InspectionPlanTaskAuditReq implements Serializable {
 
     private Integer status;
 
+    private Integer tokenType;
+
     public Integer getId() {
         return id;
     }
@@ -39,5 +41,14 @@ public class InspectionPlanTaskAuditReq implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+
+    public Integer getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(Integer tokenType) {
+        this.tokenType = tokenType;
     }
 }

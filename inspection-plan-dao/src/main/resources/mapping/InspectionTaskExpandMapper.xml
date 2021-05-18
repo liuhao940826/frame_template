@@ -91,6 +91,17 @@
     </if>
   </select>
   
+  <select id="queryExpandListCountByTaskId" resultType="java.lang.Integer">
+    select count(1) from is_inspection_task_expand where is_deleted=0
+    <if test="taskId != null">
+      and task_id =#{taskId}
+    </if>
+    <if test="status != null">
+      and status =#{status}
+    </if>
+  </select>
+  
+  
   <update id="updateStatusById">
     update is_inspection_task_expand set status = #{status} where id =#{id} and is_deleted=0
   </update>

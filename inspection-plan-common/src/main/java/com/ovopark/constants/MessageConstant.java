@@ -37,13 +37,19 @@ public class MessageConstant {
 
 
     //巡检集合消息文案
-    public static String URGED_AUDIT ="您有一个巡检计划任务,需要审核 %s";
+    public static String URGED_AUDIT ="%s提醒您审批他的“%s”巡店计划";
 
 
+    public static String ADD_MESSAGE ="%s发起的“%s”巡店计划，需要您进行审核";
+
+    public static String REFUSE_MESSAGE ="您的“%s”巡店计划被驳回，请修改后再次提交。";
+
+    public static String PASS_MESSAGE ="您的“%s”巡店计划审核通过";
 
 
+    public static String DELETE_MESSAGE ="%s删除了“%s”巡店计划";
 
-
+    public static String COMPELETE_MESSAGE ="“%s”巡店计划已完成，请查看检查结果";
 
     public MessageConstant() {
     }

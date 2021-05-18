@@ -43,4 +43,6 @@ public interface InspectionTaskService {
     JsonNewResult<Void> batchDelete(InspectionPlanTaskDeleteReq req, Users user);
 
     JsonNewResult<List<InspectionPlanTaskAppLogListResp>> appLogList(InspectionPlanTaskAppLogListReq req, Users user);
+
+    JsonNewResult<InspectionPlanTaskExpandListCountResp> expandCountList(InspectionPlanAppExpandReq req, Users user);
 }

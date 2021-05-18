@@ -65,9 +65,9 @@ public class MessageProxy {
      */
     public void sendWebSocketAndJpush(Integer targetUserId, Integer userId, String title, String message, Integer groupId,
                                        Integer type, Integer relatedId, InspectionPlanMainTypeEnum mainType,
-                                       Integer tokenType) {
-        JpushAndWebSocket(targetUserId, title, message, type, relatedId, mainType.getDesc(),tokenType);
-        sendWebSocket(message, userId, targetUserId, groupId, MessageConstant.TYPE_MSG_RECEIVE, type, relatedId, mainType.getDesc());
+                                       Integer tokenType,Integer jumpType) {
+        JpushAndWebSocket(targetUserId, title, message, type, relatedId, mainType.getDesc(),tokenType,jumpType);
+        sendWebSocket(message, userId, targetUserId, groupId, MessageConstant.TYPE_MSG_RECEIVE, type, relatedId, mainType.getDesc(),jumpType);
 
     }
 
@@ -78,7 +78,7 @@ public class MessageProxy {
      * @param title
      * @param message
      */
-    private void JpushAndWebSocket(Integer userId, String title, String message, Integer type, Integer relatedId, String objectType, Integer tokenType) {
+    private void JpushAndWebSocket(Integer userId, String title, String message, Integer type, Integer relatedId, String objectType, Integer tokenType,Integer jumpType) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("title", title);
@@ -88,6 +88,7 @@ public class MessageProxy {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("taskId", relatedId);
         jsonMap.put("objectType", objectType);
+        jsonMap.put("jumpType",jumpType);
         map.put("taskJson", jsonMap);
         map.put("reason", message);
         logger.info("极光推送请求参数数据:" + JSON.toJSONString(map) + "tokenType" + tokenType + "token值" + HttpContext.getContextInfoToken());
@@ -123,7 +124,8 @@ public class MessageProxy {
      * @param enterpriseId
      * @param messageType
      */
-    private void sendWebSocket(String content, Integer userId, Integer targetUserId, Integer enterpriseId, Integer messageType, Integer type, Integer relatedId, String objectType) {
+    private void sendWebSocket(String content, Integer userId, Integer targetUserId, Integer enterpriseId, Integer messageType,
+                               Integer type, Integer relatedId, String objectType,Integer jumpType) {
         Date now = new Date();
         String nowStr = DateUtil.format(now);
 //        String objectType = ConstantsUtil.WebSocket.STORE_PLAN_TYPE;
@@ -142,6 +144,8 @@ public class MessageProxy {
         msg.setEnterpriseId(enterpriseId);
         msg.setSrcUserId(userId);
         msg.setTargetUserId(targetUserId);
+        //为了兼容老的数据库结构但是区分跳转类型放在objectId里面
+        msg.setObjectId(jumpType);
         msg.setSubId(relatedId);
         msg.setObjectType(objectType);
         msg.setCategory(category);

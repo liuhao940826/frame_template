@@ -127,6 +127,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //截止时间回调处理
         Integer jobId = xxlJobProxy.sendCronToJob(ProxyConstants.XXL_JOB_HANDLE_TYPE_INSPECTION_PLAN, JSON.toJSONString(param), cron, user.getId(), String.format(ProxyConstants.REMARK, task.getName()));
 
+        //发送消息
+        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.ADD_MESSAGE,user.getUserName(),task.getName()),user.getGroupId(),
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.AUDIT.getCode());
+
+
         //更新定时任务id
         inspectionTaskMapper.updateJobIdById(jobId,task.getId());
         //操作日志
@@ -266,9 +271,17 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             //操作日志 通过
             insertLog(user, orgTask.getId(), LogConstant.PASS,user.getUserName());
 
+            //发送消息
+            messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.PASS_MESSAGE,orgTask.getName()),user.getGroupId(),
+                    MessageConstant.INSPECTION_JPUSH_TYPE,orgTask.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.DETAIL.getCode());
+
         }else if(InspectionTaskStatusEnum.REFUSE.getCode().equals(status)) {
             //操作日志 驳回
             insertLog(user, orgTask.getId(), LogConstant.REFUSE,user.getUserName());
+
+            //发送消息
+            messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.REFUSE_MESSAGE,orgTask.getName()),user.getGroupId(),
+                    MessageConstant.INSPECTION_JPUSH_TYPE,orgTask.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.DETAIL.getCode());
         }
 
         return JsonNewResult.success();
@@ -329,6 +342,10 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             //操作日志
             insertLog(user, taskId, LogConstant.COMPELATE,orgTask.getName());
 
+            //发送消息
+            messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.COMPELETE_MESSAGE,orgTask.getName()),user.getGroupId(),
+                    MessageConstant.INSPECTION_JPUSH_TYPE,orgTask.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.APP.getCode());
+
         }
 
         return JsonNewResult.success();
@@ -381,6 +398,18 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         pageResult.setContent(result);
 
         return JsonNewResult.success(pageResult);
+    }
+
+
+    @Override
+    public JsonNewResult<InspectionPlanTaskExpandListCountResp> expandCountList(InspectionPlanAppExpandReq req, Users user) {
+
+        //我审核
+        Integer waitCount = inspectionTaskExpandMapper.queryExpandListCountByTaskId(req.getId(),InspectionTaskExpandStatusEnum.WAIT.getCode());
+
+        Integer passCount = inspectionTaskExpandMapper.queryExpandListCountByTaskId(req.getId(),InspectionTaskExpandStatusEnum.PASS.getCode());
+
+        return JsonNewResult.success(new InspectionPlanTaskExpandListCountResp(waitCount,passCount));
     }
 
     /**
@@ -952,6 +981,10 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             xxlJobProxy.stopJob(jobId);
         }
 
+        //发送消息
+        messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,task.getOperatorName(),task.getName()),user.getGroupId(),
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.LIST.getCode());
+
 
         return JsonNewResult.success();
 
@@ -1033,8 +1066,8 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         insertLog(user, task.getId(), LogConstant.URGED,user.getUserName());
 
         //发送消息
-        messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.URGED_AUDIT,task.getName()),user.getGroupId(),
-                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType());
+        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.URGED_AUDIT,task.getOperatorName(),task.getName()),user.getGroupId(),
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.AUDIT.getCode());
 
         return JsonNewResult.success();
 

@@ -15,6 +15,8 @@ public class InspectionPlanTaskDeleteReq implements Serializable {
 
     private List<Integer> idList;
 
+    private Integer tokenType;
+
     public Integer getId() {
         return id;
     }
@@ -29,5 +31,13 @@ public class InspectionPlanTaskDeleteReq implements Serializable {
 
     public void setIdList(List<Integer> idList) {
         this.idList = idList;
+    }
+
+    public Integer getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(Integer tokenType) {
+        this.tokenType = tokenType;
     }
 }

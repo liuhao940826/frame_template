@@ -222,6 +222,20 @@ public class InspectionTaskController {
         return inspectionTaskService.expandList(req,user);
     }
 
+    @RequestMapping(value="/expandList/count")
+    @ResponseBody
+    public JsonNewResult<InspectionPlanTaskExpandListCountResp> expandCountList(@RequestBody InspectionPlanAppExpandReq req) {
+
+        Users user = HttpContext.getContextInfoUser();
+
+        Validation.newValidation()
+                .addError(null == user, ResultCode.RESULT_INVALID_TOKEN)
+                .addError(req.getId()==null  , ResultCode.PARAM_ERROR_NAME,"id")
+                .isValidThrowException();
+
+        return inspectionTaskService.expandCountList(req,user);
+    }
+
 
 
 
