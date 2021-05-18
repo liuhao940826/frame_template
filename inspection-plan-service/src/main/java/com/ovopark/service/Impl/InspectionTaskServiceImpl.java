@@ -768,7 +768,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
         //执行人 待审核状态 催办
         if(task.getOperatorId().equals(user.getId())  && InspectionTaskStatusEnum.AUDIT.getCode().equals(task.getStatus())){
-            resp.setIsOperator(DefaultEnum.DEFAULT_TRUE.getCode());
+            resp.setIsUrged(DefaultEnum.DEFAULT_TRUE.getCode());
         }
         //审核人待审核状态审核
         if(task.getAuditId().equals(user.getId()) && InspectionTaskStatusEnum.AUDIT.getCode().equals(task.getStatus())){
