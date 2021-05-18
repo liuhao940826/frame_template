@@ -576,7 +576,6 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         List<Integer> taskIdList = new ArrayList<>();
 
         //这是个大变量
-        //这是个大变量
         if(CollectionUtils.isEmpty(req.getTagIdList())){
             taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
 
@@ -585,9 +584,38 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             }
         }
 
+        //自定义排序处理
+        StringBuilder sqlDescBuilder = new StringBuilder();
+
+        if (!CollectionUtils.isEmpty(req.getOrderList())) {
+
+            List<StorePlanDescReq> orderList = req.getOrderList();
+
+            for (int i = 0; i < orderList.size(); i++) {
+
+                StorePlanDescReq descOrder = orderList.get(i);
+
+                if (descOrder.getDescColumn() != null && descOrder.getDescOrder() != null) {
+
+                    String columnExpression = StorePlanOrderWebColumnEnum.format(descOrder.getDescColumn()).getExpression();
+
+                    String orderExpression = StorePlanOrderDescEnum.format(descOrder.getDescOrder()).getDesc();
+
+                    sqlDescBuilder.append(columnExpression).append(orderExpression).append(",");
+                }
+            }
+
+            sqlDescBuilder.append(StorePlanOrderWebColumnEnum.ID.getExpression()).append(StorePlanOrderDescEnum.DESC.getDesc());
+        } else {
+            sqlDescBuilder.append(StorePlanOrderWebColumnEnum.WEB_DEFAULT.getExpression());
+        }
+
+        String sqlOrderExpression = sqlDescBuilder.toString();
+
         //任务
         List<InspectionTask> list = inspectionTaskMapper.queryWebListByPage(pageTemp,groupId ,req.getName(), req.getOperatorName(), req.getStatus(),
-                req.getAuditName(), req.getStartTime(), req.getEndTime(), InspectionPlanExpressionEnum.formatOrNull(req.getCompletePercentExpression()).getExpression(),req.getCompletePercent(),taskIdList);
+                req.getAuditName(), req.getStartTime(), req.getEndTime(), InspectionPlanExpressionEnum.formatOrNull(req.getCompletePercentExpression()).getExpression(),
+                req.getCompletePercent(),taskIdList,sqlOrderExpression);
 
         //手动gc 释放大变量
         System.gc();

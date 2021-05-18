@@ -34,6 +34,8 @@ public class InspectionPlanTaskWebListReq implements Serializable {
     private String endTime;
 
     private List<Integer> tagIdList = new ArrayList<>();
+    //排序列表
+    private List<StorePlanDescReq> orderList = new ArrayList<>();
 
     public Integer getPageNo() {
         return pageNo;
@@ -122,5 +124,13 @@ public class InspectionPlanTaskWebListReq implements Serializable {
 
     public void setTagIdList(List<Integer> tagIdList) {
         this.tagIdList = tagIdList;
+    }
+
+    public List<StorePlanDescReq> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<StorePlanDescReq> orderList) {
+        this.orderList = orderList;
     }
 }

@@ -38,7 +38,8 @@ public interface InspectionTaskMapper {
     List<InspectionTask> queryWebListByPage(@Param("page")Page<InspectionTask> pageTemp, @Param("groupId")Integer groupId,@Param("name")String name,
                                             @Param("operatorName")String operatorName, @Param("status")Integer status, @Param("auditName")String auditName,
                                             @Param("startTime")String startTime, @Param("endTime")String endTime, @Param("expression")String expression,
-                                            @Param("percent") BigDecimal completePercent, @Param("list")List<Integer> taskIdList);
+                                            @Param("percent") BigDecimal completePercent, @Param("list")List<Integer> taskIdList,
+                                            @Param("sqlOrderExpression")String sqlOrderExpression);
 
     List<InspectionTask> selectTaskByIdList(@Param("list") List<Integer> taskIdList, @Param("groupId") Integer groupId);
 
