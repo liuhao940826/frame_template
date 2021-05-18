@@ -972,6 +972,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         result= ClazzConverterUtils.converterClass(logList, InspectionPlanTaskAppLogListResp.class);
 
+        for (InspectionPlanTaskAppLogListResp resp : result) {
+            resp.setCreateTimeStr(DateUtil.format(resp.getCreateTime(),DateUtil.FORMAT_SHORT));
+        }
+        
+
         return JsonNewResult.success(result);
     }
 

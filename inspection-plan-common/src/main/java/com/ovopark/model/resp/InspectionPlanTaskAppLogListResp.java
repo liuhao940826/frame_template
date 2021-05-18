@@ -25,6 +25,10 @@ public class InspectionPlanTaskAppLogListResp implements Serializable {
 
     private String content;
 
+    private Date createTime;
+
+    private String createTimeStr;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +75,21 @@ public class InspectionPlanTaskAppLogListResp implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }
