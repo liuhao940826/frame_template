@@ -37,6 +37,10 @@ public final class CommonConstants {
     public static String TASK_EXCEL_FILE_NAME ="陈列中心-任务报表";
 
 
+
+
+    public static String INSPECTION_RESULT ="本次任务共计划检查%s家门店，已完成%s家，未完成0家";
+
     public static String OK ="ok";
 
 }

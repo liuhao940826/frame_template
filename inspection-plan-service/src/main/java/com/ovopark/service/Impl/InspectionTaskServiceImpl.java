@@ -835,10 +835,21 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
                 tagMap = tagList.stream().collect(Collectors.toMap(InspectionTag::getId, InspectionTag::getName));
 
             }
+
+            Integer undoNum = 0;
+            Integer alreadyDoNum =0;
+
             //明细集合
             for (InspectionPlanExpandDetailResp inspectionPlanExpandDetailResp : expandRespList) {
 
                 Integer deptId = inspectionPlanExpandDetailResp.getDeptId();
+
+                if(InspectionTaskExpandStatusEnum.PASS.getCode().equals(inspectionPlanExpandDetailResp.getStatus())){
+                    alreadyDoNum+=1;
+                }
+                if(InspectionTaskExpandStatusEnum.WAIT.getCode().equals(inspectionPlanExpandDetailResp.getStatus())){
+                    undoNum+=1;
+                }
 
                 //门店名称
                 inspectionPlanExpandDetailResp.setDeptName(deptNameMap.get(deptId));
@@ -859,6 +870,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
                     }
                 }
             }
+
+            String inspectResult = String.format(CommonConstants.INSPECTION_RESULT, alreadyDoNum, undoNum);
+
+            resp.setInspectionResult(inspectResult);
+
         }
         //设置明细
         resp.setInspectionExpandList(expandRespList);
