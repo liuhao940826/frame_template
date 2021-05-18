@@ -37,6 +37,8 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     private Integer isAudit=0;
 
+    private Integer isUrged=0;
+
     private List<InspectionPlanExpandDetailResp> inspectionExpandList =  new ArrayList<>();
 
     public Integer getId() {
@@ -134,5 +136,13 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     public void setUpdateTimes(Integer updateTimes) {
         this.updateTimes = updateTimes;
+    }
+
+    public Integer getIsUrged() {
+        return isUrged;
+    }
+
+    public void setIsUrged(Integer isUrged) {
+        this.isUrged = isUrged;
     }
 }
