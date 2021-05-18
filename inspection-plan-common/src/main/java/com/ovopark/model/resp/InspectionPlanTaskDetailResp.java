@@ -27,6 +27,8 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     private Date endTime;
 
+    private Integer updateTimes;
+
     private String remark;
 
     private Integer status;
@@ -124,5 +126,13 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     public void setIsAudit(Integer isAudit) {
         this.isAudit = isAudit;
+    }
+
+    public Integer getUpdateTimes() {
+        return updateTimes;
+    }
+
+    public void setUpdateTimes(Integer updateTimes) {
+        this.updateTimes = updateTimes;
     }
 }

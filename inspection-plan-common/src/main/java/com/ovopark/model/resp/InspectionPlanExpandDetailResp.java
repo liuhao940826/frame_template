@@ -22,6 +22,8 @@ public class InspectionPlanExpandDetailResp implements Serializable {
 
     private String description;
 
+    private Integer status;
+
     public Integer getDeptId() {
         return deptId;
     }
@@ -52,5 +54,13 @@ public class InspectionPlanExpandDetailResp implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
