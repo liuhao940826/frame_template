@@ -17,7 +17,7 @@ public enum InpectionPlanWebListTitleEnum {
     STATUS(7,"状态"),
     PERCENT(8,"完成进度"),
     REMARK(9,"备注"),
-    LOG(10,"历史记录"),
+//    LOG(10,"历史记录"),
     ;
 
     private Integer code;

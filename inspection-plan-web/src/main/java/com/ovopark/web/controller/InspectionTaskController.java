@@ -162,15 +162,15 @@ public class InspectionTaskController {
             //备注
             rowData.add(resp.getRemark());
             //历史记录
-            List<String> logContentList = new ArrayList<>();
-
-            for (InspectionPlanTaskAppLogListResp logListResp : resp.getLogList()) {
-                logContentList.add(logListResp.getContent());
-            }
-
-            String logContentStr = String.join("\n", logContentList);
-
-            rowData.add(logContentStr);
+//            List<String> logContentList = new ArrayList<>();
+//
+//            for (InspectionPlanTaskAppLogListResp logListResp : resp.getLogList()) {
+//                logContentList.add(logListResp.getContent());
+//            }
+//
+//            String logContentStr = String.join("\n", logContentList);
+//
+//            rowData.add(logContentStr);
 
             dataList.add(rowData);
         }
