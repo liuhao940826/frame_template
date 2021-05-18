@@ -696,13 +696,17 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
             Set<Integer> tagSet = taskTagMap.get(taskId);
 
-            for (Integer tagId : tagSet) {
 
-                String tagName = tagMap.get(tagId);
+            if(!CollectionUtils.isEmpty(tagSet)){
+                for (Integer tagId : tagSet) {
 
-                eachTaskTagList.add(new InspectionPlanTagDetailResp(tagId, tagName));
+                    String tagName = tagMap.get(tagId);
 
+                    eachTaskTagList.add(new InspectionPlanTagDetailResp(tagId, tagName));
+
+                }
             }
+
             //设置标签集合
             resp.setTagList(eachTaskTagList);
             //设置日志
