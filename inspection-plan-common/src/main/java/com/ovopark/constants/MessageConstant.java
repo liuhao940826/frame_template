@@ -12,6 +12,11 @@ public class MessageConstant {
     public static final String INSPECTION_PLAN= "巡检计划";
 
 
+    /**
+     * 计划巡店消息大类
+     */
+    public static final String TYPE_STORE_PLAN_SYSTEM="TYPE_STORE_PLAN_SYSTEM";
+
     public static final String INSPECTION_PLAN_CATEGORY="INSPECTION_PLAN_CATEGORY";
 
     public static final String CLIENT_IOS = "iOS";

@@ -214,7 +214,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         BigDecimal percent = BigDecimalUtils.calculatePercent(orgTask.getCompleteExpandCount(), totalExpandCount,BigDecimalUtils.DEFAULT_SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
 
         //状态回到待审核
-        orgTask.setName(req.getName()).setAuditId(req.getAuditId()).setAuditName(req.getAuditName())
+        orgTask.setUpdateTimes(orgTask.getUpdateTimes()+1).setName(req.getName()).setAuditId(req.getAuditId()).setAuditName(req.getAuditName())
                 .setTotalExpandCount(totalExpandCount).setCompletePercent(percent)
                 .setStartTime(req.getStartTime()).setEndTime(req.getEndTime()).setRemark(req.getRemark())
                 .setStatus(InspectionTaskStatusEnum.AUDIT.getCode());

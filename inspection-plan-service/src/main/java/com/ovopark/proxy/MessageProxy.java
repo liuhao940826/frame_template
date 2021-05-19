@@ -129,7 +129,7 @@ public class MessageProxy {
         Date now = new Date();
         String nowStr = DateUtil.format(now);
 //        String objectType = ConstantsUtil.WebSocket.STORE_PLAN_TYPE;
-        String category = MessageConstant.INSPECTION_PLAN_CATEGORY;
+        String category = MessageConstant.TYPE_STORE_PLAN_SYSTEM;
         //webSocket
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("type", type);
