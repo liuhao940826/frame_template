@@ -111,11 +111,17 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             assembleInspectionTaskExpand(expandReq,task.getId(),user,expandList,targetTagList);
 
         }
+        if(!CollectionUtils.isEmpty(expandList)) {
+            //明细表保存数据
+            inspectionTaskExpandMapper.batchSaveInspectionTaskExpand(expandList);
 
-        //明细表保存数据
-        inspectionTaskExpandMapper.batchSaveInspectionTaskExpand(expandList);
+        }
         //明细标签关联表保存数据
-        inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
+
+        if(!CollectionUtils.isEmpty(targetTagList)){
+            inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
+        }
+
         Date endTime = task.getEndTime();
         //cron表达式 截止日期
         String cron = DateUtil.dateToCron(endTime);
@@ -229,10 +235,15 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         inspectionDeptTagMapper.deleteByTaskIdWithOutDeptIdList(orgTask.getId(),retainDeptList);
 
-        //明细表保存数据
-        inspectionTaskExpandMapper.batchSaveInspectionTaskExpand(expandList);
-        //明细标签关联表保存数据
-        inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
+
+        if(!CollectionUtils.isEmpty(expandList)){
+            //明细表保存数据
+            inspectionTaskExpandMapper.batchSaveInspectionTaskExpand(expandList);
+        }
+        if(!CollectionUtils.isEmpty(targetTagList)) {
+            //明细标签关联表保存数据
+            inspectionDeptTagMapper.batchSaveInspectionDeptTag(targetTagList);
+        }
 
         //操作日志
         insertLog( user, orgTask.getId(), LogConstant.UPDATE,user.getUserName());
