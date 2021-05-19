@@ -349,7 +349,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         if(completeExpandCount.equals(orgTask.getTotalExpandCount())){
             //判断任务完成
-            inspectionTaskMapper.updateStatusById(taskId,InspectionTaskStatusEnum.FINISH.getCode(),null);
+            int isFinish =inspectionTaskMapper.updateStatusById(InspectionTaskStatusEnum.FINISH.getCode(),taskId,null);
             //操作日志
             insertLog(user, taskId, LogConstant.COMPELATE,orgTask.getName());
 
