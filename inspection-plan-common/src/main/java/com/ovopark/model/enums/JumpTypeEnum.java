@@ -3,7 +3,7 @@ package com.ovopark.model.enums;
 
 public enum JumpTypeEnum {
 
-    APP(0,"APP原生页面"),
+    APP(0,"任务结果页面"),
     AUDIT(1,"审核页面"),
     LIST(2,"列表页"),
     DETAIL(3,"详情页"),
