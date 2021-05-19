@@ -964,9 +964,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
                     tagNameList.add(tagName);
                 }
-
-                resultMap.put(expand.getId(),innerResp);
             }
+
+            resultMap.put(expand.getId(),innerResp);
         }
 
         return JsonNewResult.success(new InspectionPlanTaskWebExpandListResp(resultMap));
