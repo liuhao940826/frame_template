@@ -87,7 +87,7 @@
   
   
   <select id="selectTaskIdByGroupIdAndTagIdList" resultType="java.lang.Integer">
-    select distinct(task_id) from is_inspection_dept_tag where group_id=#{groupId}
+    select distinct(task_id) from is_inspection_dept_tag where group_id=#{groupId} and is_deleted=0
     <if test="list != null and list.size>0">
       AND tag_id  IN (
       <foreach collection="list" item="tagId" separator=",">
