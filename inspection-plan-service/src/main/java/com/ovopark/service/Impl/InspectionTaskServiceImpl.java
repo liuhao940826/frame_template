@@ -495,7 +495,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
          List<Integer> taskIdList = new ArrayList<>();
 
         //这是个大变量
-        if(CollectionUtils.isEmpty(req.getTagIdList())){
+        if(!CollectionUtils.isEmpty(req.getTagIdList())){
             taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
 
             if(CollectionUtils.isEmpty(taskIdList)){
@@ -618,7 +618,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         List<Integer> taskIdList = new ArrayList<>();
 
         //这是个大变量
-        if(CollectionUtils.isEmpty(req.getTagIdList())){
+        if(!CollectionUtils.isEmpty(req.getTagIdList())){
             taskIdList = inspectionDeptTagMapper.selectTaskIdByGroupIdAndTagIdList(groupId, req.getTagIdList());
 
             if(CollectionUtils.isEmpty(taskIdList)){
