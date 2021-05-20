@@ -803,9 +803,11 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         List<InspectionTaskExpand> expandList = inspectionTaskExpandMapper.selectExpandListByTaskId(taskId, user.getGroupId());
 
         InspectionPlanTaskDetailResp resp = ClazzConverterUtils.converterClass(task, InspectionPlanTaskDetailResp.class);
+        //可执行的时间判断
+        Date now = new Date();
 
         //判断是否是执行人或者审核人
-        if(task.getOperatorId().equals(user.getId())  && Arrays.asList(InspectionTaskStatusEnum.PASS.getCode(),InspectionTaskStatusEnum.INSPECT.getCode()).contains(task.getStatus())){
+        if(task.getOperatorId().equals(user.getId())  && Arrays.asList(InspectionTaskStatusEnum.PASS.getCode(),InspectionTaskStatusEnum.INSPECT.getCode()).contains(task.getStatus()) && now.after(task.getStartTime())){
             resp.setIsOperator(DefaultEnum.DEFAULT_TRUE.getCode());
         }
         //执行人 待审核状态 催办
