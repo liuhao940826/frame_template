@@ -19,6 +19,10 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     private String name;
 
+    private Integer operatorId;
+
+    private String operatorName;
+
     private Integer auditId;
 
     private String auditName = "";
@@ -154,5 +158,21 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     public void setInspectionResult(String inspectionResult) {
         this.inspectionResult = inspectionResult;
+    }
+
+    public Integer getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 }

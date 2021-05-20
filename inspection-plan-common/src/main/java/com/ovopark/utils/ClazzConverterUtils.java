@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * @author jeecg-boot
- * @version 1.0
- * @description 描述
- * @create 2019-11-25 14:33
+ * @Classname ClazzConverterUtils
+ * @Description 转换类
+ * @Date 2020/7/16 4:49 下午
+ * @Created by liuhao
  */
 public class ClazzConverterUtils {
 
