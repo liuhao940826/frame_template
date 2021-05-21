@@ -507,7 +507,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         //任务
-        List<InspectionTask> list = inspectionTaskMapper.queryAppListByRelateTypeByPage(pageTemp, req.getReleateType(), user.getId(), groupId, req.getName(), req.getStartTime(), req.getEndTime(), taskIdList);
+        List<InspectionTask> list = inspectionTaskMapper.queryAppListByRelateTypeByPage(pageTemp, req.getReleateType(), user.getId(), groupId, req.getName(),req.getStatus(), req.getStartTime(), req.getEndTime(), taskIdList);
         //手动gc 释放大变量
         System.gc();
 

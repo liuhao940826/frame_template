@@ -27,6 +27,8 @@ public class InspectionPlanTaskAppListReq implements Serializable {
 
     private String endTime;
 
+    private Integer status;
+
     private List<Integer> tagIdList = new ArrayList<>();
 
     public String getName() {
@@ -84,5 +86,13 @@ public class InspectionPlanTaskAppListReq implements Serializable {
 
     public void setReleateType(Integer releateType) {
         this.releateType = releateType;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

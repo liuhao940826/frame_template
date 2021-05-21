@@ -30,7 +30,8 @@ public interface InspectionTaskMapper {
 
     List<InspectionTask> queryAppListByRelateTypeByPage(@Param("page")Page<InspectionTask> pageTemp, @Param("releateType")Integer releateType,
                                                               @Param("userId")Integer userId, @Param("groupId")Integer groupId,
-                                                              @Param("name")String name, @Param("startTime")String startTime, @Param("endTime")String endTime,
+                                                              @Param("name")String name,@Param("status")Integer status,
+                                                              @Param("startTime")String startTime, @Param("endTime")String endTime,
                                                               @Param("list") List<Integer> taskIdList);
 
     int updateCompleteExpandCount(@Param("id")Integer taskId, @Param("completeExpandCount")Integer completeExpandCount,@Param("percent")BigDecimal percent);
