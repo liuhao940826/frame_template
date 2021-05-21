@@ -92,7 +92,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         List<InspectionPlanExpandAddReq> inspectionExpandList = req.getInspectionExpandList();
 
         //构建任务
-        InspectionTask task = builder.groupId(groupId).name(req.getName()).operatorId(user.getId()).operatorName(user.getUserName()).auditId(req.getAuditId())
+        InspectionTask task = builder.groupId(groupId).name(req.getName()).operatorId(user.getId()).operatorName(user.getShowName()).auditId(req.getAuditId())
                 .auditName(req.getAuditName()).status(InspectionTaskStatusEnum.AUDIT.getCode()).completeExpandCount(0).totalExpandCount(inspectionExpandList.size())
                 .startTime(req.getStartTime()).endTime(req.getEndTime()).remark(req.getRemark()).build();
 
@@ -134,7 +134,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         Integer jobId = xxlJobProxy.sendCronToJob(ProxyConstants.XXL_JOB_HANDLE_TYPE_INSPECTION_PLAN, JSON.toJSONString(param), cron, user.getId(), String.format(ProxyConstants.REMARK, task.getName()));
 
         //发送消息
-        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.ADD_MESSAGE,user.getUserName(),task.getName()),user.getGroupId(),
+        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.ADD_MESSAGE,user.getShowName(),task.getName()),user.getGroupId(),
                 MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.AUDIT.getCode());
 
 
@@ -246,7 +246,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         //操作日志
-        insertLog( user, orgTask.getId(), LogConstant.UPDATE,user.getUserName());
+        insertLog( user, orgTask.getId(), LogConstant.UPDATE,user.getShowName());
 
         return JsonNewResult.success();
     }
@@ -280,7 +280,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         if(InspectionTaskStatusEnum.PASS.getCode().equals(status)){
             //操作日志 通过
-            insertLog(user, orgTask.getId(), LogConstant.PASS,user.getUserName());
+            insertLog(user, orgTask.getId(), LogConstant.PASS,user.getShowName());
 
             //发送消息
             messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.PASS_MESSAGE,orgTask.getName()),user.getGroupId(),
@@ -288,7 +288,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         }else if(InspectionTaskStatusEnum.REFUSE.getCode().equals(status)) {
             //操作日志 驳回
-            insertLog(user, orgTask.getId(), LogConstant.REFUSE,user.getUserName());
+            insertLog(user, orgTask.getId(), LogConstant.REFUSE,user.getShowName());
 
             //发送消息
             messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.REFUSE_MESSAGE,orgTask.getName()),user.getGroupId(),
@@ -345,7 +345,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionTaskMapper.updateCompleteExpandCount(taskId,completeExpandCount,percent);
 
         //操作日志
-        insertLog(user, taskId, LogConstant.CALLBACK,user.getUserName(),req.getDeptName());
+        insertLog(user, taskId, LogConstant.CALLBACK,user.getShowName(),req.getDeptName());
 
         if(completeExpandCount.equals(orgTask.getTotalExpandCount())){
             //判断任务完成
@@ -1110,7 +1110,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         //操作日志
-        insertLog(user, task.getId(), LogConstant.URGED,user.getUserName());
+        insertLog(user, task.getId(), LogConstant.URGED,user.getShowName());
 
         //发送消息
         messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.URGED_AUDIT,task.getOperatorName(),task.getName()),user.getGroupId(),
@@ -1124,7 +1124,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //日志处理
         String content = String.format(operatorType, param);
 
-        InspectionOperatorLog log  = new InspectionOperatorLog(user.getGroupId(),taskId,user.getId(),user.getUserName(),content);
+        InspectionOperatorLog log  = new InspectionOperatorLog(user.getGroupId(),taskId,user.getId(),user.getShowName(),content);
 
         //赋值公共属性
         EntityBase.setCreateParams(log, user);
