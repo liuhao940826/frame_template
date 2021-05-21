@@ -272,7 +272,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         Date audtiTime = new Date();
         //审核通过
         inspectionTaskMapper.updateStatusById(status,req.getId(),audtiTime);
-        InspectionAuditReason inspectionAuditReason = new InspectionAuditReason(user.getGroupId(),orgTask.getUpdateTimes(),status,req.getReason());
+        InspectionAuditReason inspectionAuditReason = new InspectionAuditReason(user.getGroupId(),orgTask.getId(),status,req.getReason());
         //赋值公共属性
         EntityBase.setCreateParams(inspectionAuditReason, user);
 
