@@ -174,7 +174,7 @@ public class BigDecimalUtils {
             return result;
         }
 
-        return target.divide(total, scale,roundMode);
+        return target.divide(total, scale,roundMode).multiply(new BigDecimal(100));
     }
 
 

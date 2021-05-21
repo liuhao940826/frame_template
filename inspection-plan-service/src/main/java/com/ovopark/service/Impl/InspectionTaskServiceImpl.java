@@ -357,6 +357,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.COMPELETE_MESSAGE,orgTask.getName()),user.getGroupId(),
                     MessageConstant.INSPECTION_JPUSH_TYPE,orgTask.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.APP.getCode());
 
+        }else if(completeExpandCount<orgTask.getTotalExpandCount()){
+            //判断任务完成
+            int isOperat =inspectionTaskMapper.updateStatusById(InspectionTaskStatusEnum.INSPECT.getCode(),taskId,null);
         }
 
         return JsonNewResult.success();
@@ -886,13 +889,23 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
                 }
             }
 
-            String inspectResult = String.format(CommonConstants.INSPECTION_RESULT, alreadyDoNum, undoNum);
+            String inspectResult = String.format(CommonConstants.INSPECTION_RESULT, expandRespList.size(),alreadyDoNum, undoNum);
 
             resp.setInspectionResult(inspectResult);
 
         }
         //设置明细
         resp.setInspectionExpandList(expandRespList);
+        //设置返回最新的审核结果
+        List<InspectionAuditReason> list  =inspectionAuditReasonMapper.selectAudiReasonListByTaskId(taskId);
+
+        List<InspectionPlanTaskAuditReasonResp> reasonList = new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(list)){
+            reasonList = ClazzConverterUtils.converterClass(list, InspectionPlanTaskAuditReasonResp.class);
+        }
+        //审核的历史记录
+        resp.setReason(reasonList);
 
         return JsonNewResult.success(resp);
 
@@ -1004,6 +1017,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionTaskExpandMapper.deleteByTaskIdWithOutExpandList(taskId,new ArrayList<>());
 
         inspectionDeptTagMapper.deleteByTaskIdWithOutDeptIdList(taskId,new ArrayList<>());
+
+        inspectionAuditReasonMapper.deleteByTaskId(taskId);
+
         //
         Date now = new Date();
 
@@ -1013,7 +1029,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         //发送消息
-        messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,task.getOperatorName(),task.getName()),user.getGroupId(),
+        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,task.getOperatorName(),task.getName()),user.getGroupId(),
                 MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.LIST.getCode());
 
 
@@ -1116,5 +1132,14 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         inspectionOperatorLogMapper.insertSelective(log);
     }
 
+
+    public static void main(String[] args) {
+
+        BigDecimal percent = BigDecimalUtils.calculatePercent(1, 1,BigDecimalUtils.DEFAULT_SCALE_FOUR, BigDecimal.ROUND_HALF_UP);
+
+
+        System.out.println(percent.intValue());
+
+    }
 
 }

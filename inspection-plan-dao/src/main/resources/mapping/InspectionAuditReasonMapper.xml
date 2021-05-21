@@ -28,4 +28,12 @@
             #{createTime}, #{createId}, #{updateTime}, #{updateId}, #{isDelete})
   </insert>
 
+  <select id="selectAudiReasonListByTaskId" resultType="com.ovopark.po.InspectionAuditReason">
+    select * from is_inspection_audit_reason where  task_id=#{taskId} and is_deleted =0
+  </select>
+  
+  <update id="deleteByTaskId">
+    update is_inspection_audit_reason set is_deleted = 1 where task_id=#{taskId} and is_deleted=0
+  </update>
+  
 </mapper>

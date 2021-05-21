@@ -153,6 +153,8 @@ public class InspectionTaskController {
             rowData.add(resp.getStartTimeStr());
             //结束时间
             rowData.add(resp.getEndTimeStr());
+            //审核人
+            rowData.add(resp.getAuditName());
 
             InspectionTaskStatusEnum statusEnum = InspectionTaskStatusEnum.format(resp.getStatus());
             //状态
@@ -252,7 +254,6 @@ public class InspectionTaskController {
 
         return inspectionTaskService.udpate(req,user);
     }
-
 
 
     @RequestMapping(value="/delete")

@@ -47,6 +47,8 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     private String inspectionResult;
 
+    private List<InspectionPlanTaskAuditReasonResp> reason = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
@@ -174,5 +176,14 @@ public class InspectionPlanTaskDetailResp implements Serializable {
 
     public void setOperatorName(String operatorName) {
         this.operatorName = operatorName;
+    }
+
+
+    public List<InspectionPlanTaskAuditReasonResp> getReason() {
+        return reason;
+    }
+
+    public void setReason(List<InspectionPlanTaskAuditReasonResp> reason) {
+        this.reason = reason;
     }
 }
