@@ -193,6 +193,9 @@
       <if test="updateTimes != null">
         update_times = #{updateTimes,jdbcType=INTEGER},
       </if>
+      <if test="jobId!=null">
+        job_id =#{jobId,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
