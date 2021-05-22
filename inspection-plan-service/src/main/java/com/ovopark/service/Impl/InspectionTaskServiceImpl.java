@@ -1029,7 +1029,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         }
 
         //发送消息
-        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,user.getId(),task.getName()),user.getGroupId(),
+        messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,user.getShowName(),task.getName()),user.getGroupId(),
                 MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.LIST.getCode());
 
 
