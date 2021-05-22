@@ -354,7 +354,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             insertLog(user, taskId, LogConstant.COMPELATE,orgTask.getName());
 
             //发送消息
-            messageProxy.sendWebSocketAndJpush(orgTask.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.COMPELETE_MESSAGE,orgTask.getName()),user.getGroupId(),
+            messageProxy.sendWebSocketAndJpush(orgTask.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.COMPELETE_MESSAGE,orgTask.getName()),user.getGroupId(),
                     MessageConstant.INSPECTION_JPUSH_TYPE,orgTask.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.APP.getCode());
 
         }else if(completeExpandCount<orgTask.getTotalExpandCount()){
