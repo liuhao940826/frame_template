@@ -141,7 +141,7 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
         //更新定时任务id
         inspectionTaskMapper.updateJobIdById(jobId,task.getId());
         //操作日志
-        insertLog( user, task.getId(), LogConstant.CREATE,user.getUserName());
+        insertLog(user, task.getId(), LogConstant.CREATE,user.getShowName());
 
         return JsonNewResult.success();
 
