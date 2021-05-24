@@ -295,6 +295,7 @@
       </foreach>
       )
     </if>
+    order by status asc end_time id desc
   </select>
   
   
