@@ -1,5 +1,7 @@
 package com.ovopark.model.req;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,9 +22,9 @@ public class InspectionPlanTaskUpdateReq implements Serializable {
     private Integer auditId;
 
     private String auditName = "";
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private String remark;
