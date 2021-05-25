@@ -89,7 +89,7 @@ config:
 
 shopjob:
   url: http://10.81.72.134:8088/xxl-job-admin
-  executorId: 7
+  executorId: 9
 
 websocket:
   url: http://10.24.254.23/shopweb-websocket/websocket/sendMessageToUser
