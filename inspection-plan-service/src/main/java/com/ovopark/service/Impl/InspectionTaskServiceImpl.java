@@ -1028,10 +1028,12 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
             xxlJobProxy.stopJob(jobId);
         }
 
-        //发送消息
+        //发送消息 审核人
         messageProxy.sendWebSocketAndJpush(task.getAuditId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,user.getShowName(),task.getName()),user.getGroupId(),
                 MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.LIST.getCode());
-
+        //执行人
+        messageProxy.sendWebSocketAndJpush(task.getOperatorId(),user.getId(), MessageConstant.INSPECTION_PLAN_CATEGORY,String.format(MessageConstant.DELETE_MESSAGE,user.getShowName(),task.getName()),user.getGroupId(),
+                MessageConstant.INSPECTION_JPUSH_TYPE,task.getId(), InspectionPlanMainTypeEnum.INSPECTION,req.getTokenType(),JumpTypeEnum.LIST.getCode());
 
         return JsonNewResult.success();
 
