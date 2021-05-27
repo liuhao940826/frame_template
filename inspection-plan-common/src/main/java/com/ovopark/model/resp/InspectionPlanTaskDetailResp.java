@@ -1,6 +1,8 @@
 package com.ovopark.model.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ovopark.model.req.InspectionPlanExpandAddReq;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,9 +28,11 @@ public class InspectionPlanTaskDetailResp implements Serializable {
     private Integer auditId;
 
     private String auditName = "";
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private Integer updateTimes;
