@@ -45,7 +45,8 @@ public class ResultCode {
     //feign服务
     public static ResultCodeInfo DEPARTMENT_FEIGN_ERROR = new ResultCodeInfo(110001, "DEPARTMENT_FEIGN_ERROR", "门店服务调用失败");
 
-
+    //http
+    public static ResultCodeInfo ORGANZIE_PROXY_ERROR = new ResultCodeInfo(120001, "ORGANZIE_PROXY_ERROR", "组织架构调用失败");
 
 
     public static ResultCodeInfo INSPECTION_PLAN_TASK_NULL = new ResultCodeInfo(200001, "INSPECTION_PLAN_TASK_NULL", "巡检计划不存在");

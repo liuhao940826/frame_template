@@ -94,3 +94,6 @@ websocket:
 
 jpush:
   url: http://121.43.123.76:8999/shopweb-support/xinfaMission/sendCrmjPush/v2
+
+organize:
+  url: http://116.62.38.36:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds

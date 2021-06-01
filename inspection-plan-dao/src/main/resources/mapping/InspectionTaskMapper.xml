@@ -332,6 +332,13 @@
       </foreach>
       )
     </if>
+    <if test="organizeUserList != null and organizeUserList.size>0">
+      AND create_id IN (
+      <foreach collection="organizeUserList" item="createId" separator=",">
+        #{createId}
+      </foreach>
+      )
+    </if>
     <if test="sqlOrderExpression!=null">
       order by  ${sqlOrderExpression}
     </if>

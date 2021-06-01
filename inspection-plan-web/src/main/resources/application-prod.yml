@@ -98,3 +98,5 @@ jpush:
   url: http://boss.ovopark.com/shopweb-support/xinfaMission/sendCrmjPush/v2
   retryTimes: 3
 
+organize:
+  url: http://116.62.38.36:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds

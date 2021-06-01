@@ -34,6 +34,11 @@ public class InspectionPlanTaskWebListReq implements Serializable {
     private String endTime;
 
     private List<Integer> tagIdList = new ArrayList<>();
+
+    private List<Integer> organizeIdList = new ArrayList<>();
+
+    private Integer tokenType=1;
+
     //排序列表
     private List<StorePlanDescReq> orderList = new ArrayList<>();
 
@@ -132,5 +137,22 @@ public class InspectionPlanTaskWebListReq implements Serializable {
 
     public void setOrderList(List<StorePlanDescReq> orderList) {
         this.orderList = orderList;
+    }
+
+
+    public List<Integer> getOrganizeIdList() {
+        return organizeIdList;
+    }
+
+    public void setOrganizeIdList(List<Integer> organizeIdList) {
+        this.organizeIdList = organizeIdList;
+    }
+
+    public Integer getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(Integer tokenType) {
+        this.tokenType = tokenType;
     }
 }

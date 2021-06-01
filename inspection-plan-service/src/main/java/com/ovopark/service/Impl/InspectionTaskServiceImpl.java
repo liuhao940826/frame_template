@@ -19,6 +19,7 @@ import com.ovopark.model.resp.*;
 import com.ovopark.po.*;
 import com.ovopark.proxy.DepartProxy;
 import com.ovopark.proxy.MessageProxy;
+import com.ovopark.proxy.OrganizeProxy;
 import com.ovopark.proxy.XxlJobProxy;
 import com.ovopark.service.InspectionTaskService;
 import com.ovopark.utils.BigDecimalUtils;
@@ -71,6 +72,9 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
     @Autowired
     MessageProxy messageProxy;
+
+    @Autowired
+    OrganizeProxy organizeProxy;
 
 
     /**
@@ -657,10 +661,16 @@ public class InspectionTaskServiceImpl implements InspectionTaskService {
 
         String sqlOrderExpression = sqlDescBuilder.toString();
 
+        List<Integer> organizeUserList  =  new ArrayList<>();
+
+        if(!CollectionUtils.isEmpty(req.getOrganizeIdList())){
+            organizeUserList= organizeProxy.getOrganzieUserIdList(req.getOrganizeIdList(), user.getGroupId(), req.getTokenType());
+        }
+
         //任务
         List<InspectionTask> list = inspectionTaskMapper.queryWebListByPage(pageTemp,groupId ,req.getName(), req.getOperatorName(), req.getStatus(),
                 req.getAuditName(), req.getStartTime(), req.getEndTime(), InspectionPlanExpressionEnum.formatOrNull(req.getCompletePercentExpression()).getExpression(),
-                req.getCompletePercent(),taskIdList,sqlOrderExpression);
+                req.getCompletePercent(),taskIdList,organizeUserList,sqlOrderExpression);
 
         //手动gc 释放大变量
         System.gc();
