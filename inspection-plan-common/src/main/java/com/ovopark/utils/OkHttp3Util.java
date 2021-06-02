@@ -19,18 +19,24 @@ public class OkHttp3Util {
 
     private static Logger logger = LoggerFactory.getLogger(OkHttp3Util.class);
 
-    public static final MediaType JSON
-            = MediaType.get("application/json; charset=utf-8");
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    public static final String  SCHEME_HTTP ="http";
+
+    public static final String  SCHEME_HTTPS ="https";
 
     /**
      *
      * @param url
-     * @param callback
-     * @param objectType
+     * @param token
      * @param tokenType 根据类型去获取token的Key
      * @param scheme http/https
      */
-    public static String doGet(String url, Callback callback,String objectType,Integer tokenType,String scheme,Map<String,String> param) {
+    public static String doGet(String url, Map<String,String> param,String token,Integer tokenType,String scheme) {
+
+        if(scheme==null){
+            scheme = SCHEME_HTTP;
+        }
 
         //创建OkHttpClient请求对象
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -48,8 +54,14 @@ public class OkHttp3Util {
 
         //创建Request
         Request.Builder builder = new Request.Builder();
+
+        TokenTypeEnum tokenTypeEnum = TokenTypeEnum.format(tokenType);
+        Request request = builder.url(httpUrl)
+                .header(tokenTypeEnum.getDesc(), token)
+                .build();
+
         //得到Call对象
-        Call call = okHttpClient.newCall(builder.url(httpUrl).build());
+        Call call = okHttpClient.newCall(request);
 
 
         try (Response response = call.execute()){
