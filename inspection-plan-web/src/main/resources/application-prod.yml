@@ -103,4 +103,4 @@ jpush:
   retryTimes: 3
 
 organize:
-  url: http://www.ovopark.com:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds
+  url: http://218.244.151.54:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds
