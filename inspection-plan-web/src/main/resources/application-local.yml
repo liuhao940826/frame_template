@@ -84,6 +84,10 @@ config:
   expiredTime: 2592000000
   whiteList:
     - /task/expire
+  elasticsearch:
+    host: 172.16.22.41:9200
+    userName: elastic
+    password: Ovopark#2020
 
 shopjob:
   url: http://116.62.15.85:8088/xxl-job-admin

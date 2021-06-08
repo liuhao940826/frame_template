@@ -63,6 +63,13 @@
             </exclusions>
         </dependency>
 
+        <!-- es -->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.5.4</version>
+        </dependency>
+
         <!-- httpclient -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
