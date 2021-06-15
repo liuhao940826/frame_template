@@ -5,11 +5,11 @@
     <packaging>pom</packaging>
     <!--模块-->
     <modules>
-        <module>inspection-plan-service</module>
-        <module>inspection-plan-dao</module>
-        <module>inspection-plan-common</module>
-        <module>inspection-plan-web</module>
-        <module>inspection-plan-api</module>
+        <module>frame-template-service</module>
+        <module>frame-template-dao</module>
+        <module>frame-template-common</module>
+        <module>frame-template-web</module>
+        <module>frame-template-api</module>
     </modules>
 
     <parent>
@@ -19,16 +19,16 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.ovopark</groupId>
-    <artifactId>inspection-plan</artifactId>
+    <groupId>self.alan</groupId>
+    <artifactId>frame_template</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>inspection-plan</name>
+    <name>frame-template</name>
     <description>脚手架模板</description>
 
     <properties>
         <skipTests>true</skipTests>
         <java.version>1.8</java.version>
-        <pro.name>inspection-plan</pro.name>
+        <pro.name>frame-template</pro.name>
         <env>local</env>
         <commons.version>2.6</commons.version>
         <pro.version>1.0-SNAPSHOT</pro.version>
@@ -188,28 +188,28 @@
 
             <!--内部依赖-->
             <dependency>
-                <groupId>com.ovopark</groupId>
-                <artifactId>inspection-plan-web</artifactId>
+                <groupId>self.alan</groupId>
+                <artifactId>frame-template-web</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.ovopark</groupId>
-                <artifactId>inspection-plan-service</artifactId>
+                <groupId>self.alan</groupId>
+                <artifactId>frame-template-service</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.ovopark</groupId>
-                <artifactId>inspection-plan-dao</artifactId>
+                <groupId>self.alan</groupId>
+                <artifactId>frame-template-dao</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.ovopark</groupId>
-                <artifactId>inspection-plan-common</artifactId>
+                <groupId>self.alan</groupId>
+                <artifactId>frame-template-common</artifactId>
                 <version>${pro.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.ovopark</groupId>
-                <artifactId>inspection-plan-api</artifactId>
+                <groupId>self.alan</groupId>
+                <artifactId>frame-template-api</artifactId>
                 <version>${pro.version}</version>
             </dependency>
 
@@ -225,22 +225,22 @@
     </dependencyManagement>
 
     <!--拉去仓库地址-->
-    <repositories>
-        <repository>
-            <id>nexus</id>
-            <name>Team Nexus Repository</name>
-            <url>http://116.62.59.245:8081/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>nexus</id>-->
+<!--            <name>Team Nexus Repository</name>-->
+<!--            <url>http://localhost:8081/nexus/content/groups/public/</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
-    <!--推送仓库地址-->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>nexus-snapshots</id>
-            <name>corp nexus-snapshot</name>
-            <url>http://116.62.59.245:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--    &lt;!&ndash;推送仓库地址&ndash;&gt;-->
+<!--    <distributionManagement>-->
+<!--        <snapshotRepository>-->
+<!--            <id>nexus-snapshots</id>-->
+<!--            <name>corp nexus-snapshot</name>-->
+<!--            <url>http://localhost:8081/nexus/content/repositories/snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
 
     <build>
 
@@ -248,7 +248,7 @@
 
         <resources>
             <resource>
-                <directory>com.ovopark.cloud.projection.assembly</directory>
+                <directory>self.alan.cloud.projection.assembly</directory>
                 <filtering>true</filtering>
             </resource>
             <resource>
@@ -267,7 +267,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <includeSystemScope>true</includeSystemScope>
-                    <mainClass>com.ovopark.web.WebApplication</mainClass>
+                    <mainClass>self.alan.web.WebApplication</mainClass>
                     <layout>ZIP</layout>
                     <attach>false</attach>
                 </configuration>
