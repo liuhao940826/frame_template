@@ -95,16 +95,15 @@ config:
       password: Ovopark#2020
 
 shopjob:
-  url: http://116.62.15.85:8088/xxl-job-admin
+  url: http://localhost:8088/xxl-job-admin
   executorId: 7
 
 websocket:
-  url: http://121.43.123.76:8088/shopweb-websocket/websocket/sendMessageToUser
+  url: http://localhost:8088/shopweb-websocket/websocket/sendMessageToUser
 
 jpush:
-  url: http://121.43.123.76:8999/shopweb-support/xinfaMission/sendCrmjPush/v2
-  retryTimes: 3
+  url: http://localhost:8999/shopweb-support/xinfaMission/sendCrmjPush/v2
 
 organize:
-  url: http://116.62.38.36:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds
+  url: http://localhost:7082/ovopark-organize/userDocking/getUserIdByGroupIdAndOrganizedIds
 
