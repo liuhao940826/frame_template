@@ -49,6 +49,7 @@ import self.alan.model.page.Page;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Classname EsHighClientUtls
@@ -66,6 +67,12 @@ public class EsHighClientUtls<T> {
     private static final String INDEX = "spider";
     private static final String TYPE = "doc";
     private static final String TIMESTAMP = "timestamp";
+
+    public static final String  MUST = "must";
+    //
+    public static final String  SHOULD = "should";
+
+    public static final String  MUST_NOT = "must_not";
 
     @Autowired
     private RestHighLevelClient client;
@@ -320,7 +327,15 @@ public class EsHighClientUtls<T> {
         return resultMap;
     }
 
-
+    /**
+     * 支持泛型的查询获取
+     * @param index
+     * @param type
+     * @param id
+     * @param clazz
+     * @return
+     * @throws IOException
+     */
     public T getDocument(String index, String type, String id,Class<T> clazz) throws IOException{
 
         String  result ="";
@@ -359,6 +374,49 @@ public class EsHighClientUtls<T> {
 
         return null;
     }
+
+    /**
+     * 查询
+     * @param index
+     * @param type
+     * @return
+     */
+    public List<T> getTermDocumentList(Class<T> clazz ,String index ,String type,String termKey,Object termValue) throws IOException {
+        //        //创建request
+        SearchRequest searchRequest = new SearchRequest(index).types(type);
+
+        //创建搜索构建起
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        TermQueryBuilder termsQueryBuilder = QueryBuilders.termQuery(termKey, termValue);
+
+        //query 需要一个builder
+        searchSourceBuilder.query(termsQueryBuilder);
+
+        //设置超时逻辑
+        searchSourceBuilder.timeout(new TimeValue(60, TimeUnit.SECONDS));
+
+        //添加搜索 条件到request 中
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        //状态
+        RestStatus status = response.status();
+        //多长时间
+        TimeValue took = response.getTook();
+
+        List<T> result = new ArrayList<>();
+
+        //采样数
+        for (SearchHit hit : response.getHits().getHits()) {
+            String sourceAsString = hit.getSourceAsString();
+            T t = JSON.parseObject(sourceAsString, clazz);
+            result.add(t);
+        }
+
+        return result;
+    }
+
 
 
     /**

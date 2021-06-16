@@ -14,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import self.alan.model.resp.UserResp;
 import self.alan.po.Depart;
 import self.alan.utils.EsHighClientUtls;
 import self.alan.utils.RedisUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Classname TestController
@@ -28,7 +31,7 @@ import java.io.IOException;
  */
 @Controller
 @RequestMapping("/test")
-public class TestController {
+public class TestController<T> {
 
     private static Logger log = LoggerFactory.getLogger(TestController.class);
 
@@ -41,13 +44,15 @@ public class TestController {
 
     @RequestMapping(value="/testEs")
     @ResponseBody
-    public JsonNewResult<String> testEs(@RequestBody TestEsReq req){
+    public JsonNewResult<?> testEs(@RequestBody TestEsReq req){
 
         try {
 //            esUtils.createIndex(req.getIndex(), req.getType(), null, req.getJsonStr());
 
+            List termDocumentList = esUtils.getTermDocumentList(UserResp.class, req.getIndex(), req.getType(), "name.keyword", "浩仔");
 
-            esUtils.addDocByJson(req.getIndex(),req.getType(),null,req.getJsonStr());
+            return JsonNewResult.success(termDocumentList);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
