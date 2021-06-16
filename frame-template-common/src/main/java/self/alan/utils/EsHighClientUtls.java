@@ -361,7 +361,6 @@ public class EsHighClientUtls<T> {
     }
 
 
-
     /**
      * 删除文档
      * @param index
