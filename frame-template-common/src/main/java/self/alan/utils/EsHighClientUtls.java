@@ -1,5 +1,6 @@
 package self.alan.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.ElasticsearchException;
@@ -56,7 +57,7 @@ import java.util.*;
  * @Created by liuhao
  */
 @Component
-public class EsHighClientUtls {
+public class EsHighClientUtls<T> {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(EsHighClientUtls.class);
 
@@ -135,6 +136,8 @@ public class EsHighClientUtls {
             LOGGER.error("删除失败！");
         }
     }
+
+
 
 //    /**
 //     * 判断索引是否存在
@@ -316,6 +319,48 @@ public class EsHighClientUtls {
         }
         return resultMap;
     }
+
+
+    public T getDocument(String index, String type, String id,Class<T> clazz) throws IOException{
+
+        String  result ="";
+
+        GetRequest request = new GetRequest(index, type, id);
+        // 实时(否)
+        request.realtime(false);
+        // 检索之前执行刷新(是)
+        request.refresh(true);
+
+        GetResponse response = null;
+        try {
+            response = client.get(request, RequestOptions.DEFAULT);
+        } catch (ElasticsearchException e) {
+            if (e.status() == RestStatus.NOT_FOUND) {
+                LOGGER.error("文档未找到，请检查参数！" );
+            }
+            if (e.status() == RestStatus.CONFLICT) {
+                LOGGER.error("版本冲突！" );
+            }
+            LOGGER.error("查找失败！");
+        }
+
+        if(Objects.nonNull(response)) {
+            if (response.isExists()) { // 文档存在
+                result = response.getSourceAsString();
+
+                return JSON.parseObject(result,clazz);
+            } else {
+                // 处理未找到文档的方案。 请注意，虽然返回的响应具有404状态代码，但仍返回有效的GetResponse而不是抛出异常。
+                // 此时此类响应不持有任何源文档，并且其isExists方法返回false。
+                LOGGER.error("文档未找到，请检查参数！" );
+                return null;
+            }
+        }
+
+        return null;
+    }
+
+
 
     /**
      * 删除文档
