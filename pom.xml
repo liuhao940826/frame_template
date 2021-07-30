@@ -101,6 +101,12 @@
                 <version>${poi.version}</version>
             </dependency>
 
+            <!--添加sharding-jdbc-core -->
+<!--            <dependency>-->
+<!--                <groupId>org.apache.shardingsphere</groupId>-->
+<!--                <artifactId>sharding-jdbc-core</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--            </dependency>-->
             <!--mybatis-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
