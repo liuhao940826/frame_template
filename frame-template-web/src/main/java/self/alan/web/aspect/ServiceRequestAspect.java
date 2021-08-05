@@ -51,7 +51,7 @@ public class ServiceRequestAspect {
     private static final Logger defaultLogger = LoggerFactory.getLogger("R-R-LOG");
 
 
-    @Value("${ovopark.sso.server.url}")
+    @Value("${alan.sso.server.url}")
     private String  ssoServerUrl;
 
     @Autowired

@@ -75,7 +75,7 @@ logging:
   file:
     path: /Users/liuhao/wdzIdeaProject/inspection-plan/log
 
-ovopark:
+alan:
   sso:
     server:
       url: http://47.96.139.143:8819

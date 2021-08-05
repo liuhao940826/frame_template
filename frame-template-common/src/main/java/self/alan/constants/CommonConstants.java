@@ -17,10 +17,6 @@ public final class CommonConstants {
     public static final Integer UPDATE_TIMES =  3;
 
     /**
-     * 获取用户信息的请求路径
-     */
-    public static final String PARSE_TOKEN_URL = "/ovopark-sso/token/parseToken";
-    /**
      * 版本号
      */
     public static final Integer DEFAULT_VERSION = 1;
