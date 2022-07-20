@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration = self.alan.web.spi.configuration.AutoSPIConfiguration
+self.alan.web.spi.SpiInterface = self.alan.web.spi.DoubleDoSpi,self.alan.web.spi.DoSpi
