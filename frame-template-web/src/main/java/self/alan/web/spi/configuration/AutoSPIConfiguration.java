@@ -62,6 +62,7 @@ public class AutoSPIConfiguration implements EnvironmentAware, ApplicationContex
 
   }
 
+  //这个是对beanFactory做增强不需要改动
   @Override
   public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
       throws BeansException {
