@@ -41,6 +41,7 @@ public class AutoSPIConfiguration implements EnvironmentAware, ApplicationContex
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
       throws BeansException {
+    //这个是核心反射创建实例
     List<SpiInterface> spiInterfaces = SpringFactoriesLoader.loadFactories(SpiInterface.class,
         this.getClass().getClassLoader());
 
