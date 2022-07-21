@@ -29,6 +29,16 @@ public class AutoSPIConfiguration implements EnvironmentAware, ApplicationContex
   private static final String SINGLETON = "singleton";
 
   @Override
+  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    this.applicationContext = applicationContext;
+  }
+
+  @Override
+  public void setEnvironment(Environment environment) {
+    this.environment =environment;
+  }
+
+  @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry)
       throws BeansException {
     List<SpiInterface> spiInterfaces = SpringFactoriesLoader.loadFactories(SpiInterface.class,
@@ -58,13 +68,5 @@ public class AutoSPIConfiguration implements EnvironmentAware, ApplicationContex
 
   }
 
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
-  }
 
-  @Override
-  public void setEnvironment(Environment environment) {
-    this.environment =environment;
-  }
 }
